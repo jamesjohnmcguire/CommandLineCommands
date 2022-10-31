@@ -268,7 +268,7 @@ namespace DigitalZenWorks.CommandLine.Commands
 			{
 				string argument = arguments[index];
 
-				if (argument.StartsWith('-'))
+				if (argument.StartsWith("-", StringComparison.Ordinal))
 				{
 					CommandOption option = new ();
 
@@ -306,7 +306,7 @@ namespace DigitalZenWorks.CommandLine.Commands
 					continue;
 				}
 
-				if (!argument.StartsWith('-'))
+				if (!argument.StartsWith("-", StringComparison.Ordinal))
 				{
 					parameters.Add(argument);
 				}
