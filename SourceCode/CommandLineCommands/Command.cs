@@ -18,9 +18,9 @@ namespace DigitalZenWorks.CommandLine.Commands
 		private readonly string name;
 		private readonly IList<CommandOption> options;
 		private readonly int parameterCount;
+		private readonly IList<string> parameters = new List<string>();
 
 		private string description;
-		private IList<string> parameters = new List<string>();
 
 		/// <summary>
 		/// Initializes a new instance of the <see cref="Command"/> class.
@@ -30,10 +30,7 @@ namespace DigitalZenWorks.CommandLine.Commands
 		{
 			this.name = name;
 
-			if (options == null)
-			{
-				options = new List<CommandOption>();
-			}
+			options ??= new List<CommandOption>();
 		}
 
 		/// <summary>

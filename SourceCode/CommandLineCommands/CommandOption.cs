@@ -13,7 +13,7 @@ namespace DigitalZenWorks.CommandLine.Commands
 	/// </summary>
 	public class CommandOption
 	{
-		private bool requiresParameter;
+		private readonly bool requiresParameter;
 
 		/// <summary>
 		/// Initializes a new instance of the <see cref="CommandOption"/>

@@ -260,7 +260,7 @@ namespace DigitalZenWorks.CommandLine.Commands
 			return isValid;
 		}
 
-		private IList<CommandOption> GetOptions(Command command)
+		private IList<CommandOption> GetOptions()
 		{
 			IList<CommandOption> options = new List<CommandOption>();
 
@@ -332,7 +332,7 @@ namespace DigitalZenWorks.CommandLine.Commands
 		{
 			bool areOptionsValid = true;
 
-			commandOptions = GetOptions(validatedCommand);
+			commandOptions = GetOptions();
 
 			foreach (CommandOption option in commandOptions)
 			{
