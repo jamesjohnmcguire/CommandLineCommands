@@ -1,11 +1,35 @@
-REM %1 - Version (such as 1.0.5)
-REM %2 - API key
+REM %2 - Version (such as 1.0.5)
+REM %3 - API key
 
 CD %~dp0
 CD ..\SourceCode\CommandLineCommands
 
-msbuild -property:Configuration=Release;OutputPath=Bin\Release\Nuget;Platform="Any CPU" -restore CommandLineCommands.csproj
-msbuild -property:Configuration=Release;OutputPath=Bin\Release\Nuget;Platform="Any CPU" CommandLineCommands.csproj
+IF "%1"=="publish" GOTO publish
 
-CD Bin\Release\Nuget
-dotnet nuget push DigitalZenWorks.CommandLine.Commands.%1.nupkg --api-key %2 --source https://api.nuget.org/v3/index.json
+:default
+dotnet build --configuration Release
+
+GOTO end
+
+:publish
+
+if "%~2"=="" GOTO error1
+if "%~3"=="" GOTO error2
+
+msbuild -property:Configuration=Release -restore -target:rebuild;pack CommandLineCommands.csproj
+
+CD bin\Release
+
+nuget push DigitalZenWorks.CommandLine.Commands.%2.nupkg %3 -source https://api.nuget.org/v3/index.json
+
+cd ..\..\..
+GOTO end
+
+:error1
+ECHO No version tag specified
+GOTO end
+
+:error2
+ECHO No API key specified
+
+:end
