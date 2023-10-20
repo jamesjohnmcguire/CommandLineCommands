@@ -5,6 +5,7 @@
 		<AssemblyName>DigitalZenWorks.CommandLine.Commands</AssemblyName>
 		<AssemblyVersion>1.0.0.0</AssemblyVersion>
 		<Authors>James John McGuire</Authors>
+		<CheckEolTargetFramework>false</CheckEolTargetFramework>
 		<CodeAnalysisRuleSet>../CodeAnalysis.ruleset</CodeAnalysisRuleSet>
 		<Company>Digital Zen Works</Company>
 		<Copyright>Copyright © 2023</Copyright>
@@ -22,6 +23,7 @@
 		<PackageLicenseExpression>MIT</PackageLicenseExpression>
 		<PackageTags>Digital Zen Works;Command Line;Commands;Options</PackageTags>
 		<PackageReadmeFile>README.md</PackageReadmeFile>
+		<SuppressTfmSupportBuildWarnings>true</SuppressTfmSupportBuildWarnings>
 		<Version>1.1.5</Version>
 	</PropertyGroup>
 
