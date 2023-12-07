@@ -8,6 +8,7 @@ using DigitalZenWorks.CommandLine.Commands;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 [assembly: CLSCompliant(true)]
 
@@ -206,8 +207,9 @@ namespace CommandLineCommands.Tests
 			Assert.That(command.Name, Is.EqualTo("command-one"));
 
 			IList<CommandOption> options = command.Options;
+			int count = options.Count;
 
-			Assert.That(0, Is.EqualTo(options.Count));
+			Assert.That(count, Is.EqualTo(0));
 		}
 
 		/// <summary>
@@ -228,8 +230,9 @@ namespace CommandLineCommands.Tests
 			Assert.That(command.Name, Is.EqualTo("command-three"));
 
 			IList<CommandOption> options = command.Options;
+			int count = options.Count;
 
-			Assert.That(0, Is.EqualTo(options.Count));
+			Assert.That(count, Is.EqualTo(0));
 		}
 
 		/// <summary>
@@ -250,8 +253,9 @@ namespace CommandLineCommands.Tests
 			Assert.That(command.Name, Is.EqualTo("command-three"));
 
 			IList<CommandOption> options = command.Options;
+			int count = options.Count;
 
-			Assert.That(1, Is.EqualTo(options.Count));
+			Assert.That(count, Is.EqualTo(1));
 		}
 
 		/// <summary>
@@ -288,8 +292,9 @@ namespace CommandLineCommands.Tests
 			Assert.That(command.Name, Is.EqualTo("command-one"));
 
 			IList<CommandOption> options = command.Options;
+			int count = options.Count;
 
-			Assert.That(options.Count, Is.GreaterThan(0));
+			Assert.That(count, Is.GreaterThan(0));
 		}
 
 		/// <summary>
@@ -310,8 +315,9 @@ namespace CommandLineCommands.Tests
 			Assert.That(command.Name, Is.EqualTo("command-one"));
 
 			IList<CommandOption> options = command.Options;
+			int count = options.Count;
 
-			Assert.That(options.Count, Is.GreaterThan(0));
+			Assert.That(count, Is.GreaterThan(0));
 		}
 
 		/// <summary>
@@ -335,8 +341,9 @@ namespace CommandLineCommands.Tests
 			Assert.That(command.Name, Is.EqualTo("command-one"));
 
 			IList<CommandOption> options = command.Options;
+			int count = options.Count;
 
-			Assert.That(options.Count, Is.GreaterThan(0));
+			Assert.That(count, Is.GreaterThan(0));
 		}
 
 		/// <summary>
@@ -360,8 +367,9 @@ namespace CommandLineCommands.Tests
 			Assert.That(command.Name, Is.EqualTo("command-one"));
 
 			IList<CommandOption> options = command.Options;
+			int count = options.Count;
 
-			Assert.That(options.Count, Is.GreaterThan(0));
+			Assert.That(count, Is.GreaterThan(0));
 		}
 
 		/// <summary>
@@ -385,8 +393,9 @@ namespace CommandLineCommands.Tests
 			Assert.That(command.Name, Is.EqualTo("command-seven"));
 
 			IList<CommandOption> options = command.Options;
+			int count = options.Count;
 
-			Assert.That(options.Count, Is.GreaterThan(0));
+			Assert.That(count, Is.GreaterThan(0));
 
 			CommandOption option = options[0];
 			string parameter = option.Parameter;
@@ -415,8 +424,9 @@ namespace CommandLineCommands.Tests
 			Assert.That(command.Name, Is.EqualTo("command-seven"));
 
 			IList<CommandOption> options = command.Options;
+			int count = options.Count;
 
-			Assert.That(options.Count, Is.GreaterThan(0));
+			Assert.That(count, Is.GreaterThan(0));
 
 			CommandOption option = options[0];
 			string parameter = option.Parameter;
