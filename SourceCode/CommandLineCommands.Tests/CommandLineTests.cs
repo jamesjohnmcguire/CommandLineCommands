@@ -142,7 +142,7 @@ namespace CommandLineCommands.Tests
 
 			CommandOption optionFound = command.GetOption("n", "dryrun");
 
-			Assert.Null(optionFound);
+			Assert.That(optionFound, Is.Null);
 		}
 
 		/// <summary>
@@ -163,11 +163,11 @@ namespace CommandLineCommands.Tests
 
 			CommandOption optionFound = command.GetOption("e", "encoding");
 
-			Assert.NotNull(optionFound);
+			Assert.That(optionFound, Is.Not.Null);
 
 			string encodingName = optionFound.Parameter;
 
-			Assert.AreEqual("utf8", encodingName);
+			Assert.That(encodingName, Is.EqualTo("utf8"));
 		}
 
 		/// <summary>
@@ -180,12 +180,12 @@ namespace CommandLineCommands.Tests
 
 			CommandLineArguments commandLine = new (commands, arguments);
 
-			Assert.True(commandLine.ValidArguments);
+			Assert.That(commandLine.ValidArguments, Is.True);
 
 			Command command = commandLine.Command;
-			Assert.NotNull(command);
+			Assert.That(command, Is.Not.Null);
 
-			Assert.AreEqual("help", command.Name);
+			Assert.That(command.Name, Is.EqualTo("help"));
 		}
 
 		/// <summary>
@@ -198,16 +198,16 @@ namespace CommandLineCommands.Tests
 
 			CommandLineArguments commandLine = new (commands, arguments);
 
-			Assert.True(commandLine.ValidArguments);
+			Assert.That(commandLine.ValidArguments, Is.True);
 
 			Command command = commandLine.Command;
-			Assert.NotNull(command);
+			Assert.That(command, Is.Not.Null);
 
-			Assert.AreEqual("command-one", command.Name);
+			Assert.That(command.Name, Is.EqualTo("command-one"));
 
 			IList<CommandOption> options = command.Options;
 
-			Assert.AreEqual(options.Count, 0);
+			Assert.That(0, Is.EqualTo(options.Count));
 		}
 
 		/// <summary>
@@ -220,16 +220,16 @@ namespace CommandLineCommands.Tests
 
 			CommandLineArguments commandLine = new (commands, arguments);
 
-			Assert.True(commandLine.ValidArguments);
+			Assert.That(commandLine.ValidArguments, Is.True);
 
 			Command command = commandLine.Command;
-			Assert.NotNull(command);
+			Assert.That(command, Is.Not.Null);
 
-			Assert.AreEqual("command-three", command.Name);
+			Assert.That(command.Name, Is.EqualTo("command-three"));
 
 			IList<CommandOption> options = command.Options;
 
-			Assert.AreEqual(options.Count, 0);
+			Assert.That(0, Is.EqualTo(options.Count));
 		}
 
 		/// <summary>
@@ -242,16 +242,16 @@ namespace CommandLineCommands.Tests
 
 			CommandLineArguments commandLine = new (commands, arguments);
 
-			Assert.True(commandLine.ValidArguments);
+			Assert.That(commandLine.ValidArguments, Is.True);
 
 			Command command = commandLine.Command;
-			Assert.NotNull(command);
+			Assert.That(command, Is.Not.Null);
 
-			Assert.AreEqual("command-three", command.Name);
+			Assert.That(command.Name, Is.EqualTo("command-three"));
 
 			IList<CommandOption> options = command.Options;
 
-			Assert.AreEqual(options.Count, 1);
+			Assert.That(1, Is.EqualTo(options.Count));
 		}
 
 		/// <summary>
@@ -264,10 +264,10 @@ namespace CommandLineCommands.Tests
 
 			CommandLineArguments commandLine = new (commands, arguments);
 
-			Assert.False(commandLine.ValidArguments);
+			Assert.That(commandLine.ValidArguments, Is.False);
 
 			Command command = commandLine.Command;
-			Assert.Null(command);
+			Assert.That(command, Is.Null);
 		}
 
 		/// <summary>
@@ -280,16 +280,16 @@ namespace CommandLineCommands.Tests
 
 			CommandLineArguments commandLine = new (commands, arguments);
 
-			Assert.True(commandLine.ValidArguments);
+			Assert.That(commandLine.ValidArguments, Is.True);
 
 			Command command = commandLine.Command;
-			Assert.NotNull(command);
+			Assert.That(command, Is.Not.Null);
 
-			Assert.AreEqual("command-one", command.Name);
+			Assert.That(command.Name, Is.EqualTo("command-one"));
 
 			IList<CommandOption> options = command.Options;
 
-			Assert.Greater(options.Count, 0);
+			Assert.That(options.Count, Is.GreaterThan(0));
 		}
 
 		/// <summary>
@@ -302,16 +302,16 @@ namespace CommandLineCommands.Tests
 
 			CommandLineArguments commandLine = new (commands, arguments);
 
-			Assert.True(commandLine.ValidArguments);
+			Assert.That(commandLine.ValidArguments, Is.True);
 
 			Command command = commandLine.Command;
-			Assert.NotNull(command);
+			Assert.That(command, Is.Not.Null);
 
-			Assert.AreEqual("command-one", command.Name);
+			Assert.That(command.Name, Is.EqualTo("command-one"));
 
 			IList<CommandOption> options = command.Options;
 
-			Assert.Greater(options.Count, 0);
+			Assert.That(options.Count, Is.GreaterThan(0));
 		}
 
 		/// <summary>
@@ -327,16 +327,16 @@ namespace CommandLineCommands.Tests
 
 			CommandLineArguments commandLine = new (commands, arguments);
 
-			Assert.True(commandLine.ValidArguments);
+			Assert.That(commandLine.ValidArguments, Is.True);
 
 			Command command = commandLine.Command;
-			Assert.NotNull(command);
+			Assert.That(command, Is.Not.Null);
 
-			Assert.AreEqual("command-one", command.Name);
+			Assert.That(command.Name, Is.EqualTo("command-one"));
 
 			IList<CommandOption> options = command.Options;
 
-			Assert.Greater(options.Count, 0);
+			Assert.That(options.Count, Is.GreaterThan(0));
 		}
 
 		/// <summary>
@@ -352,16 +352,16 @@ namespace CommandLineCommands.Tests
 
 			CommandLineArguments commandLine = new (commands, arguments);
 
-			Assert.True(commandLine.ValidArguments);
+			Assert.That(commandLine.ValidArguments, Is.True);
 
 			Command command = commandLine.Command;
-			Assert.NotNull(command);
+			Assert.That(command, Is.Not.Null);
 
-			Assert.AreEqual("command-one", command.Name);
+			Assert.That(command.Name, Is.EqualTo("command-one"));
 
 			IList<CommandOption> options = command.Options;
 
-			Assert.Greater(options.Count, 0);
+			Assert.That(options.Count, Is.GreaterThan(0));
 		}
 
 		/// <summary>
@@ -377,21 +377,21 @@ namespace CommandLineCommands.Tests
 
 			CommandLineArguments commandLine = new (commands, arguments);
 
-			Assert.True(commandLine.ValidArguments);
+			Assert.That(commandLine.ValidArguments, Is.True);
 
 			Command command = commandLine.Command;
-			Assert.NotNull(command);
+			Assert.That(command, Is.Not.Null);
 
-			Assert.AreEqual("command-seven", command.Name);
+			Assert.That(command.Name, Is.EqualTo("command-seven"));
 
 			IList<CommandOption> options = command.Options;
 
-			Assert.Greater(options.Count, 0);
+			Assert.That(options.Count, Is.GreaterThan(0));
 
 			CommandOption option = options[0];
 			string parameter = option.Parameter;
 
-			Assert.AreEqual("utf8", parameter);
+			Assert.That(parameter, Is.EqualTo("utf8"));
 		}
 
 		/// <summary>
@@ -407,21 +407,21 @@ namespace CommandLineCommands.Tests
 
 			CommandLineArguments commandLine = new (commands, arguments);
 
-			Assert.True(commandLine.ValidArguments);
+			Assert.That(commandLine.ValidArguments, Is.True);
 
 			Command command = commandLine.Command;
-			Assert.NotNull(command);
+			Assert.That(command, Is.Not.Null);
 
-			Assert.AreEqual("command-seven", command.Name);
+			Assert.That(command.Name, Is.EqualTo("command-seven"));
 
 			IList<CommandOption> options = command.Options;
 
-			Assert.Greater(options.Count, 0);
+			Assert.That(options.Count, Is.GreaterThan(0));
 
 			CommandOption option = options[0];
 			string parameter = option.Parameter;
 
-			Assert.AreEqual("utf8", parameter);
+			Assert.That(parameter, Is.EqualTo("utf8"));
 		}
 	}
 }
