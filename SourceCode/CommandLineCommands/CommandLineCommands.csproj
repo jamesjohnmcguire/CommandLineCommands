@@ -8,7 +8,7 @@
 		<CheckEolTargetFramework>false</CheckEolTargetFramework>
 		<CodeAnalysisRuleSet>../CodeAnalysis.ruleset</CodeAnalysisRuleSet>
 		<Company>Digital Zen Works</Company>
-		<Copyright>Copyright © 2023</Copyright>
+		<Copyright>Copyright © 2023 - 2024</Copyright>
 		<Description>
 			This client library provides light weight functionality to help process command line options.
 		</Description>
