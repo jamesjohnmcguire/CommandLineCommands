@@ -27,15 +27,14 @@ namespace CommandLineCommands.Tests
 		[OneTimeSetUp]
 		public void OneTimeSetUp()
 		{
-			commands = new List<Command>();
+			commands = [];
 
 			Command help = new ("help");
 			help.Description = "Show this information";
 			commands.Add(help);
 
 			CommandOption option = new ("e", "encoding");
-			List<CommandOption> options = new List<CommandOption>();
-			options.Add(option);
+			List<CommandOption> options = [option];
 
 			Command commandOne = new (
 				"command-one",
@@ -52,8 +51,7 @@ namespace CommandLineCommands.Tests
 			commands.Add(commandTwo);
 
 			CommandOption dryRun = new ("n", "dryrun");
-			options = new List<CommandOption>();
-			options.Add(dryRun);
+			options = [dryRun];
 
 			Command commandThree = new (
 				"command-three",
@@ -77,9 +75,7 @@ namespace CommandLineCommands.Tests
 			commands.Add(commandFive);
 
 			CommandOption flush = new ("s", "flush");
-			options = new List<CommandOption>();
-			options.Add(dryRun);
-			options.Add(flush);
+			options = [dryRun, flush];
 
 			Command commandSix = new (
 				"command-six",
@@ -89,8 +85,7 @@ namespace CommandLineCommands.Tests
 			commands.Add(commandSix);
 
 			CommandOption encoding = new ("e", "encoding", true);
-			options = new List<CommandOption>();
-			options.Add(encoding);
+			options = [encoding];
 
 			Command commandSeven = new (
 				"command-seven",
@@ -133,11 +128,9 @@ namespace CommandLineCommands.Tests
 		{
 			CommandOption encoding = new ("e", "encoding", true);
 			encoding.Parameter = "utf8";
-			List<CommandOption> options = new List<CommandOption>();
-			options.Add(encoding);
+			List<CommandOption> options = [encoding];
 
-			List<string> parameters = new List<string>();
-			parameters.Add("%USERPROFILE%");
+			List<string> parameters = ["%USERPROFILE%"];
 
 			Command command = new ("some-command", options, parameters);
 
@@ -154,11 +147,9 @@ namespace CommandLineCommands.Tests
 		{
 			CommandOption encoding = new ("e", "encoding", true);
 			encoding.Parameter = "utf8";
-			List<CommandOption> options = new List<CommandOption>();
-			options.Add(encoding);
+			List<CommandOption> options = [encoding];
 
-			List<string> parameters = new List<string>();
-			parameters.Add("%USERPROFILE%");
+			List<string> parameters = ["%USERPROFILE%"];
 
 			Command command = new ("some-command", options, parameters);
 
@@ -177,7 +168,7 @@ namespace CommandLineCommands.Tests
 		[Test]
 		public void HelpTest()
 		{
-			string[] arguments = { "help" };
+			string[] arguments = ["help"];
 
 			CommandLineArguments commandLine = new (commands, arguments);
 
@@ -195,7 +186,7 @@ namespace CommandLineCommands.Tests
 		[Test]
 		public void OptionSimpleNoOptionTest()
 		{
-			string[] arguments = { "command-one", "%USERPROFILE%" };
+			string[] arguments = ["command-one", "%USERPROFILE%"];
 
 			CommandLineArguments commandLine = new (commands, arguments);
 
@@ -218,7 +209,7 @@ namespace CommandLineCommands.Tests
 		[Test]
 		public void OptionSimpleNoParameterTest()
 		{
-			string[] arguments = { "command-three" };
+			string[] arguments = ["command-three"];
 
 			CommandLineArguments commandLine = new (commands, arguments);
 
@@ -241,7 +232,7 @@ namespace CommandLineCommands.Tests
 		[Test]
 		public void OptionSimpleNoParameterWithOptionTest()
 		{
-			string[] arguments = { "command-three", "-n" };
+			string[] arguments = ["command-three", "-n"];
 
 			CommandLineArguments commandLine = new (commands, arguments);
 
@@ -264,7 +255,7 @@ namespace CommandLineCommands.Tests
 		[Test]
 		public void OptionSimpleFailNoParameterTest()
 		{
-			string[] arguments = { "command-one", "-e" };
+			string[] arguments = ["command-one", "-e"];
 
 			CommandLineArguments commandLine = new (commands, arguments);
 
@@ -280,7 +271,7 @@ namespace CommandLineCommands.Tests
 		[Test]
 		public void OptionSimpleShortOptionFirstTest()
 		{
-			string[] arguments = { "command-one", "-e", "%USERPROFILE%" };
+			string[] arguments = ["command-one", "-e", "%USERPROFILE%"];
 
 			CommandLineArguments commandLine = new (commands, arguments);
 
@@ -303,7 +294,7 @@ namespace CommandLineCommands.Tests
 		[Test]
 		public void OptionSimpleShortOptionLastTest()
 		{
-			string[] arguments = { "command-one", "%USERPROFILE%", "-e" };
+			string[] arguments = ["command-one", "%USERPROFILE%", "-e"];
 
 			CommandLineArguments commandLine = new (commands, arguments);
 
@@ -327,9 +318,9 @@ namespace CommandLineCommands.Tests
 		public void OptionSimpleLongOptionFirstTest()
 		{
 			string[] arguments =
-			{
+			[
 				"command-one", "--encoding", "%USERPROFILE%"
-			};
+			];
 
 			CommandLineArguments commandLine = new (commands, arguments);
 
@@ -353,9 +344,9 @@ namespace CommandLineCommands.Tests
 		public void OptionSimpleLongOptionLastTest()
 		{
 			string[] arguments =
-			{
+			[
 				"command-one", "%USERPROFILE%", "--encoding"
-			};
+			];
 
 			CommandLineArguments commandLine = new (commands, arguments);
 
@@ -379,9 +370,9 @@ namespace CommandLineCommands.Tests
 		public void OptionWithdRequiredParameterFirstTest()
 		{
 			string[] arguments =
-			{
+			[
 				"command-seven", "--encoding", "utf8", "%USERPROFILE%"
-			};
+			];
 
 			CommandLineArguments commandLine = new (commands, arguments);
 
@@ -410,9 +401,9 @@ namespace CommandLineCommands.Tests
 		public void OptionWithdRequiredParameterLastTest()
 		{
 			string[] arguments =
-			{
+			[
 				"command-seven", "%USERPROFILE%", "--encoding", "utf8"
-			};
+			];
 
 			CommandLineArguments commandLine = new (commands, arguments);
 
