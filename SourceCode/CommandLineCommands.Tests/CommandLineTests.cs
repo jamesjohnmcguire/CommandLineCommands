@@ -19,7 +19,7 @@ namespace CommandLineCommands.Tests
 	/// </summary>
 	public class CommandLineTests
 	{
-		private IList<Command> commands;
+		private List<Command> commands;
 
 		/// <summary>
 		/// One time set up method.
@@ -34,7 +34,7 @@ namespace CommandLineCommands.Tests
 			commands.Add(help);
 
 			CommandOption option = new ("e", "encoding");
-			IList<CommandOption> options = new List<CommandOption>();
+			List<CommandOption> options = new List<CommandOption>();
 			options.Add(option);
 
 			Command commandOne = new (
@@ -133,10 +133,10 @@ namespace CommandLineCommands.Tests
 		{
 			CommandOption encoding = new ("e", "encoding", true);
 			encoding.Parameter = "utf8";
-			IList<CommandOption> options = new List<CommandOption>();
+			List<CommandOption> options = new List<CommandOption>();
 			options.Add(encoding);
 
-			IList<string> parameters = new List<string>();
+			List<string> parameters = new List<string>();
 			parameters.Add("%USERPROFILE%");
 
 			Command command = new ("some-command", options, parameters);
@@ -154,10 +154,10 @@ namespace CommandLineCommands.Tests
 		{
 			CommandOption encoding = new ("e", "encoding", true);
 			encoding.Parameter = "utf8";
-			IList<CommandOption> options = new List<CommandOption>();
+			List<CommandOption> options = new List<CommandOption>();
 			options.Add(encoding);
 
-			IList<string> parameters = new List<string>();
+			List<string> parameters = new List<string>();
 			parameters.Add("%USERPROFILE%");
 
 			Command command = new ("some-command", options, parameters);
