@@ -213,6 +213,20 @@ namespace DigitalZenWorks.CommandLine.Commands
 			return maximumLength;
 		}
 
+		private static bool IsHelpCommend(string command)
+		{
+			bool isHelp = false;
+
+			string[] helpCommands = ["-?", "-h", "--help"];
+
+			if (helpCommands.Contains(command))
+			{
+				isHelp = true;
+			}
+
+			return isHelp;
+		}
+
 		private bool AreOptionsValid(
 			Command validatedCommand, out IList<CommandOption> commandOptions)
 		{
@@ -387,11 +401,22 @@ namespace DigitalZenWorks.CommandLine.Commands
 					}
 				}
 
+				bool isHelpCommand = IsHelpCommend(commandName);
+
+				if (isValidCommand == false && isHelpCommand == true)
+				{
+					Command help =
+						commands.SingleOrDefault(x => x.Name == "help");
+					validatedCommand = help;
+					isValidCommand = true;
+					areValid = true;
+				}
+
 				if (isValidCommand == false)
 				{
 					errorMessage = "Uknown command.";
 				}
-				else
+				else if (isHelpCommand == false)
 				{
 					bool areOptionsValid =
 						AreOptionsValid(validatedCommand, out commandOptions);
