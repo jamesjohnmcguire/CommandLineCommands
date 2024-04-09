@@ -414,7 +414,7 @@ namespace DigitalZenWorks.CommandLine.Commands
 
 				if (isValidCommand == false)
 				{
-					errorMessage = "Uknown command.";
+					errorMessage = "Unknown command.";
 				}
 				else if (isHelpCommand == false)
 				{
@@ -425,7 +425,7 @@ namespace DigitalZenWorks.CommandLine.Commands
 					{
 						errorMessage = string.Format(
 							CultureInfo.InvariantCulture,
-							"Uknown option:{0}.",
+							"Unknown option:{0}.",
 							invalidOption);
 					}
 					else
