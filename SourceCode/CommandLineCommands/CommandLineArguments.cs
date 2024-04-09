@@ -213,6 +213,82 @@ namespace DigitalZenWorks.CommandLine.Commands
 			return maximumLength;
 		}
 
+		private bool AreOptionsValid(
+			Command validatedCommand, out IList<CommandOption> commandOptions)
+		{
+			bool areOptionsValid = true;
+
+			commandOptions = GetOptions();
+
+			foreach (CommandOption option in commandOptions)
+			{
+				bool isValid = IsValidOption(validatedCommand, option);
+
+				if (isValid == false)
+				{
+					areOptionsValid = false;
+					break;
+				}
+			}
+
+			return areOptionsValid;
+		}
+
+		private IList<CommandOption> GetOptions()
+		{
+			IList<CommandOption> options = new List<CommandOption>();
+
+			for (int index = 0; index < arguments.Length; index++)
+			{
+				string argument = arguments[index];
+
+				if (argument.StartsWith("-", StringComparison.Ordinal))
+				{
+					CommandOption option = new();
+
+					string optionName = argument.TrimStart('-');
+
+					if (argument.StartsWith("--", StringComparison.Ordinal))
+					{
+						option.LongName = optionName;
+					}
+					else
+					{
+						option.ShortName = optionName;
+					}
+
+					option.ArgumentIndex = index;
+
+					options.Add(option);
+				}
+			}
+
+			return options;
+		}
+
+		private IList<string> GetParameters(Command command)
+		{
+			IList<string> parameters = new List<string>();
+
+			for (int index = 0; index < arguments.Length; index++)
+			{
+				string argument = arguments[index];
+
+				if (argument.Equals(
+					command.Name, StringComparison.OrdinalIgnoreCase))
+				{
+					continue;
+				}
+
+				if (!argument.StartsWith("-", StringComparison.Ordinal))
+				{
+					parameters.Add(argument);
+				}
+			}
+
+			return parameters;
+		}
+
 		private bool IsValidOption(
 			Command command, CommandOption option)
 		{
@@ -260,61 +336,6 @@ namespace DigitalZenWorks.CommandLine.Commands
 			return isValid;
 		}
 
-		private IList<CommandOption> GetOptions()
-		{
-			IList<CommandOption> options = new List<CommandOption>();
-
-			for (int index = 0; index < arguments.Length; index++)
-			{
-				string argument = arguments[index];
-
-				if (argument.StartsWith("-", StringComparison.Ordinal))
-				{
-					CommandOption option = new ();
-
-					string optionName = argument.TrimStart('-');
-
-					if (argument.StartsWith("--", StringComparison.Ordinal))
-					{
-						option.LongName = optionName;
-					}
-					else
-					{
-						option.ShortName = optionName;
-					}
-
-					option.ArgumentIndex = index;
-
-					options.Add(option);
-				}
-			}
-
-			return options;
-		}
-
-		private IList<string> GetParameters(Command command)
-		{
-			IList<string> parameters = new List<string>();
-
-			for (int index = 0; index < arguments.Length; index++)
-			{
-				string argument = arguments[index];
-
-				if (argument.Equals(
-					command.Name, StringComparison.OrdinalIgnoreCase))
-				{
-					continue;
-				}
-
-				if (!argument.StartsWith("-", StringComparison.Ordinal))
-				{
-					parameters.Add(argument);
-				}
-			}
-
-			return parameters;
-		}
-
 		private void Output(string message)
 		{
 			if (useLog == true)
@@ -325,27 +346,6 @@ namespace DigitalZenWorks.CommandLine.Commands
 			{
 				Console.WriteLine(message);
 			}
-		}
-
-		private bool AreOptionsValid(
-			Command validatedCommand, out IList<CommandOption> commandOptions)
-		{
-			bool areOptionsValid = true;
-
-			commandOptions = GetOptions();
-
-			foreach (CommandOption option in commandOptions)
-			{
-				bool isValid = IsValidOption(validatedCommand, option);
-
-				if (isValid == false)
-				{
-					areOptionsValid = false;
-					break;
-				}
-			}
-
-			return areOptionsValid;
 		}
 
 		private bool ValidateArguments()
