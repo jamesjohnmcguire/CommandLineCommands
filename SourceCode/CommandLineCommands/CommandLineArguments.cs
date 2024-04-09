@@ -256,7 +256,11 @@ namespace DigitalZenWorks.CommandLine.Commands
 			{
 				string argument = arguments[index];
 
+#if NETCOREAPP2_0_OR_GREATER || NETSTANDARD2_1_OR_GREATER
 				if (argument.StartsWith('-'))
+#else
+				if (argument.StartsWith("-"))
+#endif
 				{
 					CommandOption option = new ();
 
@@ -294,7 +298,11 @@ namespace DigitalZenWorks.CommandLine.Commands
 					continue;
 				}
 
-				if (!argument.StartsWith('-'))
+#if NETCOREAPP2_0_OR_GREATER || NETSTANDARD2_1_OR_GREATER
+				if (argument.StartsWith('-'))
+#else
+				if (argument.StartsWith("-"))
+#endif
 				{
 					parameters.Add(argument);
 				}
