@@ -250,15 +250,15 @@ namespace DigitalZenWorks.CommandLine.Commands
 
 		private IList<CommandOption> GetOptions()
 		{
-			IList<CommandOption> options = new List<CommandOption>();
+			IList<CommandOption> options = [];
 
 			for (int index = 0; index < arguments.Length; index++)
 			{
 				string argument = arguments[index];
 
-				if (argument.StartsWith("-", StringComparison.Ordinal))
+				if (argument.StartsWith('-'))
 				{
-					CommandOption option = new();
+					CommandOption option = new ();
 
 					string optionName = argument.TrimStart('-');
 
@@ -282,7 +282,7 @@ namespace DigitalZenWorks.CommandLine.Commands
 
 		private IList<string> GetParameters(Command command)
 		{
-			IList<string> parameters = new List<string>();
+			IList<string> parameters = [];
 
 			for (int index = 0; index < arguments.Length; index++)
 			{
@@ -294,7 +294,7 @@ namespace DigitalZenWorks.CommandLine.Commands
 					continue;
 				}
 
-				if (!argument.StartsWith("-", StringComparison.Ordinal))
+				if (!argument.StartsWith('-'))
 				{
 					parameters.Add(argument);
 				}

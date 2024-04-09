@@ -18,7 +18,7 @@ namespace DigitalZenWorks.CommandLine.Commands
 		private readonly string name;
 		private readonly IList<CommandOption> options;
 		private readonly int parameterCount;
-		private readonly IList<string> parameters = new List<string>();
+		private readonly IList<string> parameters = [];
 
 		private string description;
 
@@ -30,7 +30,7 @@ namespace DigitalZenWorks.CommandLine.Commands
 		{
 			this.name = name;
 
-			options ??= new List<CommandOption>();
+			options ??= [];
 		}
 
 		/// <summary>
@@ -132,7 +132,7 @@ namespace DigitalZenWorks.CommandLine.Commands
 		/// <returns>The found option, if it exists.</returns>
 		public CommandOption GetOption(string shortName, string longName)
 		{
-			List<CommandOption> optionsList = options.ToList();
+			List<CommandOption> optionsList = [.. options];
 
 			CommandOption option = optionsList.Find(option =>
 				(option.ShortName != null &&
