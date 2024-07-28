@@ -299,9 +299,9 @@ namespace DigitalZenWorks.CommandLine.Commands
 				}
 
 #if NETCOREAPP2_0_OR_GREATER || NETSTANDARD2_1_OR_GREATER
-				if (argument.StartsWith('-'))
+				if (!argument.StartsWith('-'))
 #else
-				if (argument.StartsWith("-"))
+				if (!argument.StartsWith("-"))
 #endif
 				{
 					parameters.Add(argument);
