@@ -13,7 +13,7 @@
 			This client library provides light weight functionality to help process command line options.
 		</Description>
 		<EnableNETAnalyzers>true</EnableNETAnalyzers>
-		<FileVersion>1.1.6.0</FileVersion>
+		<FileVersion>1.2.8.0</FileVersion>
 		<GenerateDocumentationFile>true</GenerateDocumentationFile>
 		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 		<LangVersion>Latest</LangVersion>
@@ -24,7 +24,7 @@
 		<PackageTags>Digital Zen Works;Command Line;Commands;Options</PackageTags>
 		<PackageReadmeFile>README.md</PackageReadmeFile>
 		<SuppressTfmSupportBuildWarnings>true</SuppressTfmSupportBuildWarnings>
-		<Version>1.1.6</Version>
+		<Version>1.2.8</Version>
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)'=='Debug'">
