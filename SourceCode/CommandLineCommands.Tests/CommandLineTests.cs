@@ -8,7 +8,6 @@ using DigitalZenWorks.CommandLine.Commands;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 
 [assembly: CLSCompliant(true)]
 
@@ -20,6 +19,7 @@ namespace CommandLineCommands.Tests
 	public class CommandLineTests
 	{
 		private List<Command> commands;
+		private CommandsSet commandsSet;
 
 		/// <summary>
 		/// One time set up method.
@@ -93,6 +93,8 @@ namespace CommandLineCommands.Tests
 				1,
 				"A command with an option that has a value.");
 			commands.Add(commandSeven);
+
+			commandsSet = new CommandsSet(commands);
 		}
 
 		/// <summary>
@@ -170,7 +172,7 @@ namespace CommandLineCommands.Tests
 		{
 			string[] arguments = ["help"];
 
-			CommandLineArguments commandLine = new (commands, arguments);
+			CommandLineArguments commandLine = new (commandsSet, arguments);
 
 			Assert.That(commandLine.ValidArguments, Is.True);
 
@@ -188,7 +190,7 @@ namespace CommandLineCommands.Tests
 		{
 			string[] arguments = ["command-one", "%USERPROFILE%"];
 
-			CommandLineArguments commandLine = new (commands, arguments);
+			CommandLineArguments commandLine = new (commandsSet, arguments);
 
 			Assert.That(commandLine.ValidArguments, Is.True);
 
@@ -211,7 +213,7 @@ namespace CommandLineCommands.Tests
 		{
 			string[] arguments = ["command-three"];
 
-			CommandLineArguments commandLine = new (commands, arguments);
+			CommandLineArguments commandLine = new (commandsSet, arguments);
 
 			Assert.That(commandLine.ValidArguments, Is.True);
 
@@ -234,7 +236,7 @@ namespace CommandLineCommands.Tests
 		{
 			string[] arguments = ["command-three", "-n"];
 
-			CommandLineArguments commandLine = new (commands, arguments);
+			CommandLineArguments commandLine = new (commandsSet, arguments);
 
 			Assert.That(commandLine.ValidArguments, Is.True);
 
@@ -257,7 +259,7 @@ namespace CommandLineCommands.Tests
 		{
 			string[] arguments = ["command-one", "-e"];
 
-			CommandLineArguments commandLine = new (commands, arguments);
+			CommandLineArguments commandLine = new (commandsSet, arguments);
 
 			Assert.That(commandLine.ValidArguments, Is.False);
 
@@ -273,7 +275,7 @@ namespace CommandLineCommands.Tests
 		{
 			string[] arguments = ["command-one", "-e", "%USERPROFILE%"];
 
-			CommandLineArguments commandLine = new (commands, arguments);
+			CommandLineArguments commandLine = new (commandsSet, arguments);
 
 			Assert.That(commandLine.ValidArguments, Is.True);
 
@@ -296,7 +298,7 @@ namespace CommandLineCommands.Tests
 		{
 			string[] arguments = ["command-one", "%USERPROFILE%", "-e"];
 
-			CommandLineArguments commandLine = new (commands, arguments);
+			CommandLineArguments commandLine = new (commandsSet, arguments);
 
 			Assert.That(commandLine.ValidArguments, Is.True);
 
@@ -322,7 +324,7 @@ namespace CommandLineCommands.Tests
 				"command-one", "--encoding", "%USERPROFILE%"
 			];
 
-			CommandLineArguments commandLine = new (commands, arguments);
+			CommandLineArguments commandLine = new (commandsSet, arguments);
 
 			Assert.That(commandLine.ValidArguments, Is.True);
 
@@ -348,7 +350,7 @@ namespace CommandLineCommands.Tests
 				"command-one", "%USERPROFILE%", "--encoding"
 			];
 
-			CommandLineArguments commandLine = new (commands, arguments);
+			CommandLineArguments commandLine = new (commandsSet, arguments);
 
 			Assert.That(commandLine.ValidArguments, Is.True);
 
@@ -374,7 +376,7 @@ namespace CommandLineCommands.Tests
 				"command-seven", "--encoding", "utf8", "%USERPROFILE%"
 			];
 
-			CommandLineArguments commandLine = new (commands, arguments);
+			CommandLineArguments commandLine = new (commandsSet, arguments);
 
 			Assert.That(commandLine.ValidArguments, Is.True);
 
@@ -405,7 +407,7 @@ namespace CommandLineCommands.Tests
 				"command-seven", "%USERPROFILE%", "--encoding", "utf8"
 			];
 
-			CommandLineArguments commandLine = new (commands, arguments);
+			CommandLineArguments commandLine = new (commandsSet, arguments);
 
 			Assert.That(commandLine.ValidArguments, Is.True);
 
