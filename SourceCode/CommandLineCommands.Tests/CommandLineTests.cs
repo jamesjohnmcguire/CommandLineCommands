@@ -172,7 +172,7 @@ namespace CommandLineCommands.Tests
 		{
 			string[] arguments = ["help"];
 
-			CommandLineArguments commandLine = new (commandsSet, arguments);
+			CommandLineInstance commandLine = new (commandsSet, arguments);
 
 			Assert.That(commandLine.ValidArguments, Is.True);
 
@@ -190,7 +190,7 @@ namespace CommandLineCommands.Tests
 		{
 			string[] arguments = ["command-one", "%USERPROFILE%"];
 
-			CommandLineArguments commandLine = new (commandsSet, arguments);
+			CommandLineInstance commandLine = new (commandsSet, arguments);
 
 			Assert.That(commandLine.ValidArguments, Is.True);
 
@@ -213,7 +213,7 @@ namespace CommandLineCommands.Tests
 		{
 			string[] arguments = ["command-three"];
 
-			CommandLineArguments commandLine = new (commandsSet, arguments);
+			CommandLineInstance commandLine = new (commandsSet, arguments);
 
 			Assert.That(commandLine.ValidArguments, Is.True);
 
@@ -236,7 +236,7 @@ namespace CommandLineCommands.Tests
 		{
 			string[] arguments = ["command-three", "-n"];
 
-			CommandLineArguments commandLine = new (commandsSet, arguments);
+			CommandLineInstance commandLine = new (commandsSet, arguments);
 
 			Assert.That(commandLine.ValidArguments, Is.True);
 
@@ -259,7 +259,7 @@ namespace CommandLineCommands.Tests
 		{
 			string[] arguments = ["command-one", "-e"];
 
-			CommandLineArguments commandLine = new (commandsSet, arguments);
+			CommandLineInstance commandLine = new (commandsSet, arguments);
 
 			Assert.That(commandLine.ValidArguments, Is.False);
 
@@ -275,7 +275,7 @@ namespace CommandLineCommands.Tests
 		{
 			string[] arguments = ["command-one", "-e", "%USERPROFILE%"];
 
-			CommandLineArguments commandLine = new (commandsSet, arguments);
+			CommandLineInstance commandLine = new (commandsSet, arguments);
 
 			Assert.That(commandLine.ValidArguments, Is.True);
 
@@ -298,7 +298,7 @@ namespace CommandLineCommands.Tests
 		{
 			string[] arguments = ["command-one", "%USERPROFILE%", "-e"];
 
-			CommandLineArguments commandLine = new (commandsSet, arguments);
+			CommandLineInstance commandLine = new (commandsSet, arguments);
 
 			Assert.That(commandLine.ValidArguments, Is.True);
 
@@ -324,7 +324,7 @@ namespace CommandLineCommands.Tests
 				"command-one", "--encoding", "%USERPROFILE%"
 			];
 
-			CommandLineArguments commandLine = new (commandsSet, arguments);
+			CommandLineInstance commandLine = new (commandsSet, arguments);
 
 			Assert.That(commandLine.ValidArguments, Is.True);
 
@@ -350,7 +350,7 @@ namespace CommandLineCommands.Tests
 				"command-one", "%USERPROFILE%", "--encoding"
 			];
 
-			CommandLineArguments commandLine = new (commandsSet, arguments);
+			CommandLineInstance commandLine = new (commandsSet, arguments);
 
 			Assert.That(commandLine.ValidArguments, Is.True);
 
@@ -376,7 +376,7 @@ namespace CommandLineCommands.Tests
 				"command-seven", "--encoding", "utf8", "%USERPROFILE%"
 			];
 
-			CommandLineArguments commandLine = new (commandsSet, arguments);
+			CommandLineInstance commandLine = new (commandsSet, arguments);
 
 			Assert.That(commandLine.ValidArguments, Is.True);
 
@@ -407,7 +407,7 @@ namespace CommandLineCommands.Tests
 				"command-seven", "%USERPROFILE%", "--encoding", "utf8"
 			];
 
-			CommandLineArguments commandLine = new (commandsSet, arguments);
+			CommandLineInstance commandLine = new (commandsSet, arguments);
 
 			Assert.That(commandLine.ValidArguments, Is.True);
 
