@@ -43,6 +43,39 @@ namespace DigitalZenWorks.CommandLine.Commands
 		/// Initializes a new instance of the
 		/// <see cref="CommandLineArguments"/> class.
 		/// </summary>
+		/// <param name="commands">A list of valid commands.</param>
+		/// <param name="arguments">The array of command line
+		/// arguments.</param>
+		public CommandLineArguments(
+			IList<Command> commands, string[] arguments)
+		{
+			this.commands = new CommandsSet(commands);
+			this.arguments = arguments;
+
+			validArguments = ValidateArguments();
+		}
+
+		/// <summary>
+		/// Initializes a new instance of the
+		/// <see cref="CommandLineArguments"/> class.
+		/// </summary>
+		/// <param name="commands">A list of valid commands.</param>
+		/// <param name="arguments">The array of command line
+		/// arguments.</param>
+		/// <param name="inferCommand">The infer command delegate.</param>
+		public CommandLineArguments(
+			IList<Command> commands,
+			string[] arguments,
+			InferCommand inferCommand)
+			: this(commands, arguments)
+		{
+			this.inferCommand = inferCommand;
+		}
+
+		/// <summary>
+		/// Initializes a new instance of the
+		/// <see cref="CommandLineArguments"/> class.
+		/// </summary>
 		/// <param name="commands">The set of valid commands.</param>
 		/// <param name="arguments">The array of command line
 		/// arguments.</param>
