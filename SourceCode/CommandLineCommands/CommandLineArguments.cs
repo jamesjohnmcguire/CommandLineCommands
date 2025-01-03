@@ -54,6 +54,7 @@ namespace DigitalZenWorks.CommandLine.Commands
 			IList<Command> commands, string[] arguments)
 		{
 			this.commandsList = commands;
+			this.commands = new CommandsSet(commands);
 			this.arguments = arguments;
 
 			validArguments = ValidateArguments();
@@ -86,13 +87,9 @@ namespace DigitalZenWorks.CommandLine.Commands
 			IList<Command> commands,
 			string[] arguments,
 			InferCommand inferCommand)
+			: this(commands, arguments)
 		{
 			this.inferCommand = inferCommand;
-
-			this.commandsList = commands;
-			this.arguments = arguments;
-
-			validArguments = ValidateArguments();
 		}
 
 		/// <summary>
