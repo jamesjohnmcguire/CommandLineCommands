@@ -29,14 +29,13 @@ namespace DigitalZenWorks.CommandLine.Commands
 	{
 		private readonly string[] arguments;
 		private readonly CommandsSet commands;
-		private readonly InferCommand inferCommand;
 		private readonly bool validArguments;
 
 		private Command command;
 		private string commandName;
 		private string errorMessage;
+		private InferCommand inferCommand;
 		private string invalidOption;
-		private bool useLog;
 
 		/// <summary>
 		/// Initializes a new instance of the
@@ -65,13 +64,9 @@ namespace DigitalZenWorks.CommandLine.Commands
 			CommandsSet commands,
 			string[] arguments,
 			InferCommand inferCommand)
+			: this(commands, arguments)
 		{
 			this.inferCommand = inferCommand;
-
-			this.commands = commands;
-			this.arguments = arguments;
-
-			validArguments = ValidateArguments();
 		}
 
 		/// <summary>
@@ -87,20 +82,13 @@ namespace DigitalZenWorks.CommandLine.Commands
 		public string ErrorMessage { get { return errorMessage; } }
 
 		/// <summary>
-		/// Gets or sets the usage statement.
+		/// Gets or sets the inferred command delegate.
 		/// </summary>
-		/// <value>The usage statement.</value>
-		public string UsageStatement { get; set; }
-
-		/// <summary>
-		/// Gets or sets a value indicating whether indicates whether to use
-		/// logging functionality.
-		/// </summary>
-		/// <value>A value indicating whether to use logging functionality.
-		/// </value>
-		public bool UseLog
+		/// <value>The inferred command delegate.</value>
+		public InferCommand InferCommand
 		{
-			get { return useLog; } set { useLog = value; }
+			get { return inferCommand; }
+			set { inferCommand = value; }
 		}
 
 		/// <summary>
