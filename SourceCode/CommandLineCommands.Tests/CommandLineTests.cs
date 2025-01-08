@@ -165,6 +165,29 @@ namespace CommandLineCommands.Tests
 		}
 
 		/// <summary>
+		/// Get help text test.
+		/// </summary>
+		[Test]
+		public void GetHelpTextTest()
+		{
+			string tempPath = Path.GetTempPath();
+			string path = Path.Combine(tempPath, "Sample.json");
+
+			bool result = FileUtils.CreateFileFromEmbeddedResource(
+				"CommandLineCommands.Tests.Sample.json", path);
+			Assert.That(result, Is.True);
+
+			string jsonText = File.ReadAllText(path);
+
+			CommandsSet commandsSet = new CommandsSet(jsonText);
+
+			string helpMessage =
+				commandsSet.GetHelp("CommandLine Commands Tests");
+
+			Assert.That(helpMessage, Is.Not.Empty);
+		}
+
+		/// <summary>
 		/// Get option fail test.
 		/// </summary>
 		[Test]
