@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Text;
 
 namespace DigitalZenWorks.CommandLine.Commands
 {
@@ -106,20 +107,25 @@ namespace DigitalZenWorks.CommandLine.Commands
 		}
 
 		/// <summary>
-		/// Show help message.
+		/// Gets the complete help message.
 		/// </summary>
 		/// <param name="title">An optional title to display.</param>
-		public void ShowHelp(string title = null)
+		/// <returns>The complete help message.</returns>
+		public string GetHelp(string title = null)
 		{
+			string message = string.Empty;
+
+			StringBuilder buffer = new ();
+
 			if (!string.IsNullOrWhiteSpace(title))
 			{
-				Output(title);
-				Output(string.Empty);
+				buffer.AppendLine(title);
+				buffer.AppendLine(string.Empty);
 			}
 
-			Output("Usage:");
-			Output(UsageStatement);
-			Output(string.Empty);
+			buffer.AppendLine("Usage:");
+			buffer.AppendLine(UsageStatement);
+			buffer.AppendLine(string.Empty);
 
 			int commandMaximumLength = 0;
 			int descriptionMaximumLength = 0;
@@ -133,7 +139,6 @@ namespace DigitalZenWorks.CommandLine.Commands
 			}
 
 			Command help = commands.SingleOrDefault(x => x.Name == "help");
-
 			commands.Remove(help);
 
 			IOrderedEnumerable<Command> sortedCommands =
@@ -141,45 +146,9 @@ namespace DigitalZenWorks.CommandLine.Commands
 
 			foreach (Command command in sortedCommands)
 			{
-				string options = string.Empty;
-				bool first = true;
-
-				if (command.Options != null)
-				{
-					foreach (CommandOption option in command.Options)
-					{
-						if (first == true)
-						{
-							first = false;
-						}
-						else
-						{
-							options += Environment.NewLine;
-
-							int paddingAmount = commandMaximumLength +
-									descriptionMaximumLength + 2;
-							string padding = string.Empty;
-							padding = padding.PadRight(paddingAmount, ' ');
-							options += padding;
-						}
-
-						string optionMessage = string.Format(
-							CultureInfo.InvariantCulture,
-							"-{0}, --{1}",
-							option.ShortName,
-							option.LongName);
-						options += optionMessage;
-					}
-				}
-
-				string message = string.Format(
-					CultureInfo.InvariantCulture,
-					"{0} {1} {2}",
-					command.Name.PadRight(commandMaximumLength, ' '),
-					command.Description.PadRight(
-						descriptionMaximumLength, ' '),
-					options);
-				Output(message);
+				string commandText = GetCommandText(
+					command, commandMaximumLength, descriptionMaximumLength);
+				buffer.AppendLine(commandText);
 			}
 
 			if (help != null)
@@ -190,16 +159,116 @@ namespace DigitalZenWorks.CommandLine.Commands
 					help.Name.PadRight(commandMaximumLength, ' '),
 					help.Description.PadRight(
 						descriptionMaximumLength, ' '));
-				Output(helpMessage);
+				buffer.AppendLine(helpMessage);
 			}
+
+			message = buffer.ToString();
+
+			return message;
+		}
+
+		/// <summary>
+		/// Show help message.
+		/// </summary>
+		/// <param name="title">An optional title to display.</param>
+		public void ShowHelp(string title = null)
+		{
+			string helpMessage = GetHelp(title);
+
+			Output(helpMessage);
+		}
+
+		private static string GetCommandText(
+			Command command,
+			int commandMaximumLength,
+			int descriptionMaximumLength)
+		{
+			string commandText = string.Empty;
+
+			string options = string.Empty;
+			bool first = true;
+
+			if (command.Options != null)
+			{
+				foreach (CommandOption option in command.Options)
+				{
+					options += GetOptionText(
+						option,
+						commandMaximumLength,
+						descriptionMaximumLength,
+						first);
+
+					first = false;
+				}
+			}
+
+			string paddedName = new (' ', commandMaximumLength);
+
+			if (command.Name != null)
+			{
+				paddedName = command.Name.PadRight(commandMaximumLength, ' ');
+			}
+
+			string paddedDescription = new (' ', descriptionMaximumLength);
+
+			if (command.Description != null)
+			{
+				paddedDescription = command.Description.PadRight(
+					descriptionMaximumLength, ' ');
+			}
+
+			commandText = string.Format(
+				CultureInfo.InvariantCulture,
+				"{0} {1} {2}",
+				paddedName,
+				paddedDescription,
+				options);
+
+			return commandText;
 		}
 
 		private static int GetMaximumLength(
 			int previousMaximumLength, string text)
 		{
-			int maximumLength = Math.Max(previousMaximumLength, text.Length);
+			int maximumLength = previousMaximumLength;
+
+			if (text != null)
+			{
+				maximumLength = Math.Max(previousMaximumLength, text.Length);
+			}
 
 			return maximumLength;
+		}
+
+		private static string GetOptionText(
+			CommandOption option,
+			int commandMaximumLength,
+			int descriptionMaximumLength,
+			bool first)
+		{
+			string optionText = string.Empty;
+
+			if (first == false)
+			{
+				optionText += Environment.NewLine;
+
+				string padding = string.Empty;
+
+				int paddingAmount = commandMaximumLength +
+						descriptionMaximumLength + 2;
+				padding = padding.PadRight(paddingAmount, ' ');
+				optionText += padding;
+			}
+
+			string optionMessage = string.Format(
+				CultureInfo.InvariantCulture,
+				"-{0}, --{1}",
+				option.ShortName,
+				option.LongName);
+
+			optionText += optionMessage;
+
+			return optionText;
 		}
 
 		private void Output(string message)
