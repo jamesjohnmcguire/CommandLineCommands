@@ -1,0 +1,78 @@
+[
+	{
+		"command": "help",
+		"description": "Show this information"
+	},
+	{
+		"command": "dbx-to-pst",
+		"description": "Migrate dbx files to pst file",
+		"options":
+		[
+			{
+				"shortName": "e",
+				"longName": "encoding",
+				"requiresParameter": true
+			}
+		],
+		"parameters":
+		[
+			"dbx files path",
+			"PST file path"
+		]
+	},
+	{
+		"command": "eml-to-pst",
+		"description": "Migrate eml files to pst file",
+		"options":
+		[
+			{
+				"shortName": "a",
+				"longName": "adjust",
+				"requiresParameter": false
+			}
+		],
+		"parameters":
+		[
+			"eml files path",
+			"PST file path"
+		]
+	},
+	{
+		"command": "list-folders",
+		"description": "List all sub folders of a given store or folder",
+		"options":
+		[
+			{
+				"shortName": "r",
+				"longName": "recurse",
+				"requiresParameter": false
+			}
+		],
+		"parameters":
+		[
+			"PST file path",
+			"folder path"
+		]
+	},
+	{
+		"command": "remove-duplicates",
+		"description": "Remove duplicate messages",
+		"options":
+		[
+			{
+				"shortName": "n",
+				"longName": "dryrun",
+				"requiresParameter": false
+			},
+			{
+				"shortName": "s",
+				"longName": "flush",
+				"requiresParameter": false
+			}
+		],
+		"parameters":
+		[
+			"PST file path"
+		]
+	}
+]
