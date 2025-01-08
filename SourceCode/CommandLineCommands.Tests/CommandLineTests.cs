@@ -5,9 +5,12 @@
 /////////////////////////////////////////////////////////////////////////////
 
 using DigitalZenWorks.CommandLine.Commands;
+using DigitalZenWorks.Common.Utilities;
 using NUnit.Framework;
+using NUnit.Framework.Internal;
 using System;
 using System.Collections.Generic;
+using System.IO;
 
 [assembly: CLSCompliant(true)]
 
@@ -16,7 +19,7 @@ namespace CommandLineCommands.Tests
 	/// <summary>
 	/// Test class.
 	/// </summary>
-	public class CommandLineTests
+	internal class CommandLineTests
 	{
 		private List<Command> commands;
 		private CommandsSet commandsSet;
@@ -120,6 +123,45 @@ namespace CommandLineCommands.Tests
 		public void SanityTest()
 		{
 			Assert.Pass();
+		}
+
+		/// <summary>
+		/// Command Set from JSON text test.
+		/// </summary>
+		[Test]
+		public void CommandSetFromJsonTest()
+		{
+			string tempPath = Path.GetTempPath();
+			string path = Path.Combine(tempPath, "Sample.json");
+
+			bool result = FileUtils.CreateFileFromEmbeddedResource(
+				"CommandLineCommands.Tests.Sample.json", path);
+			Assert.That(result, Is.True);
+
+			string jsonText = File.ReadAllText(path);
+
+			CommandsSet commandsSet;
+			Assert.That(
+				() =>
+				commandsSet = new CommandsSet(jsonText),
+				Throws.Nothing);
+		}
+
+		/// <summary>
+		/// Command Set from JSON file test.
+		/// </summary>
+		[Test]
+		public void CommandSetFromJsonFileTest()
+		{
+			string tempPath = Path.GetTempPath();
+			string path = Path.Combine(tempPath, "Sample.json");
+
+			bool result = FileUtils.CreateFileFromEmbeddedResource(
+				"CommandLineCommands.Tests.Sample.json", path);
+			Assert.That(result, Is.True);
+
+			CommandsSet commandsSet = new CommandsSet();
+			Assert.That(() => commandsSet.JsonFromFile(path), Throws.Nothing);
 		}
 
 		/// <summary>
