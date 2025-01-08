@@ -18,9 +18,17 @@ namespace DigitalZenWorks.CommandLine.Commands
 		private readonly string name;
 		private readonly IList<CommandOption> options;
 		private readonly int parameterCount;
-		private readonly IList<string> parameters = [];
 
 		private string description;
+		private IList<string> parameters = [];
+
+		/// <summary>
+		/// Initializes a new instance of the <see cref="Command"/> class.
+		/// </summary>
+		public Command()
+		{
+			options ??= [];
+		}
 
 		/// <summary>
 		/// Initializes a new instance of the <see cref="Command"/> class.
@@ -101,7 +109,11 @@ namespace DigitalZenWorks.CommandLine.Commands
 		/// Gets the command parameters.
 		/// </summary>
 		/// <value>The command parameters.</value>
-		public IList<string> Parameters { get { return parameters; } }
+		public IList<string> Parameters
+		{
+			get { return parameters; }
+			set {  parameters = value; }
+		}
 
 		/// <summary>
 		/// Does option exist.
