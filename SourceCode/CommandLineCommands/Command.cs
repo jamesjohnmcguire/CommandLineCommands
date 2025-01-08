@@ -4,6 +4,7 @@
 // </copyright>
 /////////////////////////////////////////////////////////////////////////////
 
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,11 +16,11 @@ namespace DigitalZenWorks.CommandLine.Commands
 	/// </summary>
 	public class Command
 	{
-		private readonly string name;
-		private readonly IList<CommandOption> options;
 		private readonly int parameterCount;
 
 		private string description;
+		private string name;
+		private IList<CommandOption> options;
 		private IList<string> parameters = [];
 
 		/// <summary>
@@ -91,13 +92,22 @@ namespace DigitalZenWorks.CommandLine.Commands
 		/// Gets the command name.
 		/// </summary>
 		/// <value>The command name.</value>
-		public string Name { get { return name; } }
+		[JsonProperty("command")]
+		public string Name
+		{
+			get { return name; }
+			set { name = value; }
+		}
 
 		/// <summary>
 		/// Gets the command options.
 		/// </summary>
 		/// <value>The command options.</value>
-		public IList<CommandOption> Options { get { return options; } }
+		public IList<CommandOption> Options
+		{
+			get { return options; }
+			set { options = value; }
+		}
 
 		/// <summary>
 		/// Gets the command parameter count.
