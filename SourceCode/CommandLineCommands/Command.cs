@@ -78,6 +78,7 @@ namespace DigitalZenWorks.CommandLine.Commands
 			this.description = description;
 		}
 
+#pragma warning disable CA2227
 		/// <summary>
 		/// Gets or sets the command description.
 		/// </summary>
@@ -89,7 +90,7 @@ namespace DigitalZenWorks.CommandLine.Commands
 		}
 
 		/// <summary>
-		/// Gets the command name.
+		/// Gets or sets the command name.
 		/// </summary>
 		/// <value>The command name.</value>
 		[JsonProperty("command")]
@@ -100,7 +101,7 @@ namespace DigitalZenWorks.CommandLine.Commands
 		}
 
 		/// <summary>
-		/// Gets the command options.
+		/// Gets or sets the command options.
 		/// </summary>
 		/// <value>The command options.</value>
 		public IList<CommandOption> Options
@@ -116,14 +117,15 @@ namespace DigitalZenWorks.CommandLine.Commands
 		public int ParameterCount { get { return parameterCount; } }
 
 		/// <summary>
-		/// Gets the command parameters.
+		/// Gets or sets the command parameters.
 		/// </summary>
 		/// <value>The command parameters.</value>
 		public IList<string> Parameters
 		{
 			get { return parameters; }
-			set {  parameters = value; }
+			set { parameters = value; }
 		}
+#pragma warning restore CA2227
 
 		/// <summary>
 		/// Does option exist.
