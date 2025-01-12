@@ -18,7 +18,7 @@ if "%~3"=="" GOTO error2
 
 msbuild -property:Configuration=Release -restore -target:rebuild;pack CommandLineCommands.csproj
 
-CD bin\Release
+CD bin\x64\Release
 
 nuget push DigitalZenWorks.CommandLine.Commands.%2.nupkg %3 -source https://api.nuget.org/v3/index.json
 
