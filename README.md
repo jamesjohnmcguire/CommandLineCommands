@@ -1,7 +1,8 @@
-# DigitalZenWorks.Email.ToolKit
+# DigitalZenWorks.CommandLine.Commands
 
 This C# client library that provides light weight functionality to help process command line options.
 
+Please :star: star this project!
 
 ## Getting Started
 
@@ -18,7 +19,92 @@ This C# client library that provides light weight functionality to help process 
 #### Library and API usage:
 Usage is intended to be simple and direct - Process command line arguments and get going with your business.
 
-First, create a list of commands that the application will support, such as:
+NEW!
+
+Define a list of valid commands in JSON file, then load the file into the library.  Here is an example of the JSON command definitions file:
+```json
+[
+	{
+		"command": "help",
+		"description": "Show this information"
+	},
+	{
+		"command": "dbx-to-pst",
+		"description": "Migrate dbx files to pst file",
+		"options":
+		[
+			{
+				"shortName": "e",
+				"longName": "encoding",
+				"requiresParameter": true
+			}
+		],
+		"parameters":
+		[
+			"dbx files path",
+			"PST file path"
+		]
+	},
+	{
+		"command": "eml-to-pst",
+		"description": "Migrate eml files to pst file",
+		"options":
+		[
+			{
+				"shortName": "a",
+				"longName": "adjust",
+				"requiresParameter": false
+			}
+		],
+		"parameters":
+		[
+			"eml files path",
+			"PST file path"
+		]
+	},
+	{
+		"command": "list-folders",
+		"description": "List all sub folders of a given store or folder",
+		"options":
+		[
+			{
+				"shortName": "r",
+				"longName": "recurse",
+				"requiresParameter": false
+			}
+		],
+		"parameters":
+		[
+			"PST file path",
+			"folder path"
+		]
+	},
+	{
+		"command": "remove-duplicates",
+		"description": "Remove duplicate messages",
+		"options":
+		[
+			{
+				"shortName": "n",
+				"longName": "dryrun",
+				"requiresParameter": false
+			},
+			{
+				"shortName": "s",
+				"longName": "flush",
+				"requiresParameter": false
+			}
+		],
+		"parameters":
+		[
+			"PST file path"
+		]
+	}
+]
+```
+Note: This example taken from: https://github.com/jamesjohnmcguire/DigitalZenWorks.Email.ToolKit
+
+Otherwise, to pragmatically create a list of commands that the application will support, here is an example:
 ```c#
 	IList<Command> commands = new List<Command>();
 
@@ -36,9 +122,9 @@ First, create a list of commands that the application will support, such as:
 ```
 The third parameter is the minimum amount of required parameters, such as data file path.  The other parameters should be self-explanatory.  
 
-Then instantiate a CommandLineArguments object:
+Then instantiate a CommandLineInstance object:
 ```c#
-	CommandLineArguments commandLine = new (commands, arguments);
+	CommandLineInstance commandLine = new (commands, arguments);
 ```
 If all goes well and the supplied arguments pass validation, the active command object will be available, and you can get on your way:
 ```c#
