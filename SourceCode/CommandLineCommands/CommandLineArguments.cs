@@ -21,6 +21,7 @@ namespace DigitalZenWorks.CommandLine.Commands
 			System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
 		private readonly string[] arguments;
+		private readonly CommandLineInstance commandLineInstance;
 		private readonly CommandsSet commands;
 		private readonly IList<Command> commandsList;
 		private readonly InferCommand inferCommand;
@@ -47,6 +48,8 @@ namespace DigitalZenWorks.CommandLine.Commands
 			this.arguments = arguments;
 
 			validArguments = ValidateArguments();
+
+			commandLineInstance = new (this.commands, arguments);
 		}
 
 		/// <summary>
@@ -62,6 +65,8 @@ namespace DigitalZenWorks.CommandLine.Commands
 			this.arguments = arguments;
 
 			validArguments = ValidateArguments();
+
+			commandLineInstance = new (commands, arguments);
 		}
 
 		/// <summary>
@@ -106,7 +111,7 @@ namespace DigitalZenWorks.CommandLine.Commands
 		/// Gets the active command.
 		/// </summary>
 		/// <value>The active command.</value>
-		public Command Command { get { return command; } }
+		public Command Command { get { return commandLineInstance.Command; } }
 
 		/// <summary>
 		/// Gets the error message, if any.
@@ -137,7 +142,10 @@ namespace DigitalZenWorks.CommandLine.Commands
 		/// </summary>
 		/// <value>A value indicating whether the arguments are valid
 		/// or not.</value>
-		public bool ValidArguments { get { return validArguments; } }
+		public bool ValidArguments
+		{
+			get { return commandLineInstance.ValidArguments; }
+		}
 
 		/// <summary>
 		/// Show help message.
