@@ -1,6 +1,6 @@
 ﻿/////////////////////////////////////////////////////////////////////////////
 // <copyright file="CommandLineInstance.cs" company="James John McGuire">
-// Copyright © 2022 - 2024 James John McGuire. All Rights Reserved.
+// Copyright © 2022 - 2025 James John McGuire. All Rights Reserved.
 // </copyright>
 /////////////////////////////////////////////////////////////////////////////
 
@@ -29,12 +29,12 @@ namespace DigitalZenWorks.CommandLine.Commands
 	{
 		private readonly string[] arguments;
 		private readonly CommandsSet commands;
-		private readonly InferCommand inferCommand;
 		private readonly bool validArguments;
 
 		private Command command;
 		private string commandName;
 		private string errorMessage;
+		private InferCommand inferCommand;
 		private string invalidOption;
 		private bool useLog;
 
@@ -85,6 +85,16 @@ namespace DigitalZenWorks.CommandLine.Commands
 		/// </summary>
 		/// <value>The error message, if any.</value>
 		public string ErrorMessage { get { return errorMessage; } }
+
+		/// <summary>
+		/// Gets or sets the inferred command delegate.
+		/// </summary>
+		/// <value>The inferred command delegate.</value>
+		public InferCommand InferCommand
+		{
+			get { return inferCommand; }
+			set { inferCommand = value; }
+		}
 
 		/// <summary>
 		/// Gets or sets the usage statement.
