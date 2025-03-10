@@ -47,8 +47,6 @@ namespace DigitalZenWorks.CommandLine.Commands
 			this.commands = new CommandsSet(commands);
 			this.arguments = arguments;
 
-			validArguments = ValidateArguments();
-
 			commandLineInstance = new (this.commands, arguments);
 		}
 
@@ -63,8 +61,6 @@ namespace DigitalZenWorks.CommandLine.Commands
 		{
 			this.commands = commands;
 			this.arguments = arguments;
-
-			validArguments = ValidateArguments();
 
 			commandLineInstance = new (commands, arguments);
 		}
@@ -103,8 +99,6 @@ namespace DigitalZenWorks.CommandLine.Commands
 
 			this.commands = commands;
 			this.arguments = arguments;
-
-			validArguments = ValidateArguments();
 		}
 
 		/// <summary>
@@ -387,100 +381,6 @@ namespace DigitalZenWorks.CommandLine.Commands
 			}
 
 			return isValid;
-		}
-
-		private bool ValidateArguments()
-		{
-			bool areValid = false;
-			bool isValidCommand = false;
-			Command validatedCommand = null;
-			IList<CommandOption> commandOptions = null;
-			IList<string> parameters = null;
-
-			if (arguments == null || arguments.Length < 1)
-			{
-				errorMessage = "There are no aguments given.";
-			}
-			else
-			{
-				commandName = arguments[0];
-
-				foreach (Command validCommand in commands.Commands)
-				{
-					if (commandName.Equals(
-						validCommand.Name, StringComparison.Ordinal))
-					{
-						validatedCommand = validCommand;
-						isValidCommand = true;
-						break;
-					}
-				}
-
-				if (isValidCommand == false && inferCommand != null)
-				{
-					Command inferredCommand =
-						inferCommand(commandName, commands.Commands);
-
-					if (inferredCommand != null)
-					{
-						validatedCommand = inferredCommand;
-						isValidCommand = true;
-					}
-				}
-
-				bool isHelpCommand = IsHelpCommend(commandName);
-
-				if (isValidCommand == false && isHelpCommand == true)
-				{
-					IList<Command> commandList = commands.Commands;
-
-					Command help =
-						commandList.SingleOrDefault(x => x.Name == "help");
-					validatedCommand = help;
-					isValidCommand = true;
-					areValid = true;
-				}
-
-				if (isValidCommand == false)
-				{
-					errorMessage = "Unknown command.";
-				}
-				else if (isHelpCommand == false)
-				{
-					bool areOptionsValid =
-						AreOptionsValid(validatedCommand, out commandOptions);
-
-					if (areOptionsValid == false)
-					{
-						errorMessage = string.Format(
-							CultureInfo.InvariantCulture,
-							"Unknown option:{0}.",
-							invalidOption);
-					}
-					else
-					{
-						parameters = GetParameters(validatedCommand);
-
-						if (parameters.Count >=
-							validatedCommand.ParameterCount)
-						{
-							areValid = true;
-						}
-						else
-						{
-							errorMessage = "Incorrect amount of parameters.";
-						}
-					}
-				}
-
-				if (areValid == true)
-				{
-					command = new (
-						validatedCommand.Name, commandOptions, parameters);
-				}
-			}
-
-			return areValid;
 		}
 
 		private void Output(string message)
