@@ -10,19 +10,8 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 
-[assembly: CLSCompliant(true)]
-
 namespace DigitalZenWorks.CommandLine.Commands
 {
-	/// <summary>
-	/// Delegate to infer a command.
-	/// </summary>
-	/// <param name="argument">The first argument to check upon.</param>
-	/// <param name="commands">The list of allowed commands.</param>
-	/// <returns>The inferred command, if any.</returns>
-	public delegate Command InferCommand(
-		string argument, IList<Command> commands);
-
 	/// <summary>
 	/// Represents a set of command line arguments.
 	/// </summary>
