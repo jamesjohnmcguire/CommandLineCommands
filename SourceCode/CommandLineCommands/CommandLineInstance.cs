@@ -36,6 +36,23 @@ namespace DigitalZenWorks.CommandLine.Commands
 		private string errorMessage;
 		private InferCommand inferCommand;
 		private string invalidOption;
+		private bool useLog;
+
+		/// <summary>
+		/// Initializes a new instance of the
+		/// <see cref="CommandLineInstance"/> class.
+		/// </summary>
+		/// <param name="commands">A list of valid commands.</param>
+		/// <param name="arguments">The array of command line
+		/// arguments.</param>
+		public CommandLineInstance(
+			IList<Command> commands, string[] arguments)
+		{
+			this.commands = new CommandsSet(commands);
+			this.arguments = arguments;
+
+			validArguments = ValidateArguments();
+		}
 
 		/// <summary>
 		/// Initializes a new instance of the
@@ -56,6 +73,23 @@ namespace DigitalZenWorks.CommandLine.Commands
 		/// Initializes a new instance of the
 		/// <see cref="CommandLineInstance"/> class.
 		/// </summary>
+		/// <param name="commands">A list of valid commands.</param>
+		/// <param name="arguments">The array of command line
+		/// arguments.</param>
+		/// <param name="inferCommand">The infer command delegate.</param>
+		public CommandLineInstance(
+			IList<Command> commands,
+			string[] arguments,
+			InferCommand inferCommand)
+			: this(commands, arguments)
+		{
+			this.inferCommand = inferCommand;
+		}
+
+		/// <summary>
+		/// Initializes a new instance of the
+		/// <see cref="CommandLineInstance"/> class.
+		/// </summary>
 		/// <param name="commands">The set of valid commands.</param>
 		/// <param name="arguments">The array of command line
 		/// arguments.</param>
@@ -64,9 +98,13 @@ namespace DigitalZenWorks.CommandLine.Commands
 			CommandsSet commands,
 			string[] arguments,
 			InferCommand inferCommand)
-			: this(commands, arguments)
 		{
 			this.inferCommand = inferCommand;
+
+			this.commands = commands;
+			this.arguments = arguments;
+
+			validArguments = ValidateArguments();
 		}
 
 		/// <summary>
@@ -92,12 +130,38 @@ namespace DigitalZenWorks.CommandLine.Commands
 		}
 
 		/// <summary>
+		/// Gets or sets the usage statement.
+		/// </summary>
+		/// <value>The usage statement.</value>
+		public string UsageStatement { get; set; }
+
+		/// <summary>
+		/// Gets or sets a value indicating whether indicates whether to use
+		/// logging functionality.
+		/// </summary>
+		/// <value>A value indicating whether to use logging functionality.
+		/// </value>
+		public bool UseLog
+		{
+			get { return useLog; } set { useLog = value; }
+		}
+
+		/// <summary>
 		/// Gets a value indicating whether a value indicating whether the
 		/// arguments are valid or not.
 		/// </summary>
 		/// <value>A value indicating whether the arguments are valid
 		/// or not.</value>
 		public bool ValidArguments { get { return validArguments; } }
+
+		/// <summary>
+		/// Show help message.
+		/// </summary>
+		/// <param name="title">An optional title to display.</param>
+		public void ShowHelp(string title = null)
+		{
+			commands.ShowHelp(title);
+		}
 
 		private static bool IsHelpCommend(string command)
 		{

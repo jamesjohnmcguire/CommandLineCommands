@@ -4,8 +4,11 @@
 // </copyright>
 /////////////////////////////////////////////////////////////////////////////
 
+using Common.Logging;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
+using System.Linq;
 
 namespace DigitalZenWorks.CommandLine.Commands
 {
@@ -16,7 +19,16 @@ namespace DigitalZenWorks.CommandLine.Commands
 		"please use CommandLineInstance instead.")]
 	public class CommandLineArguments
 	{
+		private static readonly ILog Log = LogManager.GetLogger(
+			System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
+		private readonly string[] arguments;
 		private readonly CommandLineInstance commandLineInstance;
+		private readonly CommandsSet commands;
+		private readonly IList<Command> commandsList;
+		private readonly InferCommand inferCommand;
+
+		private bool useLog;
 
 		/// <summary>
 		/// Initializes a new instance of the
@@ -28,26 +40,7 @@ namespace DigitalZenWorks.CommandLine.Commands
 		public CommandLineArguments(
 			IList<Command> commands, string[] arguments)
 		{
-			CommandsSet commandsSet = new (commands);
-
-			commandLineInstance = new (commandsSet, arguments);
-		}
-
-		/// <summary>
-		/// Initializes a new instance of the
-		/// <see cref="CommandLineArguments"/> class.
-		/// </summary>
-		/// <param name="commands">A list of valid commands.</param>
-		/// <param name="arguments">The array of command line
-		/// arguments.</param>
-		/// <param name="inferCommand">The infer command delegate.</param>
-		public CommandLineArguments(
-			IList<Command> commands,
-			string[] arguments,
-			InferCommand inferCommand)
-			: this(commands, arguments)
-		{
-			this.commandLineInstance.InferCommand = inferCommand;
+			commandLineInstance = new (this.commands, arguments);
 		}
 
 		/// <summary>
@@ -66,6 +59,23 @@ namespace DigitalZenWorks.CommandLine.Commands
 		/// Initializes a new instance of the
 		/// <see cref="CommandLineArguments"/> class.
 		/// </summary>
+		/// <param name="commands">A list of valid commands.</param>
+		/// <param name="arguments">The array of command line
+		/// arguments.</param>
+		/// <param name="inferCommand">The infer command delegate.</param>
+		public CommandLineArguments(
+			IList<Command> commands,
+			string[] arguments,
+			InferCommand inferCommand)
+			: this(commands, arguments)
+		{
+			this.inferCommand = inferCommand;
+		}
+
+		/// <summary>
+		/// Initializes a new instance of the
+		/// <see cref="CommandLineArguments"/> class.
+		/// </summary>
 		/// <param name="commands">The set of valid commands.</param>
 		/// <param name="arguments">The array of command line
 		/// arguments.</param>
@@ -74,9 +84,8 @@ namespace DigitalZenWorks.CommandLine.Commands
 			CommandsSet commands,
 			string[] arguments,
 			InferCommand inferCommand)
-			: this(commands, arguments)
 		{
-			this.commandLineInstance.InferCommand = inferCommand;
+			this.inferCommand = inferCommand;
 		}
 
 		/// <summary>
@@ -95,6 +104,23 @@ namespace DigitalZenWorks.CommandLine.Commands
 		}
 
 		/// <summary>
+		/// Gets or sets the usage statement.
+		/// </summary>
+		/// <value>The usage statement.</value>
+		public string UsageStatement { get; set; }
+
+		/// <summary>
+		/// Gets or sets a value indicating whether indicates whether to use
+		/// logging functionality.
+		/// </summary>
+		/// <value>A value indicating whether to use logging functionality.
+		/// </value>
+		public bool UseLog
+		{
+			get { return useLog; } set { useLog = value; }
+		}
+
+		/// <summary>
 		/// Gets a value indicating whether a value indicating whether the
 		/// arguments are valid or not.
 		/// </summary>
@@ -103,6 +129,15 @@ namespace DigitalZenWorks.CommandLine.Commands
 		public bool ValidArguments
 		{
 			get { return commandLineInstance.ValidArguments; }
+		}
+
+		/// <summary>
+		/// Show help message.
+		/// </summary>
+		/// <param name="title">An optional title to display.</param>
+		public void ShowHelp(string title = null)
+		{
+			commandLineInstance.ShowHelp(title);
 		}
 	}
 }
