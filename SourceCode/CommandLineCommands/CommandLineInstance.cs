@@ -121,6 +121,15 @@ namespace DigitalZenWorks.CommandLine.Commands
 		/// or not.</value>
 		public bool ValidArguments { get { return validArguments; } }
 
+		/// <summary>
+		/// Show help message.
+		/// </summary>
+		/// <param name="title">An optional title to display.</param>
+		public void ShowHelp(string title = null)
+		{
+			commands.ShowHelp(title);
+		}
+
 		private static bool IsHelpCommend(string command)
 		{
 			bool isHelp = false;
