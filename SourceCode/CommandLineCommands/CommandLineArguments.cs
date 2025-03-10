@@ -15,6 +15,8 @@ namespace DigitalZenWorks.CommandLine.Commands
 	/// <summary>
 	/// Represents a set of command line arguments.
 	/// </summary>
+	[Obsolete("CommandLineArguments is deprecated, " +
+		"please use CommandLineInstance instead.")]
 	public class CommandLineArguments
 	{
 		private static readonly ILog Log = LogManager.GetLogger(
