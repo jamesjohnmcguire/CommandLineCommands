@@ -19,14 +19,7 @@ namespace DigitalZenWorks.CommandLine.Commands
 		"please use CommandLineInstance instead.")]
 	public class CommandLineArguments
 	{
-		private static readonly ILog Log = LogManager.GetLogger(
-			System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-
-		private readonly string[] arguments;
 		private readonly CommandLineInstance commandLineInstance;
-		private readonly CommandsSet commands;
-		private readonly IList<Command> commandsList;
-		private readonly InferCommand inferCommand;
 
 		private bool useLog;
 
@@ -40,7 +33,7 @@ namespace DigitalZenWorks.CommandLine.Commands
 		public CommandLineArguments(
 			IList<Command> commands, string[] arguments)
 		{
-			commandLineInstance = new (this.commands, arguments);
+			commandLineInstance = new (commands, arguments);
 		}
 
 		/// <summary>
@@ -69,7 +62,7 @@ namespace DigitalZenWorks.CommandLine.Commands
 			InferCommand inferCommand)
 			: this(commands, arguments)
 		{
-			this.inferCommand = inferCommand;
+			commandLineInstance.InferCommand = inferCommand;
 		}
 
 		/// <summary>
@@ -85,7 +78,7 @@ namespace DigitalZenWorks.CommandLine.Commands
 			string[] arguments,
 			InferCommand inferCommand)
 		{
-			this.inferCommand = inferCommand;
+			commandLineInstance.InferCommand = inferCommand;
 		}
 
 		/// <summary>
