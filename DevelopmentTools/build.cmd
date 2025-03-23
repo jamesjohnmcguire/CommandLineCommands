@@ -19,7 +19,7 @@ dotnet pack --configuration Release --output nupkg -p:IncludeSource=true -p:Incl
 
 CD nupkg
 
-REM nuget push DigitalZenWorks.CommandLine.Commands.%2.nupkg %3 -source https://api.nuget.org/v3/index.json
+nuget push DigitalZenWorks.CommandLine.Commands.%2.nupkg %3 -source https://api.nuget.org/v3/index.json
 
 cd ..
 GOTO end
