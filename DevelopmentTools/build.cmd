@@ -2,7 +2,7 @@ REM %2 - Version (such as 1.5.1)
 REM %3 - API key
 
 CD %~dp0
-CD ..\SourceCode\CommandLineCommands
+CD ..\CommandLineCommands
 
 :default
 dotnet build --configuration Release -p:PlatformTarget=AnyCPU -p:Prefer32Bit=false
