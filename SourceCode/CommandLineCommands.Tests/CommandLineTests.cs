@@ -19,7 +19,7 @@ namespace CommandLineCommands.Tests
 	/// <summary>
 	/// Test class.
 	/// </summary>
-	internal class CommandLineTests
+	internal sealed class CommandLineTests
 	{
 		private List<Command> commands;
 		private CommandsSet commandsSet;
@@ -160,7 +160,7 @@ namespace CommandLineCommands.Tests
 				"CommandLineCommands.Tests.Sample.json", path);
 			Assert.That(result, Is.True);
 
-			CommandsSet commandsSet = new CommandsSet();
+			CommandsSet commandsSet = new ();
 			Assert.That(() => commandsSet.JsonFromFile(path), Throws.Nothing);
 		}
 
@@ -179,7 +179,7 @@ namespace CommandLineCommands.Tests
 
 			string jsonText = File.ReadAllText(path);
 
-			CommandsSet commandsSet = new CommandsSet(jsonText);
+			CommandsSet commandsSet = new (jsonText);
 
 			string helpMessage =
 				commandsSet.GetHelp("CommandLine Commands Tests");
