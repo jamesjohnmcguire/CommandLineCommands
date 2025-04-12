@@ -4,18 +4,17 @@
 // </copyright>
 /////////////////////////////////////////////////////////////////////////////
 
-using DigitalZenWorks.CommandLine.Commands;
-using DigitalZenWorks.Common.Utilities;
-using NUnit.Framework;
-using NUnit.Framework.Internal;
-using System;
-using System.Collections.Generic;
-using System.IO;
-
-[assembly: CLSCompliant(true)]
+[assembly: System.CLSCompliant(true)]
 
 namespace DigitalZenWorks.CommandLine.Commands.Tests
 {
+	using System.Collections.Generic;
+	using System.IO;
+	using DigitalZenWorks.CommandLine.Commands;
+	using DigitalZenWorks.Common.Utilities;
+	using NUnit.Framework;
+	using NUnit.Framework.Internal;
+
 	/// <summary>
 	/// Test class.
 	/// </summary>
