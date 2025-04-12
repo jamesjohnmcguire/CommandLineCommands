@@ -5,3 +5,6 @@ dotnet_style_object_initializer = false:suggestion
 
 # IDE0028: Use collection initializers
 dotnet_style_collection_initializer = false:suggestion
+
+# SA1101: Prefix Local Calls With This
+dotnet_diagnostic.SA1101.severity = none
