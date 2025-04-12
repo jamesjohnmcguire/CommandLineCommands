@@ -5,24 +5,21 @@
 		<AssemblyName>DigitalZenWorks.CommandLine.Commands</AssemblyName>
 		<AssemblyVersion>1.0.0.0</AssemblyVersion>
 		<Authors>James John McGuire</Authors>
-		<CheckEolTargetFramework>false</CheckEolTargetFramework>
 		<Company>Digital Zen Works</Company>
 		<Copyright>Copyright © 2023 - 2025</Copyright>
 		<Description>
 			This client library provides light weight functionality to help process command line options.
 		</Description>
 		<EnableNETAnalyzers>true</EnableNETAnalyzers>
+		<EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
 		<FileVersion>1.4.12.0</FileVersion>
 		<GenerateDocumentationFile>true</GenerateDocumentationFile>
 		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 		<LangVersion>Latest</LangVersion>
-		<NeutralLanguage>en-US</NeutralLanguage>
-		<NoWarn>NU1701</NoWarn>
 		<PackageId>DigitalZenWorks.CommandLine.Commands</PackageId>
 		<PackageLicenseExpression>MIT</PackageLicenseExpression>
 		<PackageTags>Digital Zen Works;Command Line;Commands;Options</PackageTags>
 		<PackageReadmeFile>README.md</PackageReadmeFile>
-		<SuppressTfmSupportBuildWarnings>true</SuppressTfmSupportBuildWarnings>
 		<Version>1.4.12</Version>
 	</PropertyGroup>
 
@@ -38,10 +35,6 @@
 	<ItemGroup>
 		<PackageReference Include="Common.Logging" Version="3.4.1" />
 		<PackageReference Include="Common.Logging.Core" Version="3.4.1" />
-		<PackageReference Include="Microsoft.DotNet.Analyzers.Compatibility" Version="0.2.12-alpha">
-		  <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-		  <PrivateAssets>all</PrivateAssets>
-		</PackageReference>
 		<PackageReference Include="NewtonSoft.Json" Version="13.0.3" />
 		<PackageReference Include="StyleCop.Analyzers" Version="1.1.118">
 			<PrivateAssets>all</PrivateAssets>
@@ -50,7 +43,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<AdditionalFiles Include="../stylecop.json" />
 		<None Include=".editorconfig" Link="../.editorconfig" />
 		<None Include="../LICENSE">
 			<Pack>True</Pack>
@@ -60,6 +52,7 @@
 			<Pack>True</Pack>
 			<PackagePath>\</PackagePath>
 		</None>
+		<AdditionalFiles Include="../stylecop.json" />
 	</ItemGroup>
 
 </Project>
