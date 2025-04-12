@@ -6,7 +6,6 @@
 		<AssemblyVersion>1.0.0.0</AssemblyVersion>
 		<Authors>James John McGuire</Authors>
 		<CheckEolTargetFramework>false</CheckEolTargetFramework>
-		<CodeAnalysisRuleSet>../CodeAnalysis.ruleset</CodeAnalysisRuleSet>
 		<Company>Digital Zen Works</Company>
 		<Copyright>Copyright © 2023 - 2025</Copyright>
 		<Description>
@@ -52,13 +51,12 @@
 
 	<ItemGroup>
 		<AdditionalFiles Include="../stylecop.json" />
-		<CodeAnalysisDictionary Include="../CodeAnalysis.ruleset" />
-		<None Include="../.editorconfig" Link="../.editorconfig" />
-		<None Include="../../LICENSE">
+		<None Include=".editorconfig" Link="../.editorconfig" />
+		<None Include="../LICENSE">
 			<Pack>True</Pack>
 			<PackagePath>\</PackagePath>
 		</None>
-		<None Include="../../README.md">
+		<None Include="../README.md">
 			<Pack>True</Pack>
 			<PackagePath>\</PackagePath>
 		</None>
