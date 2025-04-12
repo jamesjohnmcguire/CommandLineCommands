@@ -4,8 +4,6 @@
 // </copyright>
 /////////////////////////////////////////////////////////////////////////////
 
-using System;
-
 namespace DigitalZenWorks.CommandLine.Commands
 {
 	/// <summary>
@@ -64,7 +62,10 @@ namespace DigitalZenWorks.CommandLine.Commands
 		/// </summary>
 		/// <value>A value indicating whether this option requires a
 		/// parameter or not.</value>
-		public bool RequiresParameter { get { return requiresParameter; } }
+		public bool RequiresParameter
+		{
+			get { return requiresParameter; }
+		}
 
 		/// <summary>
 		/// Gets or sets the short name.

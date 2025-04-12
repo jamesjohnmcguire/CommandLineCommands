@@ -111,13 +111,19 @@ namespace DigitalZenWorks.CommandLine.Commands
 		/// Gets the active command.
 		/// </summary>
 		/// <value>The active command.</value>
-		public Command Command { get { return command; } }
+		public Command Command
+		{
+			get { return command; }
+		}
 
 		/// <summary>
 		/// Gets the error message, if any.
 		/// </summary>
 		/// <value>The error message, if any.</value>
-		public string ErrorMessage { get { return errorMessage; } }
+		public string ErrorMessage
+		{
+			get { return errorMessage; }
+		}
 
 		/// <summary>
 		/// Gets or sets the inferred command delegate.
@@ -152,7 +158,10 @@ namespace DigitalZenWorks.CommandLine.Commands
 		/// </summary>
 		/// <value>A value indicating whether the arguments are valid
 		/// or not.</value>
-		public bool ValidArguments { get { return validArguments; } }
+		public bool ValidArguments
+		{
+			get { return validArguments; }
+		}
 
 		/// <summary>
 		/// Show help message.

@@ -4,17 +4,17 @@
 // </copyright>
 /////////////////////////////////////////////////////////////////////////////
 
-using Common.Logging;
-using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.IO;
-using System.Linq;
-using System.Text;
-
 namespace DigitalZenWorks.CommandLine.Commands
 {
+	using System;
+	using System.Collections.Generic;
+	using System.Globalization;
+	using System.IO;
+	using System.Linq;
+	using System.Text;
+	using Common.Logging;
+	using Newtonsoft.Json;
+
 	/// <summary>
 	/// Represents a set of commands.
 	/// </summary>

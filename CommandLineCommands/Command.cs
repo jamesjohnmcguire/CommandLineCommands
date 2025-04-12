@@ -4,13 +4,12 @@
 // </copyright>
 /////////////////////////////////////////////////////////////////////////////
 
-using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-
 namespace DigitalZenWorks.CommandLine.Commands
 {
+	using System;
+	using System.Collections.Generic;
+	using Newtonsoft.Json;
+
 	/// <summary>
 	/// Represents a command line command.
 	/// </summary>
@@ -114,7 +113,10 @@ namespace DigitalZenWorks.CommandLine.Commands
 		/// Gets the command parameter count.
 		/// </summary>
 		/// <value>The command parameter count.</value>
-		public int ParameterCount { get { return parameterCount; } }
+		public int ParameterCount
+		{
+			get { return parameterCount; }
+		}
 
 		/// <summary>
 		/// Gets or sets the command parameters.

@@ -4,14 +4,11 @@
 // </copyright>
 /////////////////////////////////////////////////////////////////////////////
 
-using Common.Logging;
-using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
-
 namespace DigitalZenWorks.CommandLine.Commands
 {
+	using System;
+	using System.Collections.Generic;
+
 	/// <summary>
 	/// Represents a set of command line arguments.
 	/// </summary>
@@ -85,7 +82,10 @@ namespace DigitalZenWorks.CommandLine.Commands
 		/// Gets the active command.
 		/// </summary>
 		/// <value>The active command.</value>
-		public Command Command { get { return commandLineInstance.Command; } }
+		public Command Command
+		{
+			get { return commandLineInstance.Command; }
+		}
 
 		/// <summary>
 		/// Gets the error message, if any.
