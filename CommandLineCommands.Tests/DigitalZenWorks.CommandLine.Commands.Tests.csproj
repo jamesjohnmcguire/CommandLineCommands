@@ -1,9 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<AnalysisMode>AllEnabledByDefault</AnalysisMode>
+		<AnalysisMode>All</AnalysisMode>
 		<AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
-		<CodeAnalysisRuleSet>../CodeAnalysis.ruleset</CodeAnalysisRuleSet>
 		<EnableNETAnalyzers>true</EnableNETAnalyzers>
 		<GenerateDocumentationFile>true</GenerateDocumentationFile>
 		<IsTestProject>true</IsTestProject>
@@ -35,8 +34,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<CodeAnalysisDictionary Include="../CodeAnalysis.ruleset" />
-		<None Include="../.editorconfig" Link="../.editorconfig" />
+		<None Include=".editorconfig" Link=".editorconfig" />
 		<EmbeddedResource Include="Sample.json" />
 		<AdditionalFiles Include="../stylecop.json" />
 	</ItemGroup>
