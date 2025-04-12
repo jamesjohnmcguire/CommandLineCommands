@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.3.32929.385
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CommandLineCommands", "CommandLineCommands.csproj", "{94C275A3-5D01-4B76-9B8F-8948CE6BBEED}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CommandLineCommands", "CommandLineCommands/DigitalZenWorks.CommandLine.Commands.csproj", "{94C275A3-5D01-4B76-9B8F-8948CE6BBEED}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CommandLineCommands.Tests", "..\CommandLineCommands.Tests\CommandLineCommands.Tests.csproj", "{B7C11725-B058-4279-9EA9-3DDEE9EE2D70}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CommandLineCommands.Tests", "CommandLineCommands.Tests/DigitalZenWorks.CommandLine.Commands.Tests.csproj", "{B7C11725-B058-4279-9EA9-3DDEE9EE2D70}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

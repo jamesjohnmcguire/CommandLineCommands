@@ -31,7 +31,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\CommandLineCommands\CommandLineCommands.csproj" />
+		<ProjectReference Include="..\CommandLineCommands\DigitalZenWorks.CommandLine.Commands.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>

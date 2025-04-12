@@ -14,7 +14,7 @@ using System.IO;
 
 [assembly: CLSCompliant(true)]
 
-namespace CommandLineCommands.Tests
+namespace DigitalZenWorks.CommandLine.Commands.Tests
 {
 	/// <summary>
 	/// Test class.
@@ -135,7 +135,8 @@ namespace CommandLineCommands.Tests
 			string path = Path.Combine(tempPath, "Sample.json");
 
 			bool result = FileUtils.CreateFileFromEmbeddedResource(
-				"CommandLineCommands.Tests.Sample.json", path);
+				"DigitalZenWorks.CommandLine.Commands.Tests.Sample.json",
+				path);
 			Assert.That(result, Is.True);
 
 			string jsonText = File.ReadAllText(path);
@@ -157,7 +158,8 @@ namespace CommandLineCommands.Tests
 			string path = Path.Combine(tempPath, "Sample.json");
 
 			bool result = FileUtils.CreateFileFromEmbeddedResource(
-				"CommandLineCommands.Tests.Sample.json", path);
+				"DigitalZenWorks.CommandLine.Commands.Tests.Sample.json",
+				path);
 			Assert.That(result, Is.True);
 
 			CommandsSet commandsSet = new ();
@@ -174,7 +176,8 @@ namespace CommandLineCommands.Tests
 			string path = Path.Combine(tempPath, "Sample.json");
 
 			bool result = FileUtils.CreateFileFromEmbeddedResource(
-				"CommandLineCommands.Tests.Sample.json", path);
+				"DigitalZenWorks.CommandLine.Commands.Tests.Sample.json",
+				path);
 			Assert.That(result, Is.True);
 
 			string jsonText = File.ReadAllText(path);
