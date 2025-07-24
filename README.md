@@ -54,6 +54,11 @@ Define a list of valid commands in JSON file, then load the file into the librar
 				"shortName": "a",
 				"longName": "adjust",
 				"requiresParameter": false
+			},
+			{
+				"shortName": "c",
+				"longName": "close-store",
+				"requiresParameter": false
 			}
 		],
 		"parameters":

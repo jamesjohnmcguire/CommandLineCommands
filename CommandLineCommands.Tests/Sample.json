@@ -29,6 +29,11 @@
 				"shortName": "a",
 				"longName": "adjust",
 				"requiresParameter": false
+			},
+			{
+				"shortName": "c",
+				"longName": "close-store",
+				"requiresParameter": false
 			}
 		],
 		"parameters":
