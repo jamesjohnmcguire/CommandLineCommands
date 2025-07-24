@@ -131,10 +131,10 @@ namespace DigitalZenWorks.CommandLine.Commands.Tests
 		public void CommandSetFromJsonTest()
 		{
 			string tempPath = Path.GetTempPath();
-			string path = Path.Combine(tempPath, "Sample.json");
+			string path = Path.Combine(tempPath, "CommandsSample.json");
 
 			bool result = FileUtils.CreateFileFromEmbeddedResource(
-				"DigitalZenWorks.CommandLine.Commands.Tests.Sample.json",
+				"DigitalZenWorks.CommandLine.Commands.Tests.CommandsSample.json",
 				path);
 			Assert.That(result, Is.True);
 
@@ -154,10 +154,10 @@ namespace DigitalZenWorks.CommandLine.Commands.Tests
 		public void CommandSetFromJsonFileTest()
 		{
 			string tempPath = Path.GetTempPath();
-			string path = Path.Combine(tempPath, "Sample.json");
+			string path = Path.Combine(tempPath, "CommandsSample.json");
 
 			bool result = FileUtils.CreateFileFromEmbeddedResource(
-				"DigitalZenWorks.CommandLine.Commands.Tests.Sample.json",
+				"DigitalZenWorks.CommandLine.Commands.Tests.CommandsSample.json",
 				path);
 			Assert.That(result, Is.True);
 
@@ -172,10 +172,10 @@ namespace DigitalZenWorks.CommandLine.Commands.Tests
 		public void GetHelpTextTest()
 		{
 			string tempPath = Path.GetTempPath();
-			string path = Path.Combine(tempPath, "Sample.json");
+			string path = Path.Combine(tempPath, "CommandsSample.json");
 
 			bool result = FileUtils.CreateFileFromEmbeddedResource(
-				"DigitalZenWorks.CommandLine.Commands.Tests.Sample.json",
+				"DigitalZenWorks.CommandLine.Commands.Tests.CommandsSample.json",
 				path);
 			Assert.That(result, Is.True);
 
