@@ -1,0 +1,11 @@
+Projects Using
+	BackUpManager\SourceCode\BackUpManager\BackUpManager.csproj
+	DevelopmentTools\SourceCode\HttpTool\SourceCode\HttpTool\HttpTool.csproj
+	Email.ToolKit\ToolKit.Application\ToolKit.Application.csproj
+	MusicLibraryManager\SourceCode\MusicManager\MusicManager.csproj
+
+	Libraries\Net\PackageClients\TestConsole20\TestConsole20.csproj
+	Libraries\Net\PackageClients\TestConsole461\TestConsole461.csproj
+	Libraries\Net\PackageClients\TestConsole472\TestConsole472.csproj
+	Libraries\Net\PackageClients\TestConsole90\TestConsole90.csproj
+	MsLogConsoleApp\MsLogConsoleApp.csproj
