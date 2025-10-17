@@ -8,3 +8,9 @@ dotnet_style_collection_initializer = false:suggestion
 
 # SA1101: Prefix Local Calls With This
 dotnet_diagnostic.SA1101.severity = none
+
+# Require space after 'new' keyword
+dotnet_diagnostic.SA1000.severity = warning
+csharp_space_after_keywords_in_control_flow_statements = true
+csharp_space_between_method_call_empty_parameter_list_parentheses = false
+csharp_space_between_method_call_parameter_list_parentheses = false
