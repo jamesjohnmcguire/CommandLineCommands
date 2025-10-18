@@ -16,7 +16,7 @@ namespace DigitalZenWorks.CommandLine.Commands.Tests
 	using NUnit.Framework.Internal;
 
 	/// <summary>
-	/// Test class.
+	/// Command line tests class.
 	/// </summary>
 	internal sealed class CommandLineTests
 	{
@@ -269,7 +269,7 @@ namespace DigitalZenWorks.CommandLine.Commands.Tests
 			IList<CommandOption> options = command.Options;
 			int count = options.Count;
 
-			Assert.That(count, Is.EqualTo(0));
+			Assert.That(count, Is.Zero);
 		}
 
 		/// <summary>
@@ -292,7 +292,7 @@ namespace DigitalZenWorks.CommandLine.Commands.Tests
 			IList<CommandOption> options = command.Options;
 			int count = options.Count;
 
-			Assert.That(count, Is.EqualTo(0));
+			Assert.That(count, Is.Zero);
 		}
 
 		/// <summary>
