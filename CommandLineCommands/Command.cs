@@ -25,6 +25,8 @@ namespace DigitalZenWorks.CommandLine.Commands
 		/// <summary>
 		/// Initializes a new instance of the <see cref="Command"/> class.
 		/// </summary>
+		[Obsolete("Command constructor with no arguments is deprecated, " +
+			"please use Command constructor with arguments instead.")]
 		public Command()
 		{
 			options ??= [];
@@ -36,6 +38,8 @@ namespace DigitalZenWorks.CommandLine.Commands
 		/// <param name="name">The command name.</param>
 		public Command(string name)
 		{
+			ArgumentException.ThrowIfNullOrEmpty(name, nameof(name));
+
 			this.name = name;
 
 			options ??= [];
