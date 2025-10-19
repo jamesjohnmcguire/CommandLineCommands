@@ -46,8 +46,12 @@ namespace DigitalZenWorks.CommandLine.Commands
 
 					commandColumnLength =
 						Math.Max(name.Length, commandColumnLength);
-					descriptionColumnLength =
-						Math.Max(description.Length, descriptionColumnLength);
+
+					if (description != null)
+					{
+						descriptionColumnLength = Math.Max(
+							description.Length, descriptionColumnLength);
+					}
 
 					optionsColumnLength = GetOptionsMaximumLength(command);
 					parametersColumnLength =
@@ -129,6 +133,7 @@ namespace DigitalZenWorks.CommandLine.Commands
 			string columnName = "Command";
 			string headerColumns = columnName;
 			bool addPadding = false;
+			string columnText;
 
 			if (descriptionColumnLength > 0 || optionsColumnLength > 0 ||
 				parametersColumnLength > 0)
@@ -148,24 +153,31 @@ namespace DigitalZenWorks.CommandLine.Commands
 							Math.Max(columnName.Length, descriptionColumnLength);
 					}
 
-					string columnText = GetPaddedColumn(
+					columnText = GetPaddedColumn(
 						columnName, descriptionColumnLength, addPadding);
 					headerColumns += columnText;
+				}
 
-					if (optionsColumnLength > 0)
-					{
-						columnName = "Options";
-						headerColumns += columnName;
+				if (optionsColumnLength > 0)
+				{
+					columnName = "Options";
 
-						if (parametersColumnLength > 0)
-						{
-							headerColumns += "Parameters";
-						}
-					}
-					else if (parametersColumnLength > 0)
+					if (parametersColumnLength > 0)
 					{
+						columnText = GetPaddedColumn(
+							columnName, optionsColumnLength, true);
+						headerColumns += columnText;
+
 						headerColumns += "Parameters";
 					}
+					else
+					{
+						headerColumns += "Options";
+					}
+				}
+				else if (parametersColumnLength > 0)
+				{
+					headerColumns += "Parameters";
 				}
 			}
 

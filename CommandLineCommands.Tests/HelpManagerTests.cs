@@ -6,12 +6,10 @@
 
 namespace DigitalZenWorks.CommandLine.Commands.Tests
 {
-	using DigitalZenWorks.Common.Utilities;
-	using NUnit.Framework;
 	using System;
 	using System.Collections.Generic;
 	using System.Globalization;
-	using System.IO;
+	using NUnit.Framework;
 
 	/// <summary>
 	/// The help manager tests class.
@@ -21,6 +19,8 @@ namespace DigitalZenWorks.CommandLine.Commands.Tests
 		private CommandsSet commandsSetFull;
 
 		private CommandsSet commandsSetMinimal;
+
+		private CommandsSet commandSetNoDescription;
 
 		private CommandsSet commandsSetNoOptions;
 
@@ -44,52 +44,12 @@ namespace DigitalZenWorks.CommandLine.Commands.Tests
 				title,
 				Environment.NewLine);
 
-			List<Command> commands = [];
-
-			Command command = new("help");
-			command.Description = "Show this information";
-			commands.Add(command);
-
-			List<Command> commandsMinimal = new List<Command>(commands);
-
+			commandsSetFull = GetCommandSetFull();
 			commandsSetMinimal = GetCommandSetMinimal();
-
-			command = new ("check");
-			command.Description = "Check file for some text";
-
-			List<string> parameters = ["file path"];
-			command.Parameters = parameters;
-
-			commands.Add(command);
-
-			commandsSetVerySimple = GetCommandSetVerySimple();
-
-			Command convert = new ("convert");
-			convert.Description = "Convert file for some reason";
-
-			parameters = ["input file path", "output file path"];
-			convert.Parameters = parameters;
-
-			commands.Add(convert);
-
+			commandSetNoDescription = GetCommandSetNoDescription();
 			commandsSetNoOptions = GetCommandSetNoOptions();
-
-			commands = new List<Command>(commandsMinimal);
-			CommandOption option1 = new("s", "something");
-			CommandOption option2 = new("o", "other");
-			List<CommandOption> options = [option1, option2];
-
-			command = new(
-				"command-no-parameters",
-				options,
-				0,
-				"A command with only options");
-			commands.Add(command);
-
 			commandsSetNoParameters = GetCommandSetNoParameters();
-
-			commands.Add(convert);
-			commandsSetFull = new CommandsSet(commands);
+			commandsSetVerySimple = GetCommandSetVerySimple();
 		}
 
 		/// <summary>
@@ -109,6 +69,28 @@ namespace DigitalZenWorks.CommandLine.Commands.Tests
 		}
 
 		/// <summary>
+		/// Get help header text no option test.
+		/// </summary>
+		[Test]
+		public void GetHelpHeaderTextFullSet()
+		{
+			string buffer = "{0}Command         Description" +
+				"                  Options   Parameters{1}";
+
+			string expected = string.Format(
+				CultureInfo.InvariantCulture,
+				buffer,
+				topHeaderText,
+				Environment.NewLine);
+
+			HelpManager helpManager = new (commandsSetFull);
+			string actual = helpManager.GetHelpHeaderText(
+				"CommandLine Commands Tests");
+
+			Assert.That(actual, Is.EqualTo(expected));
+		}
+
+		/// <summary>
 		/// Get help header text minimal test.
 		/// </summary>
 		[Test]
@@ -121,6 +103,25 @@ namespace DigitalZenWorks.CommandLine.Commands.Tests
 				Environment.NewLine);
 
 			HelpManager helpManager = new (commandsSetMinimal);
+			string actual = helpManager.GetHelpHeaderText(
+				"CommandLine Commands Tests");
+
+			Assert.That(actual, Is.EqualTo(expected));
+		}
+
+		/// <summary>
+		/// Get help header text no description test.
+		/// </summary>
+		[Test]
+		public void GetHelpHeaderTextNoDescription()
+		{
+			string expected = string.Format(
+				CultureInfo.InvariantCulture,
+				"{0}Command Parameters{1}",
+				topHeaderText,
+				Environment.NewLine);
+
+			HelpManager helpManager = new (commandSetNoDescription);
 			string actual = helpManager.GetHelpHeaderText(
 				"CommandLine Commands Tests");
 
@@ -184,12 +185,50 @@ namespace DigitalZenWorks.CommandLine.Commands.Tests
 			Assert.That(actual, Is.EqualTo(expected));
 		}
 
+		private CommandsSet GetCommandSetFull()
+		{
+			CommandsSet commandsSetMinimal = GetCommandSetNoParameters();
+
+			List<Command> commands =
+				new List<Command>(commandsSetMinimal.Commands);
+
+			Command convert = new("convert");
+			convert.Description = "Convert file for some reason";
+
+			string[] parameters = ["input file path", "output file path"];
+			convert.Parameters = parameters;
+
+			commands.Add(convert);
+
+			CommandsSet commandsSet = new CommandsSet(commands);
+
+			return commandsSet;
+		}
+
 		private CommandsSet GetCommandSetMinimal()
 		{
 			List<Command> commands = [];
 
 			Command command = new ("help");
 			command.Description = "Show this information";
+			commands.Add(command);
+
+			CommandsSet commandsSet = new CommandsSet(commands);
+
+			return commandsSet;
+		}
+
+		private CommandsSet GetCommandSetNoDescription()
+		{
+			List<Command> commands = [];
+
+			Command command = new ("help");
+			commands.Add(command);
+
+			command = new ("check");
+			List<string> parameters = ["file path"];
+			command.Parameters = parameters;
+
 			commands.Add(command);
 
 			CommandsSet commandsSet = new CommandsSet(commands);
