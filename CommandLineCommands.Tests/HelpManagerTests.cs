@@ -18,6 +18,14 @@ namespace DigitalZenWorks.CommandLine.Commands.Tests
 	{
 		private readonly string title = "CommandLine Commands Tests";
 
+		private Command check;
+		private Command checkNoDescription;
+		private Command commandOptions;
+		private Command convert;
+		private Command encode;
+		private Command help;
+		private Command helpNoDescription;
+
 		private IList<Command> commandsSetFull;
 
 		private IList<Command> commandsSetMinimal;
@@ -43,6 +51,8 @@ namespace DigitalZenWorks.CommandLine.Commands.Tests
 				"{0}{1}{1}Usage:{1}",
 				title,
 				Environment.NewLine);
+
+			SetUpTestCommands();
 
 			commandsSetMinimal = GetCommandSetMinimal();
 			commandsSetVerySimple = GetCommandSetVerySimple();
@@ -344,33 +354,6 @@ namespace DigitalZenWorks.CommandLine.Commands.Tests
 			Assert.That(helpText, Is.EqualTo(expected));
 		}
 
-		private static List<Command> GetCommandSetMinimal()
-		{
-			List<Command> commands = [];
-
-			Command command = new ("help");
-			command.Description = "Show this information";
-			commands.Add(command);
-
-			return commands;
-		}
-
-		private static List<Command> GetCommandSetNoDescription()
-		{
-			List<Command> commands = [];
-
-			Command command = new ("help");
-			commands.Add(command);
-
-			command = new ("check");
-			List<string> parameters = ["file path"];
-			command.Parameters = parameters;
-
-			commands.Add(command);
-
-			return commands;
-		}
-
 		private static string GetExpectedCommandsFullSet()
 		{
 			string command1 = "help            Show this information";
@@ -474,30 +457,25 @@ namespace DigitalZenWorks.CommandLine.Commands.Tests
 		private List<Command> GetCommandSetFull()
 		{
 			List<Command> commands = [.. commandsSetNoOptions];
+			commands.Add(commandOptions);
+			commands.Add(encode);
 
-			CommandOption option1 = new ("s", "something");
-			CommandOption option2 = new ("o", "other");
-			List<CommandOption> options = [option1, option2];
+			return commands;
+		}
 
-			Command command = new (
-				"command-options",
-				options,
-				0,
-				"A command with only options");
-			commands.Add(command);
+		private List<Command> GetCommandSetMinimal()
+		{
+			List<Command> commands = [];
+			commands.Add(help);
 
-			option1 = new ("e", "encoding");
-			options = [option1];
+			return commands;
+		}
 
-			string[] parameters = ["UTF-8"];
-
-			command = new (
-				"encode",
-				options,
-				1,
-				"A command to encode");
-			command.Parameters = parameters;
-			commands.Add(command);
+		private List<Command> GetCommandSetNoDescription()
+		{
+			List<Command> commands = [];
+			commands.Add(helpNoDescription);
+			commands.Add(checkNoDescription);
 
 			return commands;
 		}
@@ -505,13 +483,6 @@ namespace DigitalZenWorks.CommandLine.Commands.Tests
 		private List<Command> GetCommandSetNoOptions()
 		{
 			List<Command> commands = [.. commandsSetVerySimple];
-
-			Command convert = new ("convert");
-			convert.Description = "Convert file for some reason";
-
-			string[] parameters = ["input file path", "output file path"];
-			convert.Parameters = parameters;
-
 			commands.Add(convert);
 
 			return commands;
@@ -520,17 +491,7 @@ namespace DigitalZenWorks.CommandLine.Commands.Tests
 		private List<Command> GetCommandSetNoParameters()
 		{
 			List<Command> commands = [.. commandsSetMinimal];
-
-			CommandOption option1 = new ("s", "something");
-			CommandOption option2 = new ("o", "other");
-			List<CommandOption> options = [option1, option2];
-
-			Command command = new (
-				"command-options",
-				options,
-				0,
-				"A command with only options");
-			commands.Add(command);
+			commands.Add(commandOptions);
 
 			return commands;
 		}
@@ -538,14 +499,7 @@ namespace DigitalZenWorks.CommandLine.Commands.Tests
 		private List<Command> GetCommandSetVerySimple()
 		{
 			List<Command> commands = [.. commandsSetMinimal];
-
-			Command command = new ("check");
-			command.Description = "Check file for some text";
-
-			List<string> parameters = ["file path"];
-			command.Parameters = parameters;
-
-			commands.Add(command);
+			commands.Add(check);
 
 			return commands;
 		}
@@ -617,6 +571,52 @@ namespace DigitalZenWorks.CommandLine.Commands.Tests
 				Environment.NewLine);
 
 			return headerText;
+		}
+
+		private void SetUpTestCommands()
+		{
+			check = new ("check");
+			check.Description = "Check file for some text";
+			List<string> checkParameters = ["file path"];
+			check.Parameters = checkParameters;
+
+			checkNoDescription = new ("check");
+			List<string> checkParametersNoDescription = ["file path"];
+			checkNoDescription.Parameters = checkParametersNoDescription;
+
+			CommandOption option1 = new ("s", "something");
+			CommandOption option2 = new ("o", "other");
+			List<CommandOption> options = [option1, option2];
+
+			commandOptions = new (
+				"command-options",
+				options,
+				0,
+				"A command with only options");
+
+			convert = new ("convert");
+			convert.Description = "Convert file for some reason";
+
+			string[] convertParameters =
+				["input file path", "output file path"];
+			convert.Parameters = convertParameters;
+
+			CommandOption option3 = new ("e", "encoding");
+			List<CommandOption> encodingOptions = [option3];
+
+			string[] encodeParameters = ["encoding"];
+
+			encode = new (
+				"encode",
+				encodingOptions,
+				1,
+				"A command to encode");
+			encode.Parameters = encodeParameters;
+
+			help = new ("help");
+			help.Description = "Show this information";
+
+			helpNoDescription = new ("help");
 		}
 	}
 }
