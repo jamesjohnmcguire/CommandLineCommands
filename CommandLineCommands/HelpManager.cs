@@ -110,7 +110,11 @@ namespace DigitalZenWorks.CommandLine.Commands
 
 			if (command.Parameters.Count > lineIndex)
 			{
-				lineParameter = command.Parameters[lineIndex];
+				string rawParameter = command.Parameters[lineIndex];
+				lineParameter = string.Format(
+					CultureInfo.InvariantCulture,
+					"<{0}>",
+					rawParameter);
 			}
 
 			return lineParameter;

@@ -358,16 +358,16 @@ namespace DigitalZenWorks.CommandLine.Commands.Tests
 		{
 			string command1 = "help            Show this information";
 			string command2 = "check           Check file for some text     " +
-				"                file path";
+				"                <file path>";
 			string command3 = "convert         Convert file for some reason " +
-				"                input file path" + Environment.NewLine +
+				"                <input file path>" + Environment.NewLine +
 				"                                                     " +
-				"        output file path";
+				"        <output file path>";
 			string command4 = "command-options A command with only options  " +
 				"-s, --something" + Environment.NewLine +
 				"                                             -o, --other";
 			string command5 = "encode          A command to encode          " +
-				"-e, --encoding  UTF-8";
+				"-e, --encoding  <encoding>";
 
 			string commandsText = string.Format(
 				CultureInfo.InvariantCulture,
@@ -396,7 +396,7 @@ namespace DigitalZenWorks.CommandLine.Commands.Tests
 		{
 			string commandsText = string.Format(
 				CultureInfo.InvariantCulture,
-				"help    {0}check   file path{0}",
+				"help    {0}check   <file path>{0}",
 				Environment.NewLine);
 
 			return commandsText;
@@ -406,10 +406,10 @@ namespace DigitalZenWorks.CommandLine.Commands.Tests
 		{
 			string command1 = "help    Show this information";
 			string command2 = "check   Check file for some text     " +
-				"file path";
+				"<file path>";
 			string command3 = "convert Convert file for some reason " +
-				"input file path" + Environment.NewLine +
-				"                                     output file path";
+				"<input file path>" + Environment.NewLine +
+				"                                     <output file path>";
 
 			string commandsText = string.Format(
 				CultureInfo.InvariantCulture,
@@ -442,7 +442,7 @@ namespace DigitalZenWorks.CommandLine.Commands.Tests
 		private static string GetExpectedCommandsVerySimple()
 		{
 			string command1 = "help    Show this information";
-			string command2 = "check   Check file for some text file path";
+			string command2 = "check   Check file for some text <file path>";
 
 			string commandsText = string.Format(
 				CultureInfo.InvariantCulture,
