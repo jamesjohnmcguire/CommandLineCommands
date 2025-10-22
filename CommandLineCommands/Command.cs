@@ -38,7 +38,19 @@ namespace DigitalZenWorks.CommandLine.Commands
 		/// <param name="name">The command name.</param>
 		public Command(string name)
 		{
-			ArgumentException.ThrowIfNullOrEmpty(name, nameof(name));
+			string variableName = nameof(name);
+
+#if NET7_0_OR_GREATER
+			ArgumentException.ThrowIfNullOrEmpty(name, variableName);
+#else
+			if (string.IsNullOrEmpty(name))
+			{
+				string message = "Value cannot be null or empty.";
+				ArgumentException exception =
+					new ArgumentException(message, variableName);
+				throw exception;
+			}
+#endif
 
 			this.name = name;
 
