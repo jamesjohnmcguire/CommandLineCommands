@@ -10,8 +10,6 @@ namespace DigitalZenWorks.CommandLine.Commands
 	using System.Collections.Generic;
 	using System.Globalization;
 	using System.IO;
-	using System.Linq;
-	using System.Text;
 	using Common.Logging;
 	using Newtonsoft.Json;
 
@@ -23,10 +21,7 @@ namespace DigitalZenWorks.CommandLine.Commands
 		private static readonly ILog Log = LogManager.GetLogger(
 			System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
-		private int commandMaximumLength;
 		private IList<Command> commands;
-		private int descriptionMaximumLength;
-		private int optionsMaximumLength;
 		private bool useLog;
 
 		/// <summary>
@@ -115,43 +110,9 @@ namespace DigitalZenWorks.CommandLine.Commands
 		/// <returns>The complete help message.</returns>
 		public string GetHelp(string title = null)
 		{
-			string message = string.Empty;
+			HelpManager helpManager = new (title, commands);
 
-			StringBuilder buffer = new ();
-
-			GetMaximumLengths();
-
-			Command help = commands.SingleOrDefault(x => x.Name == "help");
-			commands.Remove(help);
-
-			string headerText = GetHelpHeader(title);
-			buffer.AppendLine(headerText);
-
-			IOrderedEnumerable<Command> sortedCommands =
-				commands.OrderBy(x => x.Name);
-
-			foreach (Command command in sortedCommands)
-			{
-				string commandText = GetCommandText(
-					command,
-					commandMaximumLength,
-					descriptionMaximumLength,
-					optionsMaximumLength);
-				buffer.AppendLine(commandText);
-			}
-
-			if (help != null)
-			{
-				string helpMessage = GetFormattedCommandText(
-					help.Name,
-					help.Description,
-					string.Empty,
-					commandMaximumLength,
-					0);
-				buffer.AppendLine(helpMessage);
-			}
-
-			message = buffer.ToString();
+			string message = helpManager.HelpText;
 
 			return message;
 		}
@@ -165,106 +126,6 @@ namespace DigitalZenWorks.CommandLine.Commands
 			string helpMessage = GetHelp(title);
 
 			Output(helpMessage);
-		}
-
-		private static string GetCommandText(
-			Command command,
-			int commandMaximumLength,
-			int descriptionMaximumLength,
-			int optionsMaximumLength)
-		{
-			string optionsParametersText = GetOptionsParametersText(
-				command.Options,
-				command.Parameters,
-				commandMaximumLength,
-				descriptionMaximumLength,
-				optionsMaximumLength);
-
-			string commandText = GetFormattedCommandText(
-				command.Name,
-				command.Description,
-				optionsParametersText,
-				commandMaximumLength,
-				descriptionMaximumLength);
-
-			return commandText;
-		}
-
-		private static string GetFormattedCommandText(
-			string name,
-			string description,
-			string optionsParametersText,
-			int commandMaximumLength,
-			int descriptionMaximumLength)
-		{
-			string paddedName = new (' ', commandMaximumLength);
-
-			if (name != null)
-			{
-				paddedName = name.PadRight(commandMaximumLength, ' ');
-			}
-
-			string paddedDescription = new (' ', descriptionMaximumLength);
-
-			if (description != null)
-			{
-				paddedDescription = description.PadRight(
-					descriptionMaximumLength, ' ');
-			}
-
-			string commandText = string.Format(
-				CultureInfo.InvariantCulture,
-				"{0} {1} {2}",
-				paddedName,
-				paddedDescription,
-				optionsParametersText);
-
-			return commandText;
-		}
-
-		private static int GetMaximumLength(
-			int previousMaximumLength, string text)
-		{
-			int maximumLength = previousMaximumLength;
-
-			if (text != null)
-			{
-				maximumLength = Math.Max(previousMaximumLength, text.Length);
-			}
-
-			return maximumLength;
-		}
-
-		private static int GetMaximumLength(
-			int previousMaximumLength, IList<CommandOption> options)
-		{
-			int maximumLength = previousMaximumLength;
-
-			foreach (CommandOption option in options)
-			{
-				int optionLength = 0;
-
-				if (option.LongName != null)
-				{
-					optionLength = option.LongName.Length;
-
-					// 2 for the dashes, 1 for space
-					optionLength += 3;
-				}
-
-				if (option.ShortName != null)
-				{
-					optionLength += option.ShortName.Length;
-
-					// 1 for the dash, 1 for space
-					optionLength += 2;
-				}
-
-				maximumLength =
-					Math.Max(maximumLength, optionLength);
-			}
-
-			return maximumLength;
 		}
 
 		private static string GetOptionText(
@@ -295,54 +156,6 @@ namespace DigitalZenWorks.CommandLine.Commands
 			return optionText;
 		}
 
-		private static string GetOptionsParametersText(
-			IList<CommandOption> options,
-			IList<string> parameters,
-			int commandMaximumLength,
-			int descriptionMaximumLength,
-			int optionsMaximumLength)
-		{
-			string text = string.Empty;
-			bool first = true;
-
-			int lines = Math.Max(options.Count, parameters.Count);
-
-			for (int index = 0; index < lines; index++)
-			{
-				string optionText = string.Empty;
-				string parameterText = string.Empty;
-
-				if (options.Count > index)
-				{
-					CommandOption option = options[index];
-
-					optionText = GetOptionText(
-						option,
-						commandMaximumLength,
-						descriptionMaximumLength,
-						first);
-				}
-
-				if (parameters.Count > index)
-				{
-					string parameter = parameters[index];
-
-					parameterText = GetParameterText(
-						parameter,
-						commandMaximumLength,
-						descriptionMaximumLength,
-						optionsMaximumLength + 1,
-						optionText.Length,
-						first);
-				}
-
-				text += optionText + parameterText;
-				first = false;
-			}
-
-			return text;
-		}
-
 		private static string GetPadding(
 			int commandMaximumLength, int descriptionMaximumLength)
 		{
@@ -365,84 +178,6 @@ namespace DigitalZenWorks.CommandLine.Commands
 			string padding = new (' ', paddingAmount);
 
 			return padding;
-		}
-
-		private static string GetParameterText(
-			string parameter,
-			int commandMaximumLength,
-			int descriptionMaximumLength,
-			int optionsMaximumLength,
-			int optionLength,
-			bool first)
-		{
-			string parameterText = string.Empty;
-
-			string padding = string.Empty;
-
-			if (first == false)
-			{
-				parameterText += Environment.NewLine;
-
-				padding = GetPadding(
-					commandMaximumLength,
-					descriptionMaximumLength,
-					optionsMaximumLength);
-			}
-			else
-			{
-				int paddingAmount =
-					optionsMaximumLength - optionLength;
-				padding = padding.PadRight(paddingAmount, ' ');
-			}
-
-			parameterText += padding;
-			parameterText += parameter;
-
-			return parameterText;
-		}
-
-		private string GetHelpHeader(string title)
-		{
-			StringBuilder buffer = new ();
-
-			if (!string.IsNullOrWhiteSpace(title))
-			{
-				buffer.AppendLine(title);
-				buffer.AppendLine(string.Empty);
-			}
-
-			buffer.AppendLine("Usage:");
-			string usage = GetFormattedCommandText(
-				"Command",
-				"Description",
-				"Options",
-				commandMaximumLength,
-				descriptionMaximumLength);
-
-			int paddingAmount =
-				optionsMaximumLength - 6;
-			string padding = new (' ', paddingAmount);
-			usage += padding + "Parameters";
-
-			buffer.AppendLine(usage);
-			buffer.AppendLine(string.Empty);
-
-			string headerText = buffer.ToString();
-
-			return headerText;
-		}
-
-		private void GetMaximumLengths()
-		{
-			foreach (Command command in commands)
-			{
-				commandMaximumLength = GetMaximumLength(
-					commandMaximumLength, command.Name);
-				descriptionMaximumLength = GetMaximumLength(
-					descriptionMaximumLength, command.Description);
-				optionsMaximumLength = GetMaximumLength(
-					optionsMaximumLength, command.Options);
-			}
 		}
 
 		private void Output(string message)
