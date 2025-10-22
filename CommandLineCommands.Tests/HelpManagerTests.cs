@@ -16,17 +16,19 @@ namespace DigitalZenWorks.CommandLine.Commands.Tests
 	/// </summary>
 	internal sealed class HelpManagerTests
 	{
-		private CommandsSet commandsSetFull;
+		private readonly string title = "CommandLine Commands Tests";
 
-		private CommandsSet commandsSetMinimal;
+		private IList<Command> commandsSetFull;
 
-		private CommandsSet commandSetNoDescription;
+		private IList<Command> commandsSetMinimal;
 
-		private CommandsSet commandsSetNoOptions;
+		private IList<Command> commandsSetNoDescription;
 
-		private CommandsSet commandsSetNoParameters;
+		private IList<Command> commandsSetNoOptions;
 
-		private CommandsSet commandsSetVerySimple;
+		private IList<Command> commandsSetNoParameters;
+
+		private IList<Command> commandsSetVerySimple;
 
 		private string topHeaderText;
 
@@ -36,20 +38,18 @@ namespace DigitalZenWorks.CommandLine.Commands.Tests
 		[OneTimeSetUp]
 		public void OneTimeSetUp()
 		{
-			string title = "CommandLine Commands Tests";
-
 			topHeaderText = string.Format(
 				CultureInfo.InvariantCulture,
 				"{0}{1}{1}Usage:{1}",
 				title,
 				Environment.NewLine);
 
-			commandsSetFull = GetCommandSetFull();
 			commandsSetMinimal = GetCommandSetMinimal();
-			commandSetNoDescription = GetCommandSetNoDescription();
+			commandsSetVerySimple = GetCommandSetVerySimple();
+			commandsSetNoDescription = GetCommandSetNoDescription();
 			commandsSetNoOptions = GetCommandSetNoOptions();
 			commandsSetNoParameters = GetCommandSetNoParameters();
-			commandsSetVerySimple = GetCommandSetVerySimple();
+			commandsSetFull = GetCommandSetFull();
 		}
 
 		/// <summary>
@@ -69,23 +69,99 @@ namespace DigitalZenWorks.CommandLine.Commands.Tests
 		}
 
 		/// <summary>
-		/// Get help header text no option test.
+		/// Get command information full set test.
+		/// </summary>
+		[Test]
+		public void GetCommandInformationFullSet()
+		{
+			string expected = GetExpectedCommandsFullSet();
+
+			HelpManager helpManager = new (title, commandsSetFull);
+			string actual = helpManager.CommandsInformation;
+
+			Assert.That(actual, Is.EqualTo(expected));
+		}
+
+		/// <summary>
+		/// Get command information minimal test.
+		/// </summary>
+		[Test]
+		public void GetCommandInformationMinimal()
+		{
+			string expected = GetExpectedCommandsMinimal();
+
+			HelpManager helpManager = new (title, commandsSetMinimal);
+			string actual = helpManager.CommandsInformation;
+
+			Assert.That(actual, Is.EqualTo(expected));
+		}
+
+		/// <summary>
+		/// Get command information no description test.
+		/// </summary>
+		[Test]
+		public void GetCommandInformationNoDescription()
+		{
+			string expected = GetExpectedCommandsNoDescription();
+
+			HelpManager helpManager = new (title, commandsSetNoDescription);
+			string actual = helpManager.CommandsInformation;
+
+			Assert.That(actual, Is.EqualTo(expected));
+		}
+
+		/// <summary>
+		/// Get command information no options test.
+		/// </summary>
+		[Test]
+		public void GetCommandInformationNoOptions()
+		{
+			string expected = GetExpectedCommandsNoOptions();
+
+			HelpManager helpManager = new (title, commandsSetNoOptions);
+			string actual = helpManager.CommandsInformation;
+
+			Assert.That(actual, Is.EqualTo(expected));
+		}
+
+		/// <summary>
+		/// Get command information no parameters test.
+		/// </summary>
+		[Test]
+		public void GetCommandInformationNoParameters()
+		{
+			string expected = GetExpectedCommandsNoParameters();
+
+			HelpManager helpManager = new (title, commandsSetNoParameters);
+			string actual = helpManager.CommandsInformation;
+
+			Assert.That(actual, Is.EqualTo(expected));
+		}
+
+		/// <summary>
+		/// Get command information minimal test.
+		/// </summary>
+		[Test]
+		public void GetCommandInformationVerySimple()
+		{
+			string expected = GetExpectedCommandsVerySimple();
+
+			HelpManager helpManager = new (title, commandsSetVerySimple);
+			string actual = helpManager.CommandsInformation;
+
+			Assert.That(actual, Is.EqualTo(expected));
+		}
+
+		/// <summary>
+		/// Get help header text full set test.
 		/// </summary>
 		[Test]
 		public void GetHelpHeaderTextFullSet()
 		{
-			string buffer = "{0}Command         Description" +
-				"                  Options   Parameters{1}";
+			string expected = GetHeaderTextFullSet();
 
-			string expected = string.Format(
-				CultureInfo.InvariantCulture,
-				buffer,
-				topHeaderText,
-				Environment.NewLine);
-
-			HelpManager helpManager = new (commandsSetFull);
-			string actual = helpManager.GetHelpHeaderText(
-				"CommandLine Commands Tests");
+			HelpManager helpManager = new (title, commandsSetFull);
+			string actual = helpManager.HelpHeaderText;
 
 			Assert.That(actual, Is.EqualTo(expected));
 		}
@@ -96,15 +172,10 @@ namespace DigitalZenWorks.CommandLine.Commands.Tests
 		[Test]
 		public void GetHelpHeaderTextMinimal()
 		{
-			string expected = string.Format(
-				CultureInfo.InvariantCulture,
-				"{0}Command Description{1}",
-				topHeaderText,
-				Environment.NewLine);
+			string expected = GetHeaderTextMinimal();
 
-			HelpManager helpManager = new (commandsSetMinimal);
-			string actual = helpManager.GetHelpHeaderText(
-				"CommandLine Commands Tests");
+			HelpManager helpManager = new (title, commandsSetMinimal);
+			string actual = helpManager.HelpHeaderText;
 
 			Assert.That(actual, Is.EqualTo(expected));
 		}
@@ -115,15 +186,10 @@ namespace DigitalZenWorks.CommandLine.Commands.Tests
 		[Test]
 		public void GetHelpHeaderTextNoDescription()
 		{
-			string expected = string.Format(
-				CultureInfo.InvariantCulture,
-				"{0}Command Parameters{1}",
-				topHeaderText,
-				Environment.NewLine);
+			string expected = GetHeaderTextNoDescription();
 
-			HelpManager helpManager = new (commandSetNoDescription);
-			string actual = helpManager.GetHelpHeaderText(
-				"CommandLine Commands Tests");
+			HelpManager helpManager = new (title, commandsSetNoDescription);
+			string actual = helpManager.HelpHeaderText;
 
 			Assert.That(actual, Is.EqualTo(expected));
 		}
@@ -134,15 +200,10 @@ namespace DigitalZenWorks.CommandLine.Commands.Tests
 		[Test]
 		public void GetHelpHeaderTextNoOptions()
 		{
-			string expected = string.Format(
-				CultureInfo.InvariantCulture,
-				"{0}Command Description                  Parameters{1}",
-				topHeaderText,
-				Environment.NewLine);
+			string expected = GetHeaderTextNoOptions();
 
-			HelpManager helpManager = new (commandsSetNoOptions);
-			string actual = helpManager.GetHelpHeaderText(
-				"CommandLine Commands Tests");
+			HelpManager helpManager = new (title, commandsSetNoOptions);
+			string actual = helpManager.HelpHeaderText;
 
 			Assert.That(actual, Is.EqualTo(expected));
 		}
@@ -153,15 +214,10 @@ namespace DigitalZenWorks.CommandLine.Commands.Tests
 		[Test]
 		public void GetHelpHeaderTextNoParameters()
 		{
-			string expected = string.Format(
-				CultureInfo.InvariantCulture,
-				"{0}Command         Description                 Options{1}",
-				topHeaderText,
-				Environment.NewLine);
+			string expected = GetHeaderTextNoParameters();
 
-			HelpManager helpManager = new (commandsSetNoParameters);
-			string actual = helpManager.GetHelpHeaderText(
-				"CommandLine Commands Tests");
+			HelpManager helpManager = new (title, commandsSetNoParameters);
+			string actual = helpManager.HelpHeaderText;
 
 			Assert.That(actual, Is.EqualTo(expected));
 		}
@@ -172,40 +228,123 @@ namespace DigitalZenWorks.CommandLine.Commands.Tests
 		[Test]
 		public void GetHelpHeaderTextVerySimple()
 		{
-			string expected = string.Format(
-				CultureInfo.InvariantCulture,
-				"{0}Command Description              Parameters{1}",
-				topHeaderText,
-				Environment.NewLine);
+			string expected = GetHeaderTextVerySimple();
 
-			HelpManager helpManager = new (commandsSetVerySimple);
-			string actual = helpManager.GetHelpHeaderText(
-				"CommandLine Commands Tests");
+			HelpManager helpManager = new (title, commandsSetVerySimple);
+			string actual = helpManager.HelpHeaderText;
 
 			Assert.That(actual, Is.EqualTo(expected));
 		}
 
-		private CommandsSet GetCommandSetFull()
+		/// <summary>
+		/// Get help text full set test.
+		/// </summary>
+		[Test]
+		public void GetHelpTextFullSet()
 		{
-			CommandsSet commandsSetMinimal = GetCommandSetNoParameters();
+			string headerText = GetHeaderTextFullSet();
+			string commandsText = GetExpectedCommandsFullSet();
 
-			List<Command> commands =
-				new List<Command>(commandsSetMinimal.Commands);
+			string expected = headerText + commandsText;
 
-			Command convert = new("convert");
-			convert.Description = "Convert file for some reason";
+			HelpManager helpManager = new (title, commandsSetFull);
 
-			string[] parameters = ["input file path", "output file path"];
-			convert.Parameters = parameters;
+			string helpText = helpManager.HelpText;
 
-			commands.Add(convert);
-
-			CommandsSet commandsSet = new CommandsSet(commands);
-
-			return commandsSet;
+			Assert.That(helpText, Is.EqualTo(expected));
 		}
 
-		private CommandsSet GetCommandSetMinimal()
+		/// <summary>
+		/// Get help text minimal test.
+		/// </summary>
+		[Test]
+		public void GetHelpTextMinimal()
+		{
+			string headerText = GetHeaderTextMinimal();
+			string commandsText = GetExpectedCommandsMinimal();
+
+			string expected = headerText + commandsText;
+
+			HelpManager helpManager = new (title, commandsSetMinimal);
+
+			string helpText = helpManager.HelpText;
+
+			Assert.That(helpText, Is.EqualTo(expected));
+		}
+
+		/// <summary>
+		/// Get help text no description test.
+		/// </summary>
+		[Test]
+		public void GetHelpTextNoDescription()
+		{
+			string headerText = GetHeaderTextNoDescription();
+			string commandsText = GetExpectedCommandsNoDescription();
+
+			string expected = headerText + commandsText;
+
+			HelpManager helpManager = new (title, commandsSetNoDescription);
+
+			string helpText = helpManager.HelpText;
+
+			Assert.That(helpText, Is.EqualTo(expected));
+		}
+
+		/// <summary>
+		/// Get help text no options test.
+		/// </summary>
+		[Test]
+		public void GetHelpTextNoOptions()
+		{
+			string headerText = GetHeaderTextNoOptions();
+			string commandsText = GetExpectedCommandsNoOptions();
+
+			string expected = headerText + commandsText;
+
+			HelpManager helpManager = new (title, commandsSetNoOptions);
+
+			string helpText = helpManager.HelpText;
+
+			Assert.That(helpText, Is.EqualTo(expected));
+		}
+
+		/// <summary>
+		/// Get help text no parameters test.
+		/// </summary>
+		[Test]
+		public void GetHelpTextNoParameters()
+		{
+			string headerText = GetHeaderTextNoParameters();
+			string commandsText = GetExpectedCommandsNoParameters();
+
+			string expected = headerText + commandsText;
+
+			HelpManager helpManager = new (title, commandsSetNoParameters);
+
+			string helpText = helpManager.HelpText;
+
+			Assert.That(helpText, Is.EqualTo(expected));
+		}
+
+		/// <summary>
+		/// Get help text very simple test.
+		/// </summary>
+		[Test]
+		public void GetHelpTextVerySimple()
+		{
+			string headerText = GetHeaderTextVerySimple();
+			string commandsText = GetExpectedCommandsVerySimple();
+
+			string expected = headerText + commandsText;
+
+			HelpManager helpManager = new (title, commandsSetVerySimple);
+
+			string helpText = helpManager.HelpText;
+
+			Assert.That(helpText, Is.EqualTo(expected));
+		}
+
+		private static List<Command> GetCommandSetMinimal()
 		{
 			List<Command> commands = [];
 
@@ -213,12 +352,10 @@ namespace DigitalZenWorks.CommandLine.Commands.Tests
 			command.Description = "Show this information";
 			commands.Add(command);
 
-			CommandsSet commandsSet = new CommandsSet(commands);
-
-			return commandsSet;
+			return commands;
 		}
 
-		private CommandsSet GetCommandSetNoDescription()
+		private static List<Command> GetCommandSetNoDescription()
 		{
 			List<Command> commands = [];
 
@@ -231,37 +368,112 @@ namespace DigitalZenWorks.CommandLine.Commands.Tests
 
 			commands.Add(command);
 
-			CommandsSet commandsSet = new CommandsSet(commands);
-
-			return commandsSet;
+			return commands;
 		}
 
-		private CommandsSet GetCommandSetNoOptions()
+		private static string GetExpectedCommandsFullSet()
 		{
-			CommandsSet commandsSetMinimal = GetCommandSetVerySimple();
+			string command1 = "help            Show this information";
+			string command2 = "check           Check file for some text     " +
+				"                file path";
+			string command3 = "convert         Convert file for some reason " +
+				"                input file path" + Environment.NewLine +
+				"                                                     " +
+				"        output file path";
+			string command4 = "command-options A command with only options  " +
+				"-s, --something" + Environment.NewLine +
+				"                                             -o, --other";
+			string command5 = "encode          A command to encode          " +
+				"-e, --encoding  UTF-8";
 
-			List<Command> commands =
-				new List<Command>(commandsSetMinimal.Commands);
+			string commandsText = string.Format(
+				CultureInfo.InvariantCulture,
+				"{0}{5}{1}{5}{2}{5}{3}{5}{4}{5}",
+				command1,
+				command2,
+				command3,
+				command4,
+				command5,
+				Environment.NewLine);
 
-			Command convert = new ("convert");
-			convert.Description = "Convert file for some reason";
-
-			string[] parameters = ["input file path", "output file path"];
-			convert.Parameters = parameters;
-
-			commands.Add(convert);
-
-			CommandsSet commandsSet = new CommandsSet(commands);
-
-			return commandsSet;
+			return commandsText;
 		}
 
-		private CommandsSet GetCommandSetNoParameters()
+		private static string GetExpectedCommandsMinimal()
 		{
-			CommandsSet commandsSetMinimal = GetCommandSetMinimal();
+			string commandsText = string.Format(
+				CultureInfo.InvariantCulture,
+				"help    Show this information{0}",
+				Environment.NewLine);
 
-			List<Command> commands =
-				new List<Command>(commandsSetMinimal.Commands);
+			return commandsText;
+		}
+
+		private static string GetExpectedCommandsNoDescription()
+		{
+			string commandsText = string.Format(
+				CultureInfo.InvariantCulture,
+				"help    {0}check   file path{0}",
+				Environment.NewLine);
+
+			return commandsText;
+		}
+
+		private static string GetExpectedCommandsNoOptions()
+		{
+			string command1 = "help    Show this information";
+			string command2 = "check   Check file for some text     " +
+				"file path";
+			string command3 = "convert Convert file for some reason " +
+				"input file path" + Environment.NewLine +
+				"                                     output file path";
+
+			string commandsText = string.Format(
+				CultureInfo.InvariantCulture,
+				"{0}{3}{1}{3}{2}{3}",
+				command1,
+				command2,
+				command3,
+				Environment.NewLine);
+
+			return commandsText;
+		}
+
+		private static string GetExpectedCommandsNoParameters()
+		{
+			string command1 = "help            Show this information";
+			string command2 = "command-options A command with only options " +
+				"-s, --something" + Environment.NewLine +
+				"                                            -o, --other";
+
+			string commandsText = string.Format(
+				CultureInfo.InvariantCulture,
+				"{0}{2}{1}{2}",
+				command1,
+				command2,
+				Environment.NewLine);
+
+			return commandsText;
+		}
+
+		private static string GetExpectedCommandsVerySimple()
+		{
+			string command1 = "help    Show this information";
+			string command2 = "check   Check file for some text file path";
+
+			string commandsText = string.Format(
+				CultureInfo.InvariantCulture,
+				"{0}{2}{1}{2}",
+				command1,
+				command2,
+				Environment.NewLine);
+
+			return commandsText;
+		}
+
+		private List<Command> GetCommandSetFull()
+		{
+			List<Command> commands = [.. commandsSetNoOptions];
 
 			CommandOption option1 = new ("s", "something");
 			CommandOption option2 = new ("o", "other");
@@ -274,17 +486,58 @@ namespace DigitalZenWorks.CommandLine.Commands.Tests
 				"A command with only options");
 			commands.Add(command);
 
-			CommandsSet commandsSet = new CommandsSet(commands);
+			option1 = new ("e", "encoding");
+			options = [option1];
 
-			return commandsSet;
+			string[] parameters = ["UTF-8"];
+
+			command = new (
+				"encode",
+				options,
+				1,
+				"A command to encode");
+			command.Parameters = parameters;
+			commands.Add(command);
+
+			return commands;
 		}
 
-		private CommandsSet GetCommandSetVerySimple()
+		private List<Command> GetCommandSetNoOptions()
 		{
-			CommandsSet commandsSetMinimal = GetCommandSetMinimal();
+			List<Command> commands = [.. commandsSetVerySimple];
 
-			List<Command> commands =
-				new List<Command>(commandsSetMinimal.Commands);
+			Command convert = new ("convert");
+			convert.Description = "Convert file for some reason";
+
+			string[] parameters = ["input file path", "output file path"];
+			convert.Parameters = parameters;
+
+			commands.Add(convert);
+
+			return commands;
+		}
+
+		private List<Command> GetCommandSetNoParameters()
+		{
+			List<Command> commands = [.. commandsSetMinimal];
+
+			CommandOption option1 = new ("s", "something");
+			CommandOption option2 = new ("o", "other");
+			List<CommandOption> options = [option1, option2];
+
+			Command command = new (
+				"command-options",
+				options,
+				0,
+				"A command with only options");
+			commands.Add(command);
+
+			return commands;
+		}
+
+		private List<Command> GetCommandSetVerySimple()
+		{
+			List<Command> commands = [.. commandsSetMinimal];
 
 			Command command = new ("check");
 			command.Description = "Check file for some text";
@@ -294,9 +547,76 @@ namespace DigitalZenWorks.CommandLine.Commands.Tests
 
 			commands.Add(command);
 
-			CommandsSet commandsSet = new CommandsSet(commands);
+			return commands;
+		}
 
-			return commandsSet;
+		private string GetHeaderTextFullSet()
+		{
+			string buffer = "{0}Command         Description" +
+				"                  Options         Parameters{1}";
+
+			string headerText = string.Format(
+				CultureInfo.InvariantCulture,
+				buffer,
+				topHeaderText,
+				Environment.NewLine);
+
+			return headerText;
+		}
+
+		private string GetHeaderTextMinimal()
+		{
+			string headerText = string.Format(
+				CultureInfo.InvariantCulture,
+				"{0}Command Description{1}",
+				topHeaderText,
+				Environment.NewLine);
+
+			return headerText;
+		}
+
+		private string GetHeaderTextNoDescription()
+		{
+			string headerText = string.Format(
+				CultureInfo.InvariantCulture,
+				"{0}Command Parameters{1}",
+				topHeaderText,
+				Environment.NewLine);
+
+			return headerText;
+		}
+
+		private string GetHeaderTextNoOptions()
+		{
+			string headerText = string.Format(
+				CultureInfo.InvariantCulture,
+				"{0}Command Description                  Parameters{1}",
+				topHeaderText,
+				Environment.NewLine);
+
+			return headerText;
+		}
+
+		private string GetHeaderTextNoParameters()
+		{
+			string headerText = string.Format(
+				CultureInfo.InvariantCulture,
+				"{0}Command         Description                 Options{1}",
+				topHeaderText,
+				Environment.NewLine);
+
+			return headerText;
+		}
+
+		private string GetHeaderTextVerySimple()
+		{
+			string headerText = string.Format(
+				CultureInfo.InvariantCulture,
+				"{0}Command Description              Parameters{1}",
+				topHeaderText,
+				Environment.NewLine);
+
+			return headerText;
 		}
 	}
 }

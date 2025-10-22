@@ -9,20 +9,23 @@
 namespace DigitalZenWorks.CommandLine.Commands
 {
 	using System;
+	using System.Collections.Generic;
 	using System.Globalization;
-	using System.Xml.Linq;
 
 	/// <summary>
 	/// The help manager class.
 	/// </summary>
 	public class HelpManager
 	{
-		private readonly CommandsSet commandSet;
+		private readonly IList<Command> commands;
+		private readonly string title;
 
-		// For 'Command' length.
+		// Use 7 for 'Command' length.
 		private int commandColumnLength = 7;
 
 		private int descriptionColumnLength;
+
+		private string? helpText;
 
 		private int optionsColumnLength;
 
@@ -32,87 +35,85 @@ namespace DigitalZenWorks.CommandLine.Commands
 		/// Initializes a new instance of the
 		/// <see cref="HelpManager"/> class.
 		/// </summary>
-		/// <param name="commandSet">The command set.</param>
-		public HelpManager(CommandsSet commandSet)
+		/// <param name="applicationTitle">The application title.</param>
+		/// <param name="commands">The commands list.</param>
+		public HelpManager(string applicationTitle, IList<Command> commands)
 		{
-			this.commandSet = commandSet;
+			this.title = applicationTitle;
+			this.commands = commands;
 
-			if (commandSet != null)
+			if (commands != null)
 			{
-				foreach (Command command in commandSet.Commands)
-				{
-					string description = command.Description;
-					string name = command.Name;
-
-					commandColumnLength =
-						Math.Max(name.Length, commandColumnLength);
-
-					if (description != null)
-					{
-						descriptionColumnLength = Math.Max(
-							description.Length, descriptionColumnLength);
-					}
-
-					optionsColumnLength = GetOptionsMaximumLength(command);
-					parametersColumnLength =
-						GetParametersMaximumLength(command);
-				}
+				GetColumnLengths(commands);
 			}
 		}
 
 		/// <summary>
-		/// Get the help header text.
+		/// Gets the command informationhelp text.
 		/// </summary>
-		/// <param name="title">The title of the application.</param>
-		/// <returns>The help header text.</returns>
-		public string GetHelpHeaderText(string title)
+		public string CommandsInformation
 		{
-			string headerText = string.Format(
+			get
+			{
+				string commandsInformation = string.Empty;
+
+				if (commands != null)
+				{
+					foreach (Command command in commands)
+					{
+						commandsInformation += GetCommandInformation(command);
+					}
+				}
+
+				return commandsInformation;
+			}
+		}
+
+		/// <summary>
+		/// Gets the help header text.
+		/// </summary>
+		/// <returns>The help header text.</returns>
+		public string HelpHeaderText
+		{
+			get
+			{
+				string headerText = string.Format(
 				CultureInfo.InvariantCulture,
 				"{0}{1}{1}Usage:{1}",
 				title,
 				Environment.NewLine);
 
-			headerText += GetHeaderColumns();
-			headerText += Environment.NewLine;
+				headerText += GetHeaderColumns();
+				headerText += Environment.NewLine;
 
-			return headerText;
+				return headerText;
+			}
 		}
 
-		private static int GetOptionsMaximumLength(
-			int currentColumnLength, Command command)
+		/// <summary>
+		/// Gets the help text associated with this instance.
+		/// </summary>
+		public string HelpText
 		{
-			int optionsColumnLength = currentColumnLength;
-
-			if (command.Options != null)
+			get
 			{
-				foreach (CommandOption option in command.Options)
-				{
-					string optionName = option.LongName;
+				helpText ??= HelpHeaderText + CommandsInformation;
 
-					optionsColumnLength = Math.Max(
-						option.LongName.Length, optionsColumnLength);
-				}
+				return helpText;
 			}
-
-			return optionsColumnLength;
 		}
 
-		private static int GetParametersMaximumLength(
-			int currentColumnLength, Command command)
+		private static string GetCommandLineParameter(
+			Command command, int lineIndex)
 		{
-			int parametersColumnLength = currentColumnLength;
+			string lineParameter = string.Empty;
 
-			if (command.Parameters != null)
+			if (command.Parameters.Count > lineIndex)
 			{
-				foreach (string parameter in command.Parameters)
-				{
-					parametersColumnLength = Math.Max(
-						parameter.Length, parametersColumnLength);
-				}
+				lineParameter = command.Parameters[lineIndex];
 			}
 
-			return parametersColumnLength;
+			return lineParameter;
 		}
 
 		private static string PadColumn(string column, int columnLength)
@@ -128,67 +129,233 @@ namespace DigitalZenWorks.CommandLine.Commands
 			return column;
 		}
 
-		private string GetHeaderColumns()
+		private string GetColumnDescription(Command command)
 		{
-			string columnName = "Command";
-			string headerColumns = columnName;
-			bool addPadding = false;
-			string columnText;
+			string columnText = string.Empty;
+
+			if (descriptionColumnLength > 0)
+			{
+				columnText = command.Description;
+
+				if ((command.Options.Count > 0 ||
+					command.Parameters.Count > 0) &&
+					(optionsColumnLength > 0 || parametersColumnLength > 0))
+				{
+					columnText = PadColumn(
+						command.Description, descriptionColumnLength);
+				}
+			}
+
+			return columnText;
+		}
+
+		private void GetColumnLengths(IList<Command> commandsList)
+		{
+			foreach (Command command in commandsList)
+			{
+				string description = command.Description;
+				string name = command.Name;
+
+				commandColumnLength =
+					Math.Max(name.Length, commandColumnLength);
+
+				if (description != null)
+				{
+					descriptionColumnLength = Math.Max(
+						description.Length, descriptionColumnLength);
+				}
+
+				optionsColumnLength = GetOptionsMaximumLength(command);
+
+				parametersColumnLength =
+					GetParametersMaximumLength(command);
+			}
+
+			// For additional formatting and short name.
+			if (optionsColumnLength > 0)
+			{
+				optionsColumnLength += 6;
+			}
+		}
+
+		private string GetColumnName(Command command)
+		{
+			string columnText = command.Name;
 
 			if (descriptionColumnLength > 0 || optionsColumnLength > 0 ||
 				parametersColumnLength > 0)
 			{
-				headerColumns = PadColumn(headerColumns, commandColumnLength);
+				columnText = PadColumn(columnText, commandColumnLength);
+			}
 
-				if (descriptionColumnLength > 0)
+			return columnText;
+		}
+
+		private string GetColumnOption(Command command, int optionIndex)
+		{
+			string columnText;
+
+			CommandOption option = command.Options[optionIndex];
+
+			string optionMessage = string.Format(
+				CultureInfo.InvariantCulture,
+				"-{0}, --{1}",
+				option.ShortName,
+				option.LongName);
+
+			if (command.Parameters.Count > 0 && parametersColumnLength > 0)
+			{
+				columnText = PadColumn(optionMessage, optionsColumnLength);
+			}
+			else
+			{
+				columnText = optionMessage;
+			}
+
+			return columnText;
+		}
+
+		private string GetCommandInformation(Command command)
+		{
+			string commandInformation = string.Empty;
+
+			int linesCount = 1;
+			int optionalsCount = Math.Max(
+				command.Options.Count, command.Parameters.Count);
+			linesCount = Math.Max(linesCount, optionalsCount);
+
+			for (int index = 0; index < linesCount; index++)
+			{
+				string line = GetCommandLine(command, index);
+				commandInformation += line + Environment.NewLine;
+			}
+
+			return commandInformation;
+		}
+
+		private string GetCommandLine(Command command, int lineIndex)
+		{
+			string line = string.Empty;
+
+			if (lineIndex == 0)
+			{
+				line = GetColumnName(command);
+				line += GetColumnDescription(command);
+			}
+			else
+			{
+				line = PadColumn(line, commandColumnLength);
+				line += PadColumn(line, descriptionColumnLength);
+			}
+
+			string lineOption = GetCommandLineOption(command, lineIndex);
+			line += lineOption;
+
+			string lineParameter = GetCommandLineParameter(command, lineIndex);
+			line += lineParameter;
+
+			return line;
+		}
+
+		private string GetCommandLineOption(Command command, int lineIndex)
+		{
+			string lineOption = string.Empty;
+
+			if (command.Options.Count > lineIndex)
+			{
+				lineOption = GetColumnOption(command, lineIndex);
+			}
+			else if (command.Parameters.Count > lineIndex &&
+				optionsColumnLength > 0)
+			{
+				lineOption = PadColumn(lineOption, optionsColumnLength);
+			}
+
+			return lineOption;
+		}
+
+		private string GetHeaderColumnDescription()
+		{
+			string columnHeaderText = string.Empty;
+
+			if (descriptionColumnLength > 0)
+			{
+				columnHeaderText = "Description";
+
+				if (optionsColumnLength > 0 || parametersColumnLength > 0)
 				{
-					columnName = "Description";
+					// Compensate for the header name too.
+					descriptionColumnLength = Math.Max(
+						columnHeaderText.Length,
+						descriptionColumnLength);
 
-					if (optionsColumnLength > 0 || parametersColumnLength > 0)
-					{
-						addPadding = true;
-
-						// Compensate for the header name too.
-						descriptionColumnLength =
-							Math.Max(columnName.Length, descriptionColumnLength);
-					}
-
-					columnText = GetPaddedColumn(
-						columnName, descriptionColumnLength, addPadding);
-					headerColumns += columnText;
-				}
-
-				if (optionsColumnLength > 0)
-				{
-					columnName = "Options";
-
-					if (parametersColumnLength > 0)
-					{
-						columnText = GetPaddedColumn(
-							columnName, optionsColumnLength, true);
-						headerColumns += columnText;
-
-						headerColumns += "Parameters";
-					}
-					else
-					{
-						headerColumns += "Options";
-					}
-				}
-				else if (parametersColumnLength > 0)
-				{
-					headerColumns += "Parameters";
+					columnHeaderText =
+						PadColumn(columnHeaderText, descriptionColumnLength);
 				}
 			}
 
-			return headerColumns;
+			return columnHeaderText;
 		}
 
-		private string GetHeaderNameColumn()
+		private string GetHeaderColumnName()
 		{
-			string nameColumn = "Command";
+			string columnHeaderText = "Command";
 
-			return nameColumn;
+			if (descriptionColumnLength > 0 || optionsColumnLength > 0 ||
+				parametersColumnLength > 0)
+			{
+				columnHeaderText =
+					PadColumn(columnHeaderText, commandColumnLength);
+			}
+
+			return columnHeaderText;
+		}
+
+		private string GetHeaderColumnOptions()
+		{
+			string columnHeaderText = string.Empty;
+
+			if (optionsColumnLength > 0)
+			{
+				columnHeaderText = "Options";
+
+				if (parametersColumnLength > 0)
+				{
+					columnHeaderText =
+						PadColumn(columnHeaderText, optionsColumnLength);
+				}
+			}
+
+			return columnHeaderText;
+		}
+
+		private string GetHeaderColumnParameters()
+		{
+			string columnHeaderText = string.Empty;
+
+			if (parametersColumnLength > 0)
+			{
+				columnHeaderText = "Parameters";
+			}
+
+			return columnHeaderText;
+		}
+
+		private string GetHeaderColumns()
+		{
+			string columnText = GetHeaderColumnName();
+			string headerColumns = columnText;
+
+			columnText = GetHeaderColumnDescription();
+			headerColumns += columnText;
+
+			columnText = GetHeaderColumnOptions();
+			headerColumns += columnText;
+
+			columnText = GetHeaderColumnParameters();
+			headerColumns += columnText;
+
+			return headerColumns;
 		}
 
 		private int GetOptionsMaximumLength(Command command)
@@ -200,37 +367,11 @@ namespace DigitalZenWorks.CommandLine.Commands
 					string optionName = option.LongName;
 
 					optionsColumnLength = Math.Max(
-						option.LongName.Length, optionsColumnLength);
+						optionName.Length, optionsColumnLength);
 				}
 			}
 
 			return optionsColumnLength;
-		}
-
-		private string AddParametersHeaderColumn(string headerColumns)
-		{
-			string text = string.Empty;
-
-			if (parametersColumnLength > 0)
-			{
-				headerColumns = PadColumn(
-					headerColumns, optionsColumnLength);
-
-				headerColumns += "Parameters";
-			}
-
-			return headerColumns;
-		}
-
-		private string GetPaddedColumn(
-			string columnText, int columnLength, bool addPadding)
-		{
-			if (addPadding == true)
-			{
-				columnText = PadColumn(columnText, columnLength);
-			}
-
-			return columnText;
 		}
 
 		private int GetParametersMaximumLength(Command command)
