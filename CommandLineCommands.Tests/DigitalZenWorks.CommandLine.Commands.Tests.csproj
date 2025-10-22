@@ -36,6 +36,7 @@
 	<ItemGroup>
 		<None Include=".editorconfig" Link=".editorconfig" />
 		<EmbeddedResource Include="CommandsSample.json" />
+		<EmbeddedResource Include="CommandsSimpleSample.json" />
 		<AdditionalFiles Include="../stylecop.json" />
 	</ItemGroup>
 

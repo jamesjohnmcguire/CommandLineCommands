@@ -1,0 +1,32 @@
+[
+	{
+		"command": "help",
+		"description": "Show this information"
+	},
+	{
+		"command": "check",
+		"description": "Check file for non-normalized text",
+		"parameters":
+		[
+			"file path"
+		]
+	},
+	{
+		"command": "compare",
+		"description": "Compare two strings and show Unicode information",
+		"parameters":
+		[
+			"string 1",
+			"string 2"
+		]
+	},
+	{
+		"command": "normalize",
+		"description": "Normalize file to NFKC form",
+		"parameters":
+		[
+			"input file path",
+			"output file path"
+		]
+	}
+]
