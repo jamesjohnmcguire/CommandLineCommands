@@ -9,7 +9,7 @@ Please :star: star this project!
 ### Installation
 
 #### Git
-    git clone  https://github.com/jamesjohnmcguire/CommandLineCommands  
+    git clone  https://github.com/jamesjohnmcguire/CommandLineCommands
 
 #### Nuget
     PM> Install-Package DigitalZenWorks.CommandLine.Commands
@@ -107,6 +107,12 @@ Define a list of valid commands in JSON file, then load the file into the librar
 	}
 ]
 ```
+
+Then in your code somewhere, you can instantiate with something like:
+```c#
+	commandsSet = new CommandsSet(jsonText);
+```
+
 Note: This example taken from: https://github.com/jamesjohnmcguire/DigitalZenWorks.Email.ToolKit
 
 Otherwise, to pragmatically create a list of commands that the application will support, here is an example:
@@ -125,7 +131,7 @@ Otherwise, to pragmatically create a list of commands that the application will 
 		"some-command", options, 1, "A Do Something Command");
 	commands.Add(someCommand);
 ```
-The third parameter is the minimum amount of required parameters, such as data file path.  The other parameters should be self-explanatory.  
+The third parameter is the minimum amount of required parameters, such as data file path.  The other parameters should be self-explanatory.
 
 Then instantiate a CommandLineInstance object:
 ```c#
@@ -166,7 +172,7 @@ If you have a suggestion that would make this better, please fork the repo and c
 5. Open a Pull Request
 
 ### Coding style
-Please match the current coding style.  Most notably:  
+Please match the current coding style.  Most notably:
 1. One operation per line
 2. Use complete English words in variable and method names
 3. Attempt to declare variable and method names in a self-documenting manner
