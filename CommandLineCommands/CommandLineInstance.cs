@@ -327,7 +327,7 @@ namespace DigitalZenWorks.CommandLine.Commands
 
 			if (arguments == null || arguments.Length < 1)
 			{
-				errorMessage = "There are no aguments given.";
+				errorMessage = "There are no arguments given.";
 			}
 			else
 			{
