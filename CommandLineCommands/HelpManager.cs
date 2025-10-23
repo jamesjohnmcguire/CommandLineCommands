@@ -78,10 +78,10 @@ namespace DigitalZenWorks.CommandLine.Commands
 			get
 			{
 				string headerText = string.Format(
-				CultureInfo.InvariantCulture,
-				"{0}{1}{1}Usage:{1}",
-				title,
-				Environment.NewLine);
+					CultureInfo.InvariantCulture,
+					"{0}{1}{1}Usage:{1}",
+					title,
+					Environment.NewLine);
 
 				headerText += GetHeaderColumns();
 				headerText += Environment.NewLine;
@@ -174,12 +174,6 @@ namespace DigitalZenWorks.CommandLine.Commands
 				parametersColumnLength =
 					GetParametersMaximumLength(command);
 			}
-
-			// For additional formatting and short name.
-			if (optionsColumnLength > 0)
-			{
-				optionsColumnLength += 6;
-			}
 		}
 
 		private string GetColumnName(Command command)
@@ -206,6 +200,11 @@ namespace DigitalZenWorks.CommandLine.Commands
 				"-{0}, --{1}",
 				option.ShortName,
 				option.LongName);
+
+			if (option.RequiresParameter == true)
+			{
+				optionMessage += " <option>";
+			}
 
 			if (command.Parameters.Count > 0 && parametersColumnLength > 0)
 			{
@@ -370,8 +369,17 @@ namespace DigitalZenWorks.CommandLine.Commands
 				{
 					string optionName = option.LongName;
 
+					// Add 6, for additional formatting and short name.
+					int actualOptionLength = optionName.Length + 6;
+
+					if (option.RequiresParameter == true)
+					{
+						// Add 9, for <option> text.
+						actualOptionLength += 9;
+					}
+
 					optionsColumnLength = Math.Max(
-						optionName.Length, optionsColumnLength);
+						actualOptionLength, optionsColumnLength);
 				}
 			}
 
