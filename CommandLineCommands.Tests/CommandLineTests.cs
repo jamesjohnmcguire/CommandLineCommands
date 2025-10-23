@@ -35,7 +35,7 @@ namespace DigitalZenWorks.CommandLine.Commands.Tests
 			help.Description = "Show this information";
 			commands.Add(help);
 
-			CommandOption option = new ("e", "encoding");
+			CommandOption option = new ("e", "encoding", true);
 			List<CommandOption> options = [option];
 
 			Command commandOne = new (
@@ -358,14 +358,30 @@ namespace DigitalZenWorks.CommandLine.Commands.Tests
 		}
 
 		/// <summary>
-		/// Option simple short option last test.
+		/// Option simple short option last fail test.
 		/// </summary>
 		[Test]
-		public void OptionSimpleShortOptionLastTest()
+		public void OptionSimpleShortOptionLastTestFail()
 		{
 			string[] arguments = ["command-one", "%USERPROFILE%", "-e"];
 
 			CommandLineInstance commandLine = new (commandsSet, arguments);
+
+			Assert.That(commandLine.ValidArguments, Is.False);
+		}
+
+		/// <summary>
+		/// Option simple short option last success test.
+		/// </summary>
+		[Test]
+		public void OptionSimpleShortOptionLastTestSuccess()
+		{
+			string[] arguments =
+			[
+				"command-one", "%USERPROFILE%", "-e", "UTF-8"
+			];
+
+			CommandLineInstance commandLine = new(commandsSet, arguments);
 
 			Assert.That(commandLine.ValidArguments, Is.True);
 
@@ -407,14 +423,30 @@ namespace DigitalZenWorks.CommandLine.Commands.Tests
 		}
 
 		/// <summary>
-		/// Option simple long option last test.
+		/// Option simple long option last fail test.
 		/// </summary>
 		[Test]
-		public void OptionSimpleLongOptionLastTest()
+		public void OptionSimpleLongOptionLastTestFail()
 		{
 			string[] arguments =
 			[
 				"command-one", "%USERPROFILE%", "--encoding"
+			];
+
+			CommandLineInstance commandLine = new (commandsSet, arguments);
+
+			Assert.That(commandLine.ValidArguments, Is.False);
+		}
+
+		/// <summary>
+		/// Option simple long option last success test.
+		/// </summary>
+		[Test]
+		public void OptionSimpleLongOptionLastTestSuccess()
+		{
+			string[] arguments =
+			[
+				"command-one", "%USERPROFILE%", "--encoding", "UTF-8"
 			];
 
 			CommandLineInstance commandLine = new (commandsSet, arguments);
