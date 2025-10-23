@@ -23,7 +23,8 @@
 	{
 		"command": "normalize",
 		"description": "Normalize file to NFKC form",
-		"parameters":
+		"parameterCount": 2,
+		"parameters": 
 		[
 			"input file path",
 			"output file path"

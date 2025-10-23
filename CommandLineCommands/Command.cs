@@ -126,12 +126,13 @@ namespace DigitalZenWorks.CommandLine.Commands
 		}
 
 		/// <summary>
-		/// Gets the command parameter count.
+		/// Gets or sets the command parameter count.
 		/// </summary>
 		/// <value>The command parameter count.</value>
 		public int ParameterCount
 		{
 			get { return parameterCount; }
+			set { parameterCount = value; }
 		}
 
 		/// <summary>
