@@ -15,7 +15,7 @@ namespace DigitalZenWorks.CommandLine.Commands
 	/// </summary>
 	public class Command
 	{
-		private readonly int parameterCount;
+		private int requiredParameterCount;
 
 		private string description;
 		private string name;
@@ -78,18 +78,18 @@ namespace DigitalZenWorks.CommandLine.Commands
 		/// </summary>
 		/// <param name="name">The command name.</param>
 		/// <param name="options">The command options.</param>
-		/// <param name="parameterCount">The command required parameter
+		/// <param name="requiredParameterCount">The command required parameter
 		/// count.</param>
 		/// <param name="description">The command description.</param>
 		public Command(
 			string name,
 			IList<CommandOption> options,
-			int parameterCount,
+			int requiredParameterCount,
 			string description)
 			: this(name)
 		{
 			this.options = options;
-			this.parameterCount = parameterCount;
+			this.requiredParameterCount = requiredParameterCount;
 			this.description = description;
 		}
 
@@ -131,8 +131,8 @@ namespace DigitalZenWorks.CommandLine.Commands
 		/// <value>The command parameter count.</value>
 		public int ParameterCount
 		{
-			get { return parameterCount; }
-			set { parameterCount = value; }
+			get { return requiredParameterCount; }
+			set { requiredParameterCount = value; }
 		}
 
 		/// <summary>
