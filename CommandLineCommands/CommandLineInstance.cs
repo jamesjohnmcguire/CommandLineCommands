@@ -293,6 +293,11 @@ namespace DigitalZenWorks.CommandLine.Commands
 							isValid = true;
 							break;
 						}
+						else
+						{
+							// No additional parameter, fails.
+							break;
+						}
 					}
 					else
 					{
