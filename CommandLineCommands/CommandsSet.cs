@@ -8,7 +8,6 @@ namespace DigitalZenWorks.CommandLine.Commands
 {
 	using System;
 	using System.Collections.Generic;
-	using System.Globalization;
 	using System.IO;
 	using Common.Logging;
 	using Newtonsoft.Json;
@@ -126,58 +125,6 @@ namespace DigitalZenWorks.CommandLine.Commands
 			string helpMessage = GetHelp(title);
 
 			Output(helpMessage);
-		}
-
-		private static string GetOptionText(
-			CommandOption option,
-			int commandMaximumLength,
-			int descriptionMaximumLength,
-			bool first)
-		{
-			string optionText = string.Empty;
-
-			if (first == false)
-			{
-				optionText += Environment.NewLine;
-
-				string padding = GetPadding(
-					commandMaximumLength, descriptionMaximumLength);
-				optionText += padding;
-			}
-
-			string optionMessage = string.Format(
-				CultureInfo.InvariantCulture,
-				"-{0}, --{1}",
-				option.ShortName,
-				option.LongName);
-
-			optionText += optionMessage;
-
-			return optionText;
-		}
-
-		private static string GetPadding(
-			int commandMaximumLength, int descriptionMaximumLength)
-		{
-			int paddingAmount = commandMaximumLength +
-					descriptionMaximumLength + 2;
-
-			string padding = new (' ', paddingAmount);
-
-			return padding;
-		}
-
-		private static string GetPadding(
-			int commandMaximumLength,
-			int descriptionMaximumLength,
-			int optionsMaximumLength)
-		{
-			int paddingAmount = commandMaximumLength +
-					descriptionMaximumLength + optionsMaximumLength + 2;
-
-			string padding = new (' ', paddingAmount);
-
-			return padding;
 		}
 
 		private void Output(string message)
