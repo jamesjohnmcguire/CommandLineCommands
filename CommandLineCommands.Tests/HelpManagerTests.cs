@@ -578,12 +578,10 @@ namespace DigitalZenWorks.CommandLine.Commands.Tests
 		{
 			check = new ("check");
 			check.Description = "Check file for some text";
-			List<string> checkParameters = ["file path"];
-			check.Parameters = checkParameters;
+			check.Parameters.Add("file path");
 
 			checkNoDescription = new ("check");
-			List<string> checkParametersNoDescription = ["file path"];
-			checkNoDescription.Parameters = checkParametersNoDescription;
+			checkNoDescription.Parameters.Add("file path");
 
 			CommandOption option1 = new ("s", "something");
 			CommandOption option2 = new ("o", "other");
@@ -598,9 +596,8 @@ namespace DigitalZenWorks.CommandLine.Commands.Tests
 			convert = new ("convert");
 			convert.Description = "Convert file for some reason";
 
-			string[] convertParameters =
-				["input file path", "output file path"];
-			convert.Parameters = convertParameters;
+			convert.Parameters.Add("input file path");
+			convert.Parameters.Add("output file path");
 
 			CommandOption option3 = new ("e", "encoding", true);
 			List<CommandOption> encodingOptions = [option3];
