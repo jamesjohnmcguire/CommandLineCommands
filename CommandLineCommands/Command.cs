@@ -15,12 +15,11 @@ namespace DigitalZenWorks.CommandLine.Commands
 	/// </summary>
 	public class Command
 	{
-		private int requiredParameterCount;
-
 		private string description;
 		private string name;
-		private IList<CommandOption> options;
+		private IList<CommandOption> options = [];
 		private IList<string> parameters = [];
+		private int requiredParameterCount;
 
 		/// <summary>
 		/// Initializes a new instance of the <see cref="Command"/> class.
@@ -29,7 +28,6 @@ namespace DigitalZenWorks.CommandLine.Commands
 			"please use Command constructor with arguments instead.")]
 		public Command()
 		{
-			options ??= [];
 		}
 
 		/// <summary>
