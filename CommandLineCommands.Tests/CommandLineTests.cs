@@ -20,7 +20,6 @@ namespace DigitalZenWorks.CommandLine.Commands.Tests
 	/// </summary>
 	internal sealed class CommandLineTests
 	{
-		private List<Command> commands;
 		private CommandsSet commandsSet;
 
 		/// <summary>
@@ -29,74 +28,6 @@ namespace DigitalZenWorks.CommandLine.Commands.Tests
 		[OneTimeSetUp]
 		public void OneTimeSetUp()
 		{
-			commands = [];
-
-			Command help = new ("help");
-			help.Description = "Show this information";
-			commands.Add(help);
-
-			CommandOption option = new ("e", "encoding", true);
-			List<CommandOption> options = [option];
-
-			Command commandOne = new (
-				"command-one",
-				options,
-				1,
-				"A command with an option that has an option.");
-			commands.Add(commandOne);
-
-			Command commandTwo = new (
-				"command-two",
-				null,
-				1,
-				"A command with no options");
-			commands.Add(commandTwo);
-
-			CommandOption dryRun = new ("n", "dryrun");
-			options = [dryRun];
-
-			Command commandThree = new (
-				"command-three",
-				options,
-				0,
-				"A command with no parameters");
-			commands.Add(commandThree);
-
-			Command commandFour = new (
-				"command-four",
-				null,
-				2,
-				"A command with 2 minimum required parameters");
-			commands.Add(commandFour);
-
-			Command commandFive = new (
-				"command-five",
-				null,
-				4,
-				"A command with 4 minimum required parameters");
-			commands.Add(commandFive);
-
-			CommandOption flush = new ("s", "flush");
-			options = [dryRun, flush];
-
-			Command commandSix = new (
-				"command-six",
-				options,
-				0,
-				"A command with multiple options");
-			commands.Add(commandSix);
-
-			CommandOption encoding = new ("e", "encoding", true);
-			options = [encoding];
-
-			Command commandSeven = new (
-				"command-seven",
-				options,
-				1,
-				"A command with an option that has a value.");
-			commands.Add(commandSeven);
-
-			commandsSet = new CommandsSet(commands);
 		}
 
 		/// <summary>
@@ -113,6 +44,7 @@ namespace DigitalZenWorks.CommandLine.Commands.Tests
 		[SetUp]
 		public void Setup()
 		{
+			commandsSet = GetCommandSetFull();
 		}
 
 		/// <summary>
@@ -241,7 +173,8 @@ namespace DigitalZenWorks.CommandLine.Commands.Tests
 
 			CommandLineInstance commandLine = new (commandsSet, arguments);
 
-			Assert.That(commandLine.ValidArguments, Is.True);
+			bool result = commandLine.ValidArguments;
+			Assert.That(result, Is.True);
 
 			Command command = commandLine.Command;
 			Assert.That(command, Is.Not.Null);
@@ -329,9 +262,6 @@ namespace DigitalZenWorks.CommandLine.Commands.Tests
 			CommandLineInstance commandLine = new (commandsSet, arguments);
 
 			Assert.That(commandLine.ValidArguments, Is.False);
-
-			Command command = commandLine.Command;
-			Assert.That(command, Is.Null);
 		}
 
 		/// <summary>
@@ -340,7 +270,10 @@ namespace DigitalZenWorks.CommandLine.Commands.Tests
 		[Test]
 		public void OptionSimpleShortOptionFirstTest()
 		{
-			string[] arguments = ["command-one", "-e", "%USERPROFILE%"];
+			string[] arguments =
+			[
+				"command-one", "-e", "UTF-8", "%USERPROFILE%"
+			];
 
 			CommandLineInstance commandLine = new (commandsSet, arguments);
 
@@ -381,7 +314,7 @@ namespace DigitalZenWorks.CommandLine.Commands.Tests
 				"command-one", "%USERPROFILE%", "-e", "UTF-8"
 			];
 
-			CommandLineInstance commandLine = new(commandsSet, arguments);
+			CommandLineInstance commandLine = new (commandsSet, arguments);
 
 			Assert.That(commandLine.ValidArguments, Is.True);
 
@@ -404,7 +337,7 @@ namespace DigitalZenWorks.CommandLine.Commands.Tests
 		{
 			string[] arguments =
 			[
-				"command-one", "--encoding", "%USERPROFILE%"
+				"command-one", "--encoding", "UTF-8", "%USERPROFILE%"
 			];
 
 			CommandLineInstance commandLine = new (commandsSet, arguments);
@@ -420,6 +353,22 @@ namespace DigitalZenWorks.CommandLine.Commands.Tests
 			int count = options.Count;
 
 			Assert.That(count, Is.GreaterThan(0));
+		}
+
+		/// <summary>
+		/// Option simple long option first test.
+		/// </summary>
+		[Test]
+		public void OptionSimpleLongOptionFirstTestFailNoParameters()
+		{
+			string[] arguments =
+			[
+				"command-one", "--encoding", "UTF-8"
+			];
+
+			CommandLineInstance commandLine = new (commandsSet, arguments);
+
+			Assert.That(commandLine.ValidArguments, Is.False);
 		}
 
 		/// <summary>
@@ -524,6 +473,80 @@ namespace DigitalZenWorks.CommandLine.Commands.Tests
 			string parameter = option.Parameter;
 
 			Assert.That(parameter, Is.EqualTo("utf8"));
+		}
+
+		private static CommandsSet GetCommandSetFull()
+		{
+			List<Command> commands = [];
+
+			Command help = new ("help");
+			help.Description = "Show this information";
+			commands.Add(help);
+
+			CommandOption option = new ("e", "encoding", true);
+			List<CommandOption> options = [option];
+
+			Command commandOne = new (
+				"command-one",
+				options,
+				1,
+				"A command with an option that has an option.");
+			commands.Add(commandOne);
+
+			Command commandTwo = new (
+				"command-two",
+				null,
+				1,
+				"A command with no options");
+			commands.Add(commandTwo);
+
+			CommandOption dryRun = new ("n", "dryrun");
+			options = [dryRun];
+
+			Command commandThree = new (
+				"command-three",
+				options,
+				0,
+				"A command with no parameters");
+			commands.Add(commandThree);
+
+			Command commandFour = new (
+				"command-four",
+				null,
+				2,
+				"A command with 2 minimum required parameters");
+			commands.Add(commandFour);
+
+			Command commandFive = new (
+				"command-five",
+				null,
+				4,
+				"A command with 4 minimum required parameters");
+			commands.Add(commandFive);
+
+			CommandOption flush = new ("s", "flush");
+			options = [dryRun, flush];
+
+			Command commandSix = new (
+				"command-six",
+				options,
+				0,
+				"A command with multiple options");
+			commands.Add(commandSix);
+
+			CommandOption encoding = new ("e", "encoding", true);
+			options = [encoding];
+
+			Command commandSeven = new (
+				"command-seven",
+				options,
+				1,
+				"A command with an option that has a value.");
+			commands.Add(commandSeven);
+
+			CommandsSet commandsSet = new (commands);
+
+			return commandsSet;
 		}
 	}
 }

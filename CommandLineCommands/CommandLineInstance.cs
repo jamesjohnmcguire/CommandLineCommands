@@ -4,15 +4,15 @@
 // </copyright>
 /////////////////////////////////////////////////////////////////////////////
 
-using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
-
-[assembly: CLSCompliant(true)]
+[assembly: System.CLSCompliant(true)]
 
 namespace DigitalZenWorks.CommandLine.Commands
 {
+	using System;
+	using System.Collections.Generic;
+	using System.Globalization;
+	using System.Linq;
+
 	/// <summary>
 	/// Delegate to infer a command.
 	/// </summary>
@@ -27,31 +27,28 @@ namespace DigitalZenWorks.CommandLine.Commands
 	/// </summary>
 	public class CommandLineInstance
 	{
-		private readonly string[] arguments;
-		private readonly CommandsSet commands;
-		private readonly bool validArguments;
+		private readonly string commandName;
 
+		private string[] arguments;
 		private Command command;
-		private string commandName;
+		private CommandsSet commands;
 		private string errorMessage;
 		private InferCommand inferCommand;
-		private string invalidOption;
 		private bool useLog;
+		private bool validArguments;
 
 		/// <summary>
 		/// Initializes a new instance of the
 		/// <see cref="CommandLineInstance"/> class.
 		/// </summary>
-		/// <param name="commands">A list of valid commands.</param>
+		/// <param name="commandsList">A list of valid commands.</param>
 		/// <param name="arguments">The array of command line
 		/// arguments.</param>
 		public CommandLineInstance(
-			IList<Command> commands, string[] arguments)
+			IList<Command> commandsList, string[] arguments)
 		{
-			this.commands = new CommandsSet(commands);
-			this.arguments = arguments;
-
-			validArguments = ValidateArguments();
+			CommandsSet commands = new (commandsList);
+			Initialize(commands, arguments);
 		}
 
 		/// <summary>
@@ -63,10 +60,7 @@ namespace DigitalZenWorks.CommandLine.Commands
 		/// arguments.</param>
 		public CommandLineInstance(CommandsSet commands, string[] arguments)
 		{
-			this.commands = commands;
-			this.arguments = arguments;
-
-			validArguments = ValidateArguments();
+			Initialize(commands, arguments);
 		}
 
 		/// <summary>
@@ -101,10 +95,7 @@ namespace DigitalZenWorks.CommandLine.Commands
 		{
 			this.inferCommand = inferCommand;
 
-			this.commands = commands;
-			this.arguments = arguments;
-
-			validArguments = ValidateArguments();
+			Initialize(commands, arguments);
 		}
 
 		/// <summary>
@@ -172,163 +163,337 @@ namespace DigitalZenWorks.CommandLine.Commands
 			commands.ShowHelp(title);
 		}
 
-		private static bool IsHelpCommend(string command)
+		private static CommandOption GetCommandOption(
+			IList<CommandOption> options,
+			string optionName,
+			bool isLongFormOption)
+		{
+			CommandOption option = null;
+
+			optionName = optionName.TrimStart('-');
+
+			foreach (CommandOption commandOption in options)
+			{
+				if (isLongFormOption == true &&
+					commandOption.LongName == optionName)
+				{
+					option = commandOption;
+					break;
+				}
+				else if (commandOption.ShortName == optionName)
+				{
+					option = commandOption;
+					break;
+				}
+			}
+
+			return option;
+		}
+
+		private static string GetOptionName(
+			string argument, bool isLongFormOption)
+		{
+			string optionName;
+
+			if (isLongFormOption == true)
+			{
+				optionName = argument[2..];
+			}
+			else
+			{
+				optionName = argument[1..];
+			}
+
+			return optionName;
+		}
+
+		private static bool IsHelpCommand(string[] arguments)
 		{
 			bool isHelp = false;
 
-			string[] helpCommands = ["-?", "-h", "--help"];
-
-			if (helpCommands.Contains(command))
+			if (arguments != null && arguments.Length > 0)
 			{
-				isHelp = true;
+				string command = arguments[0];
+
+				if (command.Equals("help", StringComparison.OrdinalIgnoreCase))
+				{
+					isHelp = true;
+				}
+				else
+				{
+					string[] helpCommands = ["-?", "-h", "--help"];
+
+					isHelp = arguments.Any(argument => helpCommands.Contains(
+						argument, StringComparer.OrdinalIgnoreCase));
+				}
 			}
 
 			return isHelp;
 		}
 
-		private bool AreOptionsValid(
-			Command validatedCommand, out IList<CommandOption> commandOptions)
+		private static bool IsLongFormOption(string argument)
 		{
-			bool areOptionsValid = true;
+			bool isLongFormOption = false;
 
-			commandOptions = GetOptions();
-
-			foreach (CommandOption option in commandOptions)
+			if (argument.StartsWith("--", StringComparison.Ordinal))
 			{
-				bool isValid = IsValidOption(validatedCommand, option);
+				isLongFormOption = true;
+			}
 
-				if (isValid == false)
+			return isLongFormOption;
+		}
+
+		private static bool IsOption(string argument)
+		{
+			bool isOption = false;
+
+#if NETCOREAPP2_0_OR_GREATER || NETSTANDARD2_1_OR_GREATER
+			if (argument.StartsWith('-'))
+#else
+				if (argument.StartsWith("-"))
+#endif
+			{
+				isOption = true;
+			}
+
+			return isOption;
+		}
+
+		private static bool IsValidOption(
+			IList<CommandOption> options, string[] arguments, int index)
+		{
+			bool isValidOption = false;
+
+			if (arguments.Length > index)
+			{
+				string argument = arguments[index];
+
+				bool isOption = IsOption(argument);
+
+				if (isOption == true)
 				{
-					areOptionsValid = false;
+					bool isLongFormOption = IsLongFormOption(argument);
+
+					string optionName =
+						GetOptionName(argument, isLongFormOption);
+
+					CommandOption option = GetCommandOption(
+						options,
+						optionName,
+						isLongFormOption);
+
+					if (option != null)
+					{
+						isValidOption = IsValidRequiredParameter(
+							option, arguments, index);
+					}
+				}
+			}
+
+			return isValidOption;
+		}
+
+		private static bool IsValidRequiredParameter(
+			CommandOption option, string[] arguments, int index)
+		{
+			bool isValidRequiredParameter = false;
+
+			if (option.RequiresParameter == true)
+			{
+				// Ensure there's a next argument and it's
+				// not another option
+				int nextIndex = index + 1;
+
+				if (arguments.Length > nextIndex)
+				{
+					bool isOption = IsOption(arguments[nextIndex]);
+
+					if (isOption == false)
+					{
+						isValidRequiredParameter = true;
+					}
+				}
+			}
+			else
+			{
+				isValidRequiredParameter = true;
+			}
+
+			return isValidRequiredParameter;
+		}
+
+		private Command GetCommand(string commandName)
+		{
+			Command command = null;
+			Command commandTemplate = GetCommandTemplate(commandName);
+
+			if (commandTemplate != null)
+			{
+				IList<CommandOption> options = [];
+
+				command = new Command(
+					commandName,
+					options,
+					commandTemplate.ParameterCount,
+					commandTemplate.Description);
+			}
+
+			return command;
+		}
+
+		private Command GetCommand(string[] arguments)
+		{
+			Command command = null;
+			bool isHelpCommand = IsHelpCommand(arguments);
+
+			if (isHelpCommand == true)
+			{
+				command = new("help");
+			}
+			else
+			{
+				bool isInferCommand = IsInferCommand();
+
+				if (isInferCommand == true)
+				{
+					command = inferCommand(commandName, commands.Commands);
+				}
+				else
+				{
+					command = GetCommand(arguments[0]);
+				}
+			}
+
+			return command;
+		}
+
+		private Command GetCommandTemplate(string commandName)
+		{
+			Command command = null;
+
+			foreach (Command commandTemplate in commands.Commands)
+			{
+				if (commandName.Equals(
+					commandTemplate.Name, StringComparison.Ordinal))
+				{
+					command = commandTemplate;
 					break;
 				}
 			}
 
-			return areOptionsValid;
+			return command;
 		}
 
-		private IList<CommandOption> GetOptions()
+		private void Initialize(CommandsSet commands, string[] arguments)
 		{
-			IList<CommandOption> options = [];
+			this.commands = commands;
+			this.arguments = arguments;
 
-			for (int index = 0; index < arguments.Length; index++)
+			validArguments = ProcessArguments();
+		}
+
+		private bool IsInferCommand()
+		{
+			bool isInferCommand = false;
+
+			if (inferCommand != null)
 			{
-				string argument = arguments[index];
+				Command inferredCommand =
+					inferCommand(commandName, commands.Commands);
 
-#if NETCOREAPP2_0_OR_GREATER || NETSTANDARD2_1_OR_GREATER
-				if (argument.StartsWith('-'))
-#else
-				if (argument.StartsWith("-"))
-#endif
+				if (inferredCommand != null)
 				{
-					CommandOption option = new ();
-
-					string optionName = argument.TrimStart('-');
-
-					if (argument.StartsWith("--", StringComparison.Ordinal))
-					{
-						option.LongName = optionName;
-					}
-					else
-					{
-						option.ShortName = optionName;
-					}
-
-					option.ArgumentIndex = index;
-
-					options.Add(option);
+					this.command = inferredCommand;
+					isInferCommand = true;
 				}
 			}
 
-			return options;
+			return isInferCommand;
 		}
 
-		private IList<string> GetParameters(Command command)
+		private bool PostArgumentsCheck(
+			bool argumentsFailed, int paramaterCount, Command command)
 		{
-			IList<string> parameters = [];
+			bool validArguments = false;
 
-			for (int index = 0; index < arguments.Length; index++)
+			if (argumentsFailed == false)
 			{
-				string argument = arguments[index];
-
-				if (argument.Equals(
-					command.Name, StringComparison.OrdinalIgnoreCase))
+				if (paramaterCount >= command.ParameterCount)
 				{
-					continue;
-				}
-
-#if NETCOREAPP2_0_OR_GREATER || NETSTANDARD2_1_OR_GREATER
-				if (!argument.StartsWith('-'))
-#else
-				if (!argument.StartsWith("-"))
-#endif
-				{
-					parameters.Add(argument);
-				}
-			}
-
-			return parameters;
-		}
-
-		private bool IsValidOption(
-			Command command, CommandOption option)
-		{
-			bool isValid = false;
-
-			foreach (CommandOption validOption in command.Options)
-			{
-				if ((option.LongName != null && option.LongName.Equals(
-						validOption.LongName, StringComparison.Ordinal)) ||
-					(option.ShortName != null && option.ShortName.Equals(
-						validOption.ShortName, StringComparison.Ordinal)))
-				{
-					if (validOption.RequiresParameter == true)
-					{
-						// Subtract one for the needed parameter afterwards.
-						if (option.ArgumentIndex < arguments.Length - 1)
-						{
-							option.Parameter =
-								arguments[option.ArgumentIndex + 1];
-
-							isValid = true;
-							break;
-						}
-						else
-						{
-							// No additional parameter, fails.
-							break;
-						}
-					}
-					else
-					{
-						isValid = true;
-						break;
-					}
-				}
-			}
-
-			if (isValid == false)
-			{
-				if (!string.IsNullOrWhiteSpace(option.LongName))
-				{
-					invalidOption = option.LongName;
+					validArguments = true;
 				}
 				else
 				{
-					invalidOption = option.ShortName;
+					errorMessage = "Incorrect amount of parameters.";
 				}
 			}
 
-			return isValid;
+			return validArguments;
 		}
 
-		private bool ValidateArguments()
+		private bool ProcessArgument(
+			string argument,
+			Command commandTemplate,
+			ref int index,
+			ref int paramaterCount)
 		{
-			bool areValid = false;
-			bool isValidCommand = false;
-			Command validatedCommand = null;
-			IList<CommandOption> commandOptions = null;
-			IList<string> parameters = null;
+			bool validArgument = false;
+
+			bool isOption = IsOption(argument);
+
+			if (isOption == true)
+			{
+				bool isValidOption = IsValidOption(
+					commandTemplate.Options, arguments, index);
+
+				if (isValidOption == false)
+				{
+					errorMessage = string.Format(
+						CultureInfo.InvariantCulture,
+						"Unknown option:{0}.",
+						argument);
+				}
+				else
+				{
+					bool isLongFormOption =
+						IsLongFormOption(argument);
+
+					CommandOption option = GetCommandOption(
+						commandTemplate.Options,
+						argument,
+						isLongFormOption);
+
+					if (option != null)
+					{
+						this.command.Options.Add(option);
+
+						if (option.RequiresParameter == true)
+						{
+							// The next argument is taken.
+							index++;
+							option.Parameter =
+								arguments[index];
+						}
+
+						validArgument = true;
+					}
+				}
+			}
+			else
+			{
+				// Assuming remaining arguments as parameters.
+				this.command.Parameters.Add(argument);
+				paramaterCount++;
+				validArgument = true;
+			}
+
+			return validArgument;
+		}
+
+		private bool ProcessArguments()
+		{
+			bool validArguments = false;
+			int paramaterCount = 0;
 
 			if (arguments == null || arguments.Length < 1)
 			{
@@ -336,84 +501,43 @@ namespace DigitalZenWorks.CommandLine.Commands
 			}
 			else
 			{
-				commandName = arguments[0];
+				Command command = GetCommand(arguments);
 
-				foreach (Command validCommand in commands.Commands)
-				{
-					if (commandName.Equals(
-						validCommand.Name, StringComparison.Ordinal))
-					{
-						validatedCommand = validCommand;
-						isValidCommand = true;
-						break;
-					}
-				}
-
-				if (isValidCommand == false && inferCommand != null)
-				{
-					Command inferredCommand =
-						inferCommand(commandName, commands.Commands);
-
-					if (inferredCommand != null)
-					{
-						validatedCommand = inferredCommand;
-						isValidCommand = true;
-					}
-				}
-
-				bool isHelpCommand = IsHelpCommend(commandName);
-
-				if (isValidCommand == false && isHelpCommand == true)
-				{
-					IList<Command> commandList = commands.Commands;
-
-					Command help =
-						commandList.SingleOrDefault(x => x.Name == "help");
-					validatedCommand = help;
-					isValidCommand = true;
-					areValid = true;
-				}
-
-				if (isValidCommand == false)
+				if (command == null)
 				{
 					errorMessage = "Unknown command.";
 				}
-				else if (isHelpCommand == false)
+				else
 				{
-					bool areOptionsValid =
-						AreOptionsValid(validatedCommand, out commandOptions);
+					this.command = command;
 
-					if (areOptionsValid == false)
-					{
-						errorMessage = string.Format(
-							CultureInfo.InvariantCulture,
-							"Unknown option:{0}.",
-							invalidOption);
-					}
-					else
-					{
-						parameters = GetParameters(validatedCommand);
+					bool failed = false;
+					Command commandTemplate = GetCommandTemplate(command.Name);
 
-						if (parameters.Count >=
-							validatedCommand.ParameterCount)
+					// Already processed first argument
+					for (int index = 1; index < arguments.Length; index++)
+					{
+						string argument = arguments[index];
+
+						bool validArgument = ProcessArgument(
+							argument,
+							commandTemplate,
+							ref index,
+							ref paramaterCount);
+
+						if (validArgument == false)
 						{
-							areValid = true;
-						}
-						else
-						{
-							errorMessage = "Incorrect amount of parameters.";
+							failed = true;
+							break;
 						}
 					}
-				}
 
-				if (areValid == true)
-				{
-					command = new (
-						validatedCommand.Name, commandOptions, parameters);
+					validArguments =
+						PostArgumentsCheck(failed, paramaterCount, command);
 				}
 			}
 
-			return areValid;
+			return validArguments;
 		}
 	}
 }
