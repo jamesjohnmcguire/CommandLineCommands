@@ -602,14 +602,11 @@ namespace DigitalZenWorks.CommandLine.Commands.Tests
 			CommandOption option3 = new ("e", "encoding", true);
 			List<CommandOption> encodingOptions = [option3];
 
-			// string[] encodeParameters = ["option"];
-
 			encode = new (
 				"encode",
 				encodingOptions,
 				1,
 				"A command to encode");
-			// encode.Parameters = encodeParameters;
 
 			help = new ("help");
 			help.Description = "Show this information";
