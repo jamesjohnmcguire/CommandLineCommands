@@ -197,11 +197,20 @@ namespace DigitalZenWorks.CommandLine.Commands
 
 			if (isLongFormOption == true)
 			{
+#if NETCOREAPP2_0_OR_GREATER || NETSTANDARD2_1_OR_GREATER
 				optionName = argument[2..];
+#else
+				optionName = argument.Substring(2);
+#endif
+
 			}
 			else
 			{
+#if NETCOREAPP2_0_OR_GREATER || NETSTANDARD2_1_OR_GREATER
 				optionName = argument[1..];
+#else
+				optionName = argument.Substring(1);
+#endif
 			}
 
 			return optionName;
@@ -250,7 +259,7 @@ namespace DigitalZenWorks.CommandLine.Commands
 #if NETCOREAPP2_0_OR_GREATER || NETSTANDARD2_1_OR_GREATER
 			if (argument.StartsWith('-'))
 #else
-				if (argument.StartsWith("-"))
+			if (argument.StartsWith("-"))
 #endif
 			{
 				isOption = true;
@@ -348,7 +357,7 @@ namespace DigitalZenWorks.CommandLine.Commands
 
 			if (isHelpCommand == true)
 			{
-				command = new("help");
+				command = new ("help");
 			}
 			else
 			{
