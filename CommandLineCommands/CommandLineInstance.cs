@@ -27,8 +27,6 @@ namespace DigitalZenWorks.CommandLine.Commands
 	/// </summary>
 	public class CommandLineInstance
 	{
-		private readonly string commandName;
-
 		private string[] arguments;
 		private Command command;
 		private CommandsSet commands;
@@ -67,17 +65,19 @@ namespace DigitalZenWorks.CommandLine.Commands
 		/// Initializes a new instance of the
 		/// <see cref="CommandLineInstance"/> class.
 		/// </summary>
-		/// <param name="commands">A list of valid commands.</param>
+		/// <param name="commandsList">A list of valid commands.</param>
 		/// <param name="arguments">The array of command line
 		/// arguments.</param>
 		/// <param name="inferCommand">The infer command delegate.</param>
 		public CommandLineInstance(
-			IList<Command> commands,
+			IList<Command> commandsList,
 			string[] arguments,
 			InferCommand inferCommand)
-			: this(commands, arguments)
 		{
+			CommandsSet commands = new (commandsList);
 			this.inferCommand = inferCommand;
+
+			Initialize(commands, arguments);
 		}
 
 		/// <summary>
@@ -352,7 +352,8 @@ namespace DigitalZenWorks.CommandLine.Commands
 
 		private Command GetCommand(string[] arguments)
 		{
-			Command command = null;
+			Command command;
+			string commandArgument = arguments[0];
 			bool isHelpCommand = IsHelpCommand(arguments);
 
 			if (isHelpCommand == true)
@@ -361,16 +362,9 @@ namespace DigitalZenWorks.CommandLine.Commands
 			}
 			else
 			{
-				bool isInferCommand = IsInferCommand();
+				command = GetInferCommand(commandArgument);
 
-				if (isInferCommand == true)
-				{
-					command = inferCommand(commandName, commands.Commands);
-				}
-				else
-				{
-					command = GetCommand(arguments[0]);
-				}
+				command ??= GetCommand(commandArgument);
 			}
 
 			return command;
@@ -393,31 +387,25 @@ namespace DigitalZenWorks.CommandLine.Commands
 			return command;
 		}
 
+		private Command GetInferCommand(string argument)
+		{
+			Command inferredCommand = null;
+
+			if (inferCommand != null)
+			{
+				inferredCommand =
+					inferCommand(argument, commands.Commands);
+			}
+
+			return inferredCommand;
+		}
+
 		private void Initialize(CommandsSet commands, string[] arguments)
 		{
 			this.commands = commands;
 			this.arguments = arguments;
 
 			validArguments = ProcessArguments();
-		}
-
-		private bool IsInferCommand()
-		{
-			bool isInferCommand = false;
-
-			if (inferCommand != null)
-			{
-				Command inferredCommand =
-					inferCommand(commandName, commands.Commands);
-
-				if (inferredCommand != null)
-				{
-					this.command = inferredCommand;
-					isInferCommand = true;
-				}
-			}
-
-			return isInferCommand;
 		}
 
 		private bool PostArgumentsCheck(
