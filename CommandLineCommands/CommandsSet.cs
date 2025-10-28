@@ -84,15 +84,18 @@ namespace DigitalZenWorks.CommandLine.Commands
 		/// <param name="filePath">The file to read from.</param>
 		/// <exception cref="FileNotFoundException">Thrown if file is
 		/// not found.</exception>
-		public void JsonFromFile(string filePath)
+		/// <returns>A list of commands.</returns>
+		public IList<Command> JsonFromFile(string filePath)
 		{
+			IList<Command> commands;
+
 			bool exists = File.Exists(filePath);
 
 			if (exists == true)
 			{
 				string jsonText = File.ReadAllText(filePath);
 
-				IList<Command> commands =
+				commands =
 					JsonConvert.DeserializeObject<IList<Command>>(jsonText);
 				this.commands = commands;
 			}
@@ -100,6 +103,8 @@ namespace DigitalZenWorks.CommandLine.Commands
 			{
 				throw new FileNotFoundException("File Not Found.");
 			}
+
+			return commands;
 		}
 
 		/// <summary>
