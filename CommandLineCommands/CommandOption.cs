@@ -11,8 +11,6 @@ namespace DigitalZenWorks.CommandLine.Commands
 	/// </summary>
 	public class CommandOption
 	{
-		private readonly bool requiresParameter;
-
 		/// <summary>
 		/// Initializes a new instance of the <see cref="CommandOption"/>
 		/// class.
@@ -35,7 +33,7 @@ namespace DigitalZenWorks.CommandLine.Commands
 			ShortName = shortName;
 			LongName = longName;
 
-			this.requiresParameter = requiresParameter;
+			RequiresParameter = requiresParameter;
 		}
 
 		/// <summary>
@@ -57,15 +55,12 @@ namespace DigitalZenWorks.CommandLine.Commands
 		public string Parameter { get; set; }
 
 		/// <summary>
-		/// Gets a value indicating whether a value indicating whether this
+		/// Gets or sets a value indicating whether a value indicating whether this
 		/// option requires a parameter or not.
 		/// </summary>
 		/// <value>A value indicating whether this option requires a
 		/// parameter or not.</value>
-		public bool RequiresParameter
-		{
-			get { return requiresParameter; }
-		}
+		public bool RequiresParameter { get; set; }
 
 		/// <summary>
 		/// Gets or sets the short name.
