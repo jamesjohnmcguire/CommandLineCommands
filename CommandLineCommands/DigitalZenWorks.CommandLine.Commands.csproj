@@ -6,7 +6,7 @@
 		<AssemblyVersion>1.0.0.0</AssemblyVersion>
 		<Authors>James John McGuire</Authors>
 		<Company>Digital Zen Works</Company>
-		<Copyright>Copyright © 2023 - 2025</Copyright>
+		<Copyright>Copyright © 2023 - 2026</Copyright>
 		<Description>
 			This client library provides light weight functionality to help process command line options.
 		</Description>
