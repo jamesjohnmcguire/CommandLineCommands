@@ -141,8 +141,21 @@ namespace DigitalZenWorks.CommandLine.Commands
 			{
 				columnText = command.Description;
 
-				if ((command.Options.Count > 0 ||
-					command.Parameters.Count > 0) &&
+				int optionsCount = 0;
+				int parametersCount = 0;
+
+				if (command.Options != null)
+				{
+					optionsCount = command.Options.Count;
+				}
+
+				if (command.Parameters != null)
+				{
+					parametersCount = command.Parameters.Count;
+				}
+
+				if ((optionsCount > 0 ||
+					parametersCount > 0) &&
 					(optionsColumnLength > 0 || parametersColumnLength > 0))
 				{
 					columnText = PadColumn(
@@ -223,8 +236,21 @@ namespace DigitalZenWorks.CommandLine.Commands
 			string commandInformation = string.Empty;
 
 			int linesCount = 1;
+			int optionsCount = 0;
+			int parametersCount = 0;
+
+			if (command.Options != null)
+			{
+				optionsCount = command.Options.Count;
+			}
+
+			if (command.Parameters != null)
+			{
+				parametersCount = command.Parameters.Count;
+			}
+
 			int optionalsCount = Math.Max(
-				command.Options.Count, command.Parameters.Count);
+				optionsCount, parametersCount);
 			linesCount = Math.Max(linesCount, optionalsCount);
 
 			for (int index = 0; index < linesCount; index++)
@@ -264,11 +290,11 @@ namespace DigitalZenWorks.CommandLine.Commands
 		{
 			string lineOption = string.Empty;
 
-			if (command.Options.Count > lineIndex)
+			if (command.Options != null && command.Options.Count > lineIndex)
 			{
 				lineOption = GetColumnOption(command, lineIndex);
 			}
-			else if (command.Parameters.Count > lineIndex &&
+			else if (command.Parameters != null && command.Parameters.Count > lineIndex &&
 				optionsColumnLength > 0)
 			{
 				lineOption = PadColumn(lineOption, optionsColumnLength);
