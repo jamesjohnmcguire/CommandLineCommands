@@ -13,13 +13,12 @@ GOTO end
 :publish
 
 if "%~2"=="" GOTO error1
-if "%~3"=="" GOTO error2
 
 dotnet pack --configuration Release --output nupkg -p:IncludeSource=true -p:IncludeSymbols=true
 
 CD nupkg
 
-nuget push DigitalZenWorks.CommandLine.Commands.%2.nupkg %3 -source https://api.nuget.org/v3/index.json
+nuget push DigitalZenWorks.CommandLine.Commands.%2.nupkg %NuGetKey% -source https://api.nuget.org/v3/index.json
 
 cd ..
 GOTO end
@@ -27,8 +26,5 @@ GOTO end
 :error1
 ECHO No version tag specified
 GOTO end
-
-:error2
-ECHO No API key specified
 
 :end
