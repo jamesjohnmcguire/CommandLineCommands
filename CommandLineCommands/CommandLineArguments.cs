@@ -30,7 +30,7 @@ namespace DigitalZenWorks.CommandLine.Commands
 		public CommandLineArguments(
 			IList<Command> commands, string[] arguments)
 		{
-			commandLineInstance = new (commands, arguments);
+			commandLineInstance = new(commands, arguments);
 		}
 
 		/// <summary>
@@ -42,7 +42,7 @@ namespace DigitalZenWorks.CommandLine.Commands
 		/// arguments.</param>
 		public CommandLineArguments(CommandsSet commands, string[] arguments)
 		{
-			commandLineInstance = new (commands, arguments);
+			commandLineInstance = new(commands, arguments);
 		}
 
 		/// <summary>
@@ -110,7 +110,8 @@ namespace DigitalZenWorks.CommandLine.Commands
 		/// </value>
 		public bool UseLog
 		{
-			get { return useLog; } set { useLog = value; }
+			get { return useLog; }
+			set { useLog = value; }
 		}
 
 		/// <summary>

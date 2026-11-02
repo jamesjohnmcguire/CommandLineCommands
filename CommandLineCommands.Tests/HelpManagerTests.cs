@@ -86,7 +86,7 @@ namespace DigitalZenWorks.CommandLine.Commands.Tests
 		{
 			string expected = GetExpectedCommandsFullSet();
 
-			HelpManager helpManager = new (title, commandsSetFull);
+			HelpManager helpManager = new(title, commandsSetFull);
 			string actual = helpManager.CommandsInformation;
 
 			Assert.That(actual, Is.EqualTo(expected));
@@ -100,7 +100,7 @@ namespace DigitalZenWorks.CommandLine.Commands.Tests
 		{
 			string expected = GetExpectedCommandsMinimal();
 
-			HelpManager helpManager = new (title, commandsSetMinimal);
+			HelpManager helpManager = new(title, commandsSetMinimal);
 			string actual = helpManager.CommandsInformation;
 
 			Assert.That(actual, Is.EqualTo(expected));
@@ -114,7 +114,7 @@ namespace DigitalZenWorks.CommandLine.Commands.Tests
 		{
 			string expected = GetExpectedCommandsNoDescription();
 
-			HelpManager helpManager = new (title, commandsSetNoDescription);
+			HelpManager helpManager = new(title, commandsSetNoDescription);
 			string actual = helpManager.CommandsInformation;
 
 			Assert.That(actual, Is.EqualTo(expected));
@@ -128,7 +128,7 @@ namespace DigitalZenWorks.CommandLine.Commands.Tests
 		{
 			string expected = GetExpectedCommandsNoOptions();
 
-			HelpManager helpManager = new (title, commandsSetNoOptions);
+			HelpManager helpManager = new(title, commandsSetNoOptions);
 			string actual = helpManager.CommandsInformation;
 
 			Assert.That(actual, Is.EqualTo(expected));
@@ -142,7 +142,7 @@ namespace DigitalZenWorks.CommandLine.Commands.Tests
 		{
 			string expected = GetExpectedCommandsNoParameters();
 
-			HelpManager helpManager = new (title, commandsSetNoParameters);
+			HelpManager helpManager = new(title, commandsSetNoParameters);
 			string actual = helpManager.CommandsInformation;
 
 			Assert.That(actual, Is.EqualTo(expected));
@@ -156,7 +156,7 @@ namespace DigitalZenWorks.CommandLine.Commands.Tests
 		{
 			string expected = GetExpectedCommandsVerySimple();
 
-			HelpManager helpManager = new (title, commandsSetVerySimple);
+			HelpManager helpManager = new(title, commandsSetVerySimple);
 			string actual = helpManager.CommandsInformation;
 
 			Assert.That(actual, Is.EqualTo(expected));
@@ -170,7 +170,7 @@ namespace DigitalZenWorks.CommandLine.Commands.Tests
 		{
 			string expected = GetHeaderTextFullSet();
 
-			HelpManager helpManager = new (title, commandsSetFull);
+			HelpManager helpManager = new(title, commandsSetFull);
 			string actual = helpManager.HelpHeaderText;
 
 			Assert.That(actual, Is.EqualTo(expected));
@@ -184,7 +184,7 @@ namespace DigitalZenWorks.CommandLine.Commands.Tests
 		{
 			string expected = GetHeaderTextMinimal();
 
-			HelpManager helpManager = new (title, commandsSetMinimal);
+			HelpManager helpManager = new(title, commandsSetMinimal);
 			string actual = helpManager.HelpHeaderText;
 
 			Assert.That(actual, Is.EqualTo(expected));
@@ -198,7 +198,7 @@ namespace DigitalZenWorks.CommandLine.Commands.Tests
 		{
 			string expected = GetHeaderTextNoDescription();
 
-			HelpManager helpManager = new (title, commandsSetNoDescription);
+			HelpManager helpManager = new(title, commandsSetNoDescription);
 			string actual = helpManager.HelpHeaderText;
 
 			Assert.That(actual, Is.EqualTo(expected));
@@ -212,7 +212,7 @@ namespace DigitalZenWorks.CommandLine.Commands.Tests
 		{
 			string expected = GetHeaderTextNoOptions();
 
-			HelpManager helpManager = new (title, commandsSetNoOptions);
+			HelpManager helpManager = new(title, commandsSetNoOptions);
 			string actual = helpManager.HelpHeaderText;
 
 			Assert.That(actual, Is.EqualTo(expected));
@@ -226,7 +226,7 @@ namespace DigitalZenWorks.CommandLine.Commands.Tests
 		{
 			string expected = GetHeaderTextNoParameters();
 
-			HelpManager helpManager = new (title, commandsSetNoParameters);
+			HelpManager helpManager = new(title, commandsSetNoParameters);
 			string actual = helpManager.HelpHeaderText;
 
 			Assert.That(actual, Is.EqualTo(expected));
@@ -240,7 +240,7 @@ namespace DigitalZenWorks.CommandLine.Commands.Tests
 		{
 			string expected = GetHeaderTextVerySimple();
 
-			HelpManager helpManager = new (title, commandsSetVerySimple);
+			HelpManager helpManager = new(title, commandsSetVerySimple);
 			string actual = helpManager.HelpHeaderText;
 
 			Assert.That(actual, Is.EqualTo(expected));
@@ -257,7 +257,7 @@ namespace DigitalZenWorks.CommandLine.Commands.Tests
 
 			string expected = headerText + commandsText;
 
-			HelpManager helpManager = new (title, commandsSetFull);
+			HelpManager helpManager = new(title, commandsSetFull);
 
 			string helpText = helpManager.HelpText;
 
@@ -275,7 +275,7 @@ namespace DigitalZenWorks.CommandLine.Commands.Tests
 
 			string expected = headerText + commandsText;
 
-			HelpManager helpManager = new (title, commandsSetMinimal);
+			HelpManager helpManager = new(title, commandsSetMinimal);
 
 			string helpText = helpManager.HelpText;
 
@@ -293,7 +293,7 @@ namespace DigitalZenWorks.CommandLine.Commands.Tests
 
 			string expected = headerText + commandsText;
 
-			HelpManager helpManager = new (title, commandsSetNoDescription);
+			HelpManager helpManager = new(title, commandsSetNoDescription);
 
 			string helpText = helpManager.HelpText;
 
@@ -311,7 +311,7 @@ namespace DigitalZenWorks.CommandLine.Commands.Tests
 
 			string expected = headerText + commandsText;
 
-			HelpManager helpManager = new (title, commandsSetNoOptions);
+			HelpManager helpManager = new(title, commandsSetNoOptions);
 
 			string helpText = helpManager.HelpText;
 
@@ -329,7 +329,7 @@ namespace DigitalZenWorks.CommandLine.Commands.Tests
 
 			string expected = headerText + commandsText;
 
-			HelpManager helpManager = new (title, commandsSetNoParameters);
+			HelpManager helpManager = new(title, commandsSetNoParameters);
 
 			string helpText = helpManager.HelpText;
 
@@ -347,7 +347,7 @@ namespace DigitalZenWorks.CommandLine.Commands.Tests
 
 			string expected = headerText + commandsText;
 
-			HelpManager helpManager = new (title, commandsSetVerySimple);
+			HelpManager helpManager = new(title, commandsSetVerySimple);
 
 			string helpText = helpManager.HelpText;
 
@@ -576,42 +576,42 @@ namespace DigitalZenWorks.CommandLine.Commands.Tests
 
 		private void SetUpTestCommands()
 		{
-			check = new ("check");
+			check = new("check");
 			check.Description = "Check file for some text";
 			check.Parameters.Add("file path");
 
-			checkNoDescription = new ("check");
+			checkNoDescription = new("check");
 			checkNoDescription.Parameters.Add("file path");
 
-			CommandOption option1 = new ("s", "something");
-			CommandOption option2 = new ("o", "other");
+			CommandOption option1 = new("s", "something");
+			CommandOption option2 = new("o", "other");
 			List<CommandOption> options = [option1, option2];
 
-			commandOptions = new (
+			commandOptions = new(
 				"command-options",
 				options,
 				0,
 				"A command with only options");
 
-			convert = new ("convert");
+			convert = new("convert");
 			convert.Description = "Convert file for some reason";
 
 			convert.Parameters.Add("input file path");
 			convert.Parameters.Add("output file path");
 
-			CommandOption option3 = new ("e", "encoding", true);
+			CommandOption option3 = new("e", "encoding", true);
 			List<CommandOption> encodingOptions = [option3];
 
-			encode = new (
+			encode = new(
 				"encode",
 				encodingOptions,
 				1,
 				"A command to encode");
 
-			help = new ("help");
+			help = new("help");
 			help.Description = "Show this information";
 
-			helpNoDescription = new ("help");
+			helpNoDescription = new("help");
 		}
 	}
 }

@@ -93,7 +93,7 @@ namespace DigitalZenWorks.CommandLine.Commands.Tests
 				path);
 			Assert.That(result, Is.True);
 
-			CommandsSet commandsSet = new ();
+			CommandsSet commandsSet = new();
 			Assert.That(() => commandsSet.JsonFromFile(path), Throws.Nothing);
 		}
 
@@ -113,7 +113,7 @@ namespace DigitalZenWorks.CommandLine.Commands.Tests
 
 			string jsonText = File.ReadAllText(path);
 
-			CommandsSet commandsSet = new (jsonText);
+			CommandsSet commandsSet = new(jsonText);
 
 			string helpMessage =
 				commandsSet.GetHelp("CommandLine Commands Tests");
@@ -127,13 +127,13 @@ namespace DigitalZenWorks.CommandLine.Commands.Tests
 		[Test]
 		public void GetOptionFailTest()
 		{
-			CommandOption encoding = new ("e", "encoding", true);
+			CommandOption encoding = new("e", "encoding", true);
 			encoding.Parameter = "utf8";
 			List<CommandOption> options = [encoding];
 
 			List<string> parameters = ["%USERPROFILE%"];
 
-			Command command = new ("some-command", options, parameters);
+			Command command = new("some-command", options, parameters);
 
 			CommandOption optionFound = command.GetOption("n", "dryrun");
 
@@ -146,13 +146,13 @@ namespace DigitalZenWorks.CommandLine.Commands.Tests
 		[Test]
 		public void GetOptionSuccessTest()
 		{
-			CommandOption encoding = new ("e", "encoding", true);
+			CommandOption encoding = new("e", "encoding", true);
 			encoding.Parameter = "utf8";
 			List<CommandOption> options = [encoding];
 
 			List<string> parameters = ["%USERPROFILE%"];
 
-			Command command = new ("some-command", options, parameters);
+			Command command = new("some-command", options, parameters);
 
 			CommandOption optionFound = command.GetOption("e", "encoding");
 
@@ -171,7 +171,7 @@ namespace DigitalZenWorks.CommandLine.Commands.Tests
 		{
 			string[] arguments = ["help"];
 
-			CommandLineInstance commandLine = new (commandsSet, arguments);
+			CommandLineInstance commandLine = new(commandsSet, arguments);
 
 			bool result = commandLine.ValidArguments;
 			Assert.That(result, Is.True);
@@ -190,7 +190,7 @@ namespace DigitalZenWorks.CommandLine.Commands.Tests
 		{
 			string[] arguments = ["command-one", "%USERPROFILE%"];
 
-			CommandLineInstance commandLine = new (commandsSet, arguments);
+			CommandLineInstance commandLine = new(commandsSet, arguments);
 
 			Assert.That(commandLine.ValidArguments, Is.True);
 
@@ -213,7 +213,7 @@ namespace DigitalZenWorks.CommandLine.Commands.Tests
 		{
 			string[] arguments = ["command-three"];
 
-			CommandLineInstance commandLine = new (commandsSet, arguments);
+			CommandLineInstance commandLine = new(commandsSet, arguments);
 
 			Assert.That(commandLine.ValidArguments, Is.True);
 
@@ -236,7 +236,7 @@ namespace DigitalZenWorks.CommandLine.Commands.Tests
 		{
 			string[] arguments = ["command-three", "-n"];
 
-			CommandLineInstance commandLine = new (commandsSet, arguments);
+			CommandLineInstance commandLine = new(commandsSet, arguments);
 
 			Assert.That(commandLine.ValidArguments, Is.True);
 
@@ -259,7 +259,7 @@ namespace DigitalZenWorks.CommandLine.Commands.Tests
 		{
 			string[] arguments = ["command-one", "-e"];
 
-			CommandLineInstance commandLine = new (commandsSet, arguments);
+			CommandLineInstance commandLine = new(commandsSet, arguments);
 
 			Assert.That(commandLine.ValidArguments, Is.False);
 		}
@@ -275,7 +275,7 @@ namespace DigitalZenWorks.CommandLine.Commands.Tests
 				"command-one", "-e", "UTF-8", "%USERPROFILE%"
 			];
 
-			CommandLineInstance commandLine = new (commandsSet, arguments);
+			CommandLineInstance commandLine = new(commandsSet, arguments);
 
 			Assert.That(commandLine.ValidArguments, Is.True);
 
@@ -298,7 +298,7 @@ namespace DigitalZenWorks.CommandLine.Commands.Tests
 		{
 			string[] arguments = ["command-one", "%USERPROFILE%", "-e"];
 
-			CommandLineInstance commandLine = new (commandsSet, arguments);
+			CommandLineInstance commandLine = new(commandsSet, arguments);
 
 			Assert.That(commandLine.ValidArguments, Is.False);
 		}
@@ -314,7 +314,7 @@ namespace DigitalZenWorks.CommandLine.Commands.Tests
 				"command-one", "%USERPROFILE%", "-e", "UTF-8"
 			];
 
-			CommandLineInstance commandLine = new (commandsSet, arguments);
+			CommandLineInstance commandLine = new(commandsSet, arguments);
 
 			Assert.That(commandLine.ValidArguments, Is.True);
 
@@ -340,7 +340,7 @@ namespace DigitalZenWorks.CommandLine.Commands.Tests
 				"command-one", "--encoding", "UTF-8", "%USERPROFILE%"
 			];
 
-			CommandLineInstance commandLine = new (commandsSet, arguments);
+			CommandLineInstance commandLine = new(commandsSet, arguments);
 
 			Assert.That(commandLine.ValidArguments, Is.True);
 
@@ -366,7 +366,7 @@ namespace DigitalZenWorks.CommandLine.Commands.Tests
 				"command-one", "--encoding", "UTF-8"
 			];
 
-			CommandLineInstance commandLine = new (commandsSet, arguments);
+			CommandLineInstance commandLine = new(commandsSet, arguments);
 
 			Assert.That(commandLine.ValidArguments, Is.False);
 		}
@@ -382,7 +382,7 @@ namespace DigitalZenWorks.CommandLine.Commands.Tests
 				"command-one", "%USERPROFILE%", "--encoding"
 			];
 
-			CommandLineInstance commandLine = new (commandsSet, arguments);
+			CommandLineInstance commandLine = new(commandsSet, arguments);
 
 			Assert.That(commandLine.ValidArguments, Is.False);
 		}
@@ -398,7 +398,7 @@ namespace DigitalZenWorks.CommandLine.Commands.Tests
 				"command-one", "%USERPROFILE%", "--encoding", "UTF-8"
 			];
 
-			CommandLineInstance commandLine = new (commandsSet, arguments);
+			CommandLineInstance commandLine = new(commandsSet, arguments);
 
 			Assert.That(commandLine.ValidArguments, Is.True);
 
@@ -424,7 +424,7 @@ namespace DigitalZenWorks.CommandLine.Commands.Tests
 				"command-seven", "--encoding", "utf8", "%USERPROFILE%"
 			];
 
-			CommandLineInstance commandLine = new (commandsSet, arguments);
+			CommandLineInstance commandLine = new(commandsSet, arguments);
 
 			Assert.That(commandLine.ValidArguments, Is.True);
 
@@ -455,7 +455,7 @@ namespace DigitalZenWorks.CommandLine.Commands.Tests
 				"command-seven", "%USERPROFILE%", "--encoding", "utf8"
 			];
 
-			CommandLineInstance commandLine = new (commandsSet, arguments);
+			CommandLineInstance commandLine = new(commandsSet, arguments);
 
 			Assert.That(commandLine.ValidArguments, Is.True);
 
@@ -479,72 +479,72 @@ namespace DigitalZenWorks.CommandLine.Commands.Tests
 		{
 			List<Command> commands = [];
 
-			Command help = new ("help");
+			Command help = new("help");
 			help.Description = "Show this information";
 			commands.Add(help);
 
-			CommandOption option = new ("e", "encoding", true);
+			CommandOption option = new("e", "encoding", true);
 			List<CommandOption> options = [option];
 
-			Command commandOne = new (
+			Command commandOne = new(
 				"command-one",
 				options,
 				1,
 				"A command with an option that has an option.");
 			commands.Add(commandOne);
 
-			Command commandTwo = new (
+			Command commandTwo = new(
 				"command-two",
 				null,
 				1,
 				"A command with no options");
 			commands.Add(commandTwo);
 
-			CommandOption dryRun = new ("n", "dryrun");
+			CommandOption dryRun = new("n", "dryrun");
 			options = [dryRun];
 
-			Command commandThree = new (
+			Command commandThree = new(
 				"command-three",
 				options,
 				0,
 				"A command with no parameters");
 			commands.Add(commandThree);
 
-			Command commandFour = new (
+			Command commandFour = new(
 				"command-four",
 				null,
 				2,
 				"A command with 2 minimum required parameters");
 			commands.Add(commandFour);
 
-			Command commandFive = new (
+			Command commandFive = new(
 				"command-five",
 				null,
 				4,
 				"A command with 4 minimum required parameters");
 			commands.Add(commandFive);
 
-			CommandOption flush = new ("s", "flush");
+			CommandOption flush = new("s", "flush");
 			options = [dryRun, flush];
 
-			Command commandSix = new (
+			Command commandSix = new(
 				"command-six",
 				options,
 				0,
 				"A command with multiple options");
 			commands.Add(commandSix);
 
-			CommandOption encoding = new ("e", "encoding", true);
+			CommandOption encoding = new("e", "encoding", true);
 			options = [encoding];
 
-			Command commandSeven = new (
+			Command commandSeven = new(
 				"command-seven",
 				options,
 				1,
 				"A command with an option that has a value.");
 			commands.Add(commandSeven);
 
-			CommandsSet commandsSet = new (commands);
+			CommandsSet commandsSet = new(commands);
 
 			return commandsSet;
 		}

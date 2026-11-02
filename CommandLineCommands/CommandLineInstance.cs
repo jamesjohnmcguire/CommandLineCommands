@@ -45,7 +45,7 @@ namespace DigitalZenWorks.CommandLine.Commands
 		public CommandLineInstance(
 			IList<Command> commandsList, string[] arguments)
 		{
-			CommandsSet commands = new (commandsList);
+			CommandsSet commands = new(commandsList);
 			Initialize(commands, arguments);
 		}
 
@@ -74,7 +74,7 @@ namespace DigitalZenWorks.CommandLine.Commands
 			string[] arguments,
 			InferCommand inferCommand)
 		{
-			CommandsSet commands = new (commandsList);
+			CommandsSet commands = new(commandsList);
 			this.inferCommand = inferCommand;
 
 			Initialize(commands, arguments);
@@ -140,7 +140,8 @@ namespace DigitalZenWorks.CommandLine.Commands
 		/// </value>
 		public bool UseLog
 		{
-			get { return useLog; } set { useLog = value; }
+			get { return useLog; }
+			set { useLog = value; }
 		}
 
 		/// <summary>
@@ -358,7 +359,7 @@ namespace DigitalZenWorks.CommandLine.Commands
 
 			if (isHelpCommand == true)
 			{
-				command = new ("help");
+				command = new("help");
 			}
 			else
 			{

@@ -114,7 +114,7 @@ namespace DigitalZenWorks.CommandLine.Commands
 		/// <returns>The complete help message.</returns>
 		public string GetHelp(string title = null)
 		{
-			HelpManager helpManager = new (title, commands);
+			HelpManager helpManager = new(title, commands);
 
 			string message = helpManager.HelpText;
 
