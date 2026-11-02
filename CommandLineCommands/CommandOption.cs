@@ -4,68 +4,67 @@
 // </copyright>
 /////////////////////////////////////////////////////////////////////////////
 
-namespace DigitalZenWorks.CommandLine.Commands
+namespace DigitalZenWorks.CommandLine.Commands;
+
+/// <summary>
+/// Represents a command line command option.
+/// </summary>
+public class CommandOption
 {
 	/// <summary>
-	/// Represents a command line command option.
+	/// Initializes a new instance of the <see cref="CommandOption"/>
+	/// class.
 	/// </summary>
-	public class CommandOption
+	public CommandOption()
 	{
-		/// <summary>
-		/// Initializes a new instance of the <see cref="CommandOption"/>
-		/// class.
-		/// </summary>
-		public CommandOption()
-		{
-		}
-
-		/// <summary>
-		/// Initializes a new instance of the <see cref="CommandOption"/>
-		/// class.
-		/// </summary>
-		/// <param name="shortName">The command short name.</param>
-		/// <param name="longName">The command long name.</param>
-		/// <param name="requiresParameter">A value indicating whether this
-		/// option requires a parameter or not.</param>
-		public CommandOption(
-			string shortName, string longName, bool requiresParameter = false)
-		{
-			ShortName = shortName;
-			LongName = longName;
-
-			RequiresParameter = requiresParameter;
-		}
-
-		/// <summary>
-		/// Gets or sets the option's argument index.
-		/// </summary>
-		/// <value>The option's argument index.</value>
-		public int ArgumentIndex { get; set; }
-
-		/// <summary>
-		/// Gets or sets the long name.
-		/// </summary>
-		/// <value>The long name.</value>
-		public string LongName { get; set; }
-
-		/// <summary>
-		/// Gets or sets the option parameter.
-		/// </summary>
-		/// <value>The option parameter.</value>
-		public string Parameter { get; set; }
-
-		/// <summary>
-		/// Gets or sets a value indicating whether a value indicating whether this
-		/// option requires a parameter or not.
-		/// </summary>
-		/// <value>A value indicating whether this option requires a
-		/// parameter or not.</value>
-		public bool RequiresParameter { get; set; }
-
-		/// <summary>
-		/// Gets or sets the short name.
-		/// </summary>
-		/// <value>The short name.</value>
-		public string ShortName { get; set; }
 	}
+
+	/// <summary>
+	/// Initializes a new instance of the <see cref="CommandOption"/>
+	/// class.
+	/// </summary>
+	/// <param name="shortName">The command short name.</param>
+	/// <param name="longName">The command long name.</param>
+	/// <param name="requiresParameter">A value indicating whether this
+	/// option requires a parameter or not.</param>
+	public CommandOption(
+		string shortName, string longName, bool requiresParameter = false)
+	{
+		ShortName = shortName;
+		LongName = longName;
+
+		RequiresParameter = requiresParameter;
+	}
+
+	/// <summary>
+	/// Gets or sets the option's argument index.
+	/// </summary>
+	/// <value>The option's argument index.</value>
+	public int ArgumentIndex { get; set; }
+
+	/// <summary>
+	/// Gets or sets the long name.
+	/// </summary>
+	/// <value>The long name.</value>
+	public string LongName { get; set; }
+
+	/// <summary>
+	/// Gets or sets the option parameter.
+	/// </summary>
+	/// <value>The option parameter.</value>
+	public string Parameter { get; set; }
+
+	/// <summary>
+	/// Gets or sets a value indicating whether a value indicating whether this
+	/// option requires a parameter or not.
+	/// </summary>
+	/// <value>A value indicating whether this option requires a
+	/// parameter or not.</value>
+	public bool RequiresParameter { get; set; }
+
+	/// <summary>
+	/// Gets or sets the short name.
+	/// </summary>
+	/// <value>The short name.</value>
+	public string ShortName { get; set; }
 }

@@ -4,36 +4,35 @@
 // </copyright>
 /////////////////////////////////////////////////////////////////////////////
 
-namespace DigitalZenWorks.CommandLine.Commands
+namespace DigitalZenWorks.CommandLine.Commands;
+
+/// <summary>
+/// Represents a command column type.
+/// </summary>
+public enum CommandColumn
 {
 	/// <summary>
-	/// Represents a command column type.
+	/// Unknown column type.
 	/// </summary>
-	public enum CommandColumn
-	{
-		/// <summary>
-		/// Unknown column type.
-		/// </summary>
-		Unknown,
+	Unknown,
 
-		/// <summary>
-		/// Command column type.
-		/// </summary>
-		Command,
+	/// <summary>
+	/// Command column type.
+	/// </summary>
+	Command,
 
-		/// <summary>
-		/// Description column type.
-		/// </summary>
-		Description,
+	/// <summary>
+	/// Description column type.
+	/// </summary>
+	Description,
 
-		/// <summary>
-		/// Option column type.
-		/// </summary>
-		Option,
+	/// <summary>
+	/// Option column type.
+	/// </summary>
+	Option,
 
-		/// <summary>
-		/// Parameter column type.
-		/// </summary>
-		Parameter,
-	}
+	/// <summary>
+	/// Parameter column type.
+	/// </summary>
+	Parameter,
 }
