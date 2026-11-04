@@ -19,4 +19,6 @@ x86/
 # NUNIT
 TestResult.xml
 
-SourceCode/CommandLineCommands/nupkg/
+artifacts/
+nupkg/
+TestResults/
