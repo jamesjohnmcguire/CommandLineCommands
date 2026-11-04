@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="CommandLineCommands.Tests/DigitalZenWorks.CommandLine.Commands.Tests.csproj" />
+  <Project Path="CommandLineCommands/DigitalZenWorks.CommandLine.Commands.csproj" />
+</Solution>
