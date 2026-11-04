@@ -1,189 +1,216 @@
 # DigitalZenWorks.CommandLine.Commands
 
-This C# client library that provides light weight functionality to help process command line options.
+[![NuGet version][version-badge]][nuget]
+[![NuGet downloads][downloads-badge]][nuget]
+[![Build and tests][build-badge]][workflow]
+[![License: MIT][license-badge]][license]
+[![GitHub issues][issues-badge]][issues]
 
-Please :star: star this project!
+A lightweight C# library for named commands, short and long options,
+option values, positional arguments, JSON command definitions, and help
+output. The application retains control of command execution.
 
-## Getting Started
+## Installation
 
-### Installation
+Add the package to your application:
 
-#### Git
-    git clone  https://github.com/jamesjohnmcguire/CommandLineCommands
+```shell
+dotnet add package DigitalZenWorks.CommandLine.Commands
+```
 
-#### Nuget
-    PM> Install-Package DigitalZenWorks.CommandLine.Commands
+Or use Visual Studio's Package Manager Console:
 
-### Usage:
+```powershell
+Install-Package DigitalZenWorks.CommandLine.Commands
+```
 
-#### Library and API usage:
-Usage is intended to be simple and direct - Process command line arguments and get going with your business.
+## Quick start
 
-NEW!
+In a console application, define the accepted commands and options, then
+validate the supplied arguments:
 
-Define a list of valid commands in JSON file, then load the file into the library.  Here is an example of the JSON command definitions file:
+```csharp
+using System;
+using System.Collections.Generic;
+using DigitalZenWorks.CommandLine.Commands;
+
+Command help = new("help");
+help.Description = "Show available commands";
+
+CommandOption encoding = new("e", "encoding", true);
+CommandOption dryRun = new("n", "dryrun");
+List<CommandOption> options = new();
+options.Add(encoding);
+options.Add(dryRun);
+
+Command convert = new("convert", options, 1, "Convert a data file");
+List<Command> commands = new();
+commands.Add(help);
+commands.Add(convert);
+
+CommandLineInstance commandLine = new(commands, args);
+
+if (commandLine.ValidArguments == false)
+{
+	Console.Error.WriteLine(commandLine.ErrorMessage);
+	commandLine.ShowHelp();
+	return;
+}
+
+Command command = commandLine.Command;
+
+if (command.Name == "help")
+{
+	commandLine.ShowHelp();
+	return;
+}
+
+string inputPath = command.Parameters[0];
+CommandOption encodingOption = command.GetOption("e", "encoding");
+string encodingName = "utf-8";
+
+if (encodingOption != null)
+{
+	encodingName = encodingOption.Parameter;
+}
+
+bool dryRunRequested = command.DoesOptionExist("n", "dryrun");
+Console.WriteLine("Input: " + inputPath);
+Console.WriteLine("Encoding: " + encodingName);
+Console.WriteLine("Dry run: " + dryRunRequested);
+```
+
+Example invocations:
+
+```shell
+dotnet run -- convert --encoding utf-8 --dryrun input.txt
+dotnet run -- convert -e utf-8 -n input.txt
+dotnet run -- help
+```
+
+The `1` in the `Command` constructor is the minimum number of positional
+arguments. Setting `requiresParameter` to `true` on a `CommandOption` makes
+it consume the following argument as its value. Supply values separately,
+as in `--encoding utf-8`.
+
+## JSON command definitions
+
+Commands can also be defined in a JSON file, such as `commands.json`:
+
 ```json
 [
 	{
 		"command": "help",
-		"description": "Show this information"
+		"description": "Show available commands"
 	},
 	{
-		"command": "dbx-to-pst",
-		"description": "Migrate dbx files to pst file",
+		"command": "convert",
+		"description": "Convert a data file",
+		"parameterCount": 1,
 		"options":
 		[
 			{
 				"shortName": "e",
 				"longName": "encoding",
 				"requiresParameter": true
-			}
-		],
-		"parameters":
-		[
-			"dbx files path",
-			"PST file path"
-		]
-	},
-	{
-		"command": "eml-to-pst",
-		"description": "Migrate eml files to pst file",
-		"options":
-		[
-			{
-				"shortName": "a",
-				"longName": "adjust",
-				"requiresParameter": false
 			},
-			{
-				"shortName": "c",
-				"longName": "close-store",
-				"requiresParameter": false
-			}
-		],
-		"parameters":
-		[
-			"eml files path",
-			"PST file path"
-		]
-	},
-	{
-		"command": "list-folders",
-		"description": "List all sub folders of a given store or folder",
-		"options":
-		[
-			{
-				"shortName": "r",
-				"longName": "recurse",
-				"requiresParameter": false
-			}
-		],
-		"parameters":
-		[
-			"PST file path",
-			"folder path"
-		]
-	},
-	{
-		"command": "remove-duplicates",
-		"description": "Remove duplicate messages",
-		"options":
-		[
 			{
 				"shortName": "n",
 				"longName": "dryrun",
 				"requiresParameter": false
-			},
-			{
-				"shortName": "s",
-				"longName": "flush",
-				"requiresParameter": false
 			}
-		],
-		"parameters":
-		[
-			"PST file path"
 		]
 	}
 ]
 ```
 
-Then in your code somewhere, you can instantiate with something like:
-```c#
-	commandsSet = new CommandsSet(jsonText);
+Load the definitions instead of constructing the command list in code:
+
+```csharp
+using System.IO;
+using DigitalZenWorks.CommandLine.Commands;
+
+string jsonText = File.ReadAllText("commands.json");
+CommandsSet commandSet = new(jsonText);
+CommandLineInstance commandLine = new(commandSet, args);
 ```
 
-Note: This example taken from: https://github.com/jamesjohnmcguire/DigitalZenWorks.Email.ToolKit
+Check `ValidArguments` before accessing the selected command, its options,
+or its positional arguments. See the XML documentation in the
+[library source][source] for individual API contracts.
 
-Otherwise, to pragmatically create a list of commands that the application will support, here is an example:
-```c#
-	IList<Command> commands = new List<Command>();
+## Target frameworks
 
-	Command help = new ("help");
-	help.Description = "Show this information";
-	commands.Add(help);
+The current Release configuration targets .NET Standard 2.0, .NET Framework
+4.7.2, and .NET 5, 6, 7, 8, 9, and 10. Debug builds target .NET 10 only.
+See the [package page][nuget] for a published version's frameworks and
+its dependencies.
 
-	CommandOption encoding = new ("e", "encoding", true);
-	IList<CommandOption> options = new List<CommandOption>();
-	options.Add(encoding);
+## Build and test
 
-	Command someCommand = new (
-		"some-command", options, 1, "A Do Something Command");
-	commands.Add(someCommand);
-```
-The third parameter is the minimum amount of required parameters, such as data file path.  The other parameters should be self-explanatory.
+Install the .NET 10 SDK, then clone and build the repository:
 
-Then instantiate a CommandLineInstance object:
-```c#
-	CommandLineInstance commandLine = new (commands, arguments);
-```
-If all goes well and the supplied arguments pass validation, the active command object will be available, and you can get on your way:
-```c#
-	if (commandLine.ValidArguments == true)
-	{
-		Command command = commandLine.Command;
-
-		switch (command.Name)
-		{
-			case "some-command":
-				DoSomething(command);
-				break;
-		}
-	}
+```shell
+git clone https://github.com/jamesjohnmcguire/CommandLineCommands.git
+cd CommandLineCommands
+dotnet build CommandLineCommands.slnx --configuration Debug
+dotnet test CommandLineCommands.slnx --configuration Debug
 ```
 
-Getting the associated additional parameters and options, can be done as follows:
-```c#
-	string dataFilePath = command.Parameters[0];
-
-	bool dryRun = command.DoesOptionExist("n", "dryrun");
-```
+See the [development notes][development-notes] for Release builds,
+versioning, trusted publishing, and the `build.cmd` helper.
 
 ## Contributing
 
-If you have a suggestion that would make this better, please fork the repo and create a pull request. You can also simply open an issue with the tag "enhancement".
+Report bugs and propose improvements through [GitHub issues][issues].
 
-### Process:
+ For a pull request:
 
 1. Fork the Project
-2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the Branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
+2. Create your focused branch
+3. Add your code changes
+3. Add or update tests to validate your changes
+3. Commit and Push your Changes
+4. Open a Pull Request. Include the description of the change, its validation, and any related issue in the PR.
 
 ### Coding style
 Please match the current coding style.  Most notably:
 1. One operation per line
-2. Use complete English words in variable and method names
+2. Use complete, self-documenting English words in variable and method names
 3. Attempt to declare variable and method names in a self-documenting manner
+4. Use tabs and Allman braces
 
+Keep public API compatibility in mind: this library is consumed as NuGet package.
 
 ## License
 
-Distributed under the MIT License. See `LICENSE` for more information.
+Distributed under the [MIT License][license].
 
 ## Contact
 
-James John McGuire - [@jamesmc](https://twitter.com/jamesmc) - jamesjohnmcguire@gmail.com
+James John McGuire — jamesjohnmcguire@gmail.com
 
-Project Link: [https://github.com/jamesjohnmcguire/CommandLineCommands](https://github.com/jamesjohnmcguire/CommandLineCommands)
+[Project repository][repository]. If the library is useful to you, consider
+giving it a star.
+
+[version-badge]:
+  https://img.shields.io/nuget/v/DigitalZenWorks.CommandLine.Commands.svg
+[downloads-badge]:
+  https://img.shields.io/nuget/dt/DigitalZenWorks.CommandLine.Commands.svg
+[license-badge]:
+  https://img.shields.io/badge/license-MIT-blue.svg
+[build-badge]:
+  https://img.shields.io/github/actions/workflow/status/jamesjohnmcguire/CommandLineCommands/dotnet.yml?branch=main
+[workflow]:
+  https://github.com/jamesjohnmcguire/CommandLineCommands/actions/workflows/dotnet.yml
+[issues-badge]:
+  https://img.shields.io/github/issues/jamesjohnmcguire/CommandLineCommands
+[nuget]: https://www.nuget.org/packages/DigitalZenWorks.CommandLine.Commands
+[license]:
+  https://github.com/jamesjohnmcguire/CommandLineCommands/blob/main/LICENSE
+[issues]: https://github.com/jamesjohnmcguire/CommandLineCommands/issues
+[source]:
+  https://github.com/jamesjohnmcguire/CommandLineCommands/tree/main/CommandLineCommands
+[repository]: https://github.com/jamesjohnmcguire/CommandLineCommands
+[development-notes]:
+  https://github.com/jamesjohnmcguire/CommandLineCommands/blob/main/Support/DevelopmentNotes.md
