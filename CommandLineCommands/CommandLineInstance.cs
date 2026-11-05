@@ -19,8 +19,7 @@ using System.Linq;
 /// <param name="argument">The first argument to check upon.</param>
 /// <param name="commands">The list of allowed commands.</param>
 /// <returns>The inferred command, if any.</returns>
-public delegate Command InferCommand(
-	string argument, IList<Command> commands);
+public delegate Command InferCommand(string argument, IList<Command> commands);
 
 /// <summary>
 /// Represents a set of command line arguments.
@@ -42,8 +41,7 @@ public class CommandLineInstance
 	/// <param name="commandsList">A list of valid commands.</param>
 	/// <param name="arguments">The array of command line
 	/// arguments.</param>
-	public CommandLineInstance(
-		IList<Command> commandsList, string[] arguments)
+	public CommandLineInstance(IList<Command> commandsList, string[] arguments)
 	{
 		CommandsSet commands = new(commandsList);
 		Initialize(commands, arguments);
@@ -191,8 +189,7 @@ public class CommandLineInstance
 		return option;
 	}
 
-	private static string GetOptionName(
-		string argument, bool isLongFormOption)
+	private static string GetOptionName(string argument, bool isLongFormOption)
 	{
 		string optionName;
 
@@ -284,8 +281,7 @@ public class CommandLineInstance
 			{
 				bool isLongFormOption = IsLongFormOption(argument);
 
-				string optionName =
-					GetOptionName(argument, isLongFormOption);
+				string optionName = GetOptionName(argument, isLongFormOption);
 
 				CommandOption option = GetCommandOption(
 					options,
@@ -294,8 +290,8 @@ public class CommandLineInstance
 
 				if (option != null)
 				{
-					isValidOption = IsValidRequiredParameter(
-						option, arguments, index);
+					isValidOption =
+						IsValidRequiredParameter(option, arguments, index);
 				}
 			}
 		}
@@ -453,8 +449,7 @@ public class CommandLineInstance
 			}
 			else
 			{
-				bool isLongFormOption =
-					IsLongFormOption(argument);
+				bool isLongFormOption = IsLongFormOption(argument);
 
 				CommandOption option = GetCommandOption(
 					commandTemplate.Options,
@@ -469,8 +464,7 @@ public class CommandLineInstance
 					{
 						// The next argument is taken.
 						index++;
-						option.Parameter =
-							arguments[index];
+						option.Parameter = arguments[index];
 					}
 
 					validArgument = true;

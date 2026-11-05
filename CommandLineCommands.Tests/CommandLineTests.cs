@@ -115,8 +115,7 @@ internal sealed class CommandLineTests
 
 		CommandsSet commandsSet = new(jsonText);
 
-		string helpMessage =
-			commandsSet.GetHelp("CommandLine Commands Tests");
+		string helpMessage = commandsSet.GetHelp("CommandLine Commands Tests");
 
 		Assert.That(helpMessage, Is.Not.Empty);
 	}

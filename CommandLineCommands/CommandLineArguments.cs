@@ -27,8 +27,7 @@ public class CommandLineArguments
 	/// <param name="commands">A list of valid commands.</param>
 	/// <param name="arguments">The array of command line
 	/// arguments.</param>
-	public CommandLineArguments(
-		IList<Command> commands, string[] arguments)
+	public CommandLineArguments(IList<Command> commands, string[] arguments)
 	{
 		commandLineInstance = new(commands, arguments);
 	}

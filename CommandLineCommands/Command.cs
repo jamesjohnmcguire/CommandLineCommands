@@ -177,11 +177,9 @@ public class Command
 
 		CommandOption option = optionsList.Find(option =>
 			(option.ShortName != null &&
-			option.ShortName.Equals(
-				shortName, StringComparison.Ordinal)) ||
+			option.ShortName.Equals(shortName, StringComparison.Ordinal)) ||
 			(option.LongName != null &&
-			option.LongName.Equals(
-				longName, StringComparison.Ordinal)));
+			option.LongName.Equals(longName, StringComparison.Ordinal)));
 
 		return option;
 	}

@@ -154,8 +154,7 @@ public class HelpManager
 				parametersCount = command.Parameters.Count;
 			}
 
-			if ((optionsCount > 0 ||
-				parametersCount > 0) &&
+			if ((optionsCount > 0 || parametersCount > 0) &&
 				(optionsColumnLength > 0 || parametersColumnLength > 0))
 			{
 				columnText = PadColumn(
@@ -173,19 +172,17 @@ public class HelpManager
 			string description = command.Description;
 			string name = command.Name;
 
-			commandColumnLength =
-				Math.Max(name.Length, commandColumnLength);
+			commandColumnLength = Math.Max(name.Length, commandColumnLength);
 
 			if (description != null)
 			{
-				descriptionColumnLength = Math.Max(
-					description.Length, descriptionColumnLength);
+				descriptionColumnLength =
+					Math.Max(description.Length, descriptionColumnLength);
 			}
 
 			optionsColumnLength = GetOptionsMaximumLength(command);
 
-			parametersColumnLength =
-				GetParametersMaximumLength(command);
+			parametersColumnLength = GetParametersMaximumLength(command);
 		}
 	}
 
@@ -249,8 +246,7 @@ public class HelpManager
 			parametersCount = command.Parameters.Count;
 		}
 
-		int optionalsCount = Math.Max(
-			optionsCount, parametersCount);
+		int optionalsCount = Math.Max(optionsCount, parametersCount);
 		linesCount = Math.Max(linesCount, optionalsCount);
 
 		for (int index = 0; index < linesCount; index++)
@@ -294,8 +290,8 @@ public class HelpManager
 		{
 			lineOption = GetColumnOption(command, lineIndex);
 		}
-		else if (command.Parameters != null && command.Parameters.Count > lineIndex &&
-			optionsColumnLength > 0)
+		else if (command.Parameters != null &&
+			command.Parameters.Count > lineIndex && optionsColumnLength > 0)
 		{
 			lineOption = PadColumn(lineOption, optionsColumnLength);
 		}
@@ -314,9 +310,8 @@ public class HelpManager
 			if (optionsColumnLength > 0 || parametersColumnLength > 0)
 			{
 				// Compensate for the header name too.
-				descriptionColumnLength = Math.Max(
-					columnHeaderText.Length,
-					descriptionColumnLength);
+				descriptionColumnLength =
+					Math.Max(columnHeaderText.Length, descriptionColumnLength);
 
 				columnHeaderText =
 					PadColumn(columnHeaderText, descriptionColumnLength);
@@ -333,8 +328,7 @@ public class HelpManager
 		if (descriptionColumnLength > 0 || optionsColumnLength > 0 ||
 			parametersColumnLength > 0)
 		{
-			columnHeaderText =
-				PadColumn(columnHeaderText, commandColumnLength);
+			columnHeaderText = PadColumn(columnHeaderText, commandColumnLength);
 		}
 
 		return columnHeaderText;
@@ -404,8 +398,8 @@ public class HelpManager
 					actualOptionLength += 9;
 				}
 
-				optionsColumnLength = Math.Max(
-					actualOptionLength, optionsColumnLength);
+				optionsColumnLength =
+					Math.Max(actualOptionLength, optionsColumnLength);
 			}
 		}
 
@@ -418,8 +412,8 @@ public class HelpManager
 		{
 			foreach (string parameter in command.Parameters)
 			{
-				parametersColumnLength = Math.Max(
-					parameter.Length, parametersColumnLength);
+				parametersColumnLength =
+					Math.Max(parameter.Length, parametersColumnLength);
 			}
 		}
 
